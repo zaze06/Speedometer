@@ -1,0 +1,17 @@
+{
+  "speedometer.config.name": "Speedometer Config",
+  "speedometer.config.category.name": "Speedometer Config Category",
+  "speedometer.config.speed": "Speed Type",
+  "speedometer.config.color": "Color",
+  "speedometer.config.knot": "Use knot in boats",
+
+  "speedometer.key.configkey": "Config Key",
+  "speedometer.key.catagory": "Speedometer",
+
+  "speedometer.speed.mph": "MPH",
+  "speedometer.speed.mps": "Meters/s",
+  "speedometer.speed.kmph": "Km/h",
+  "speedometer.speed.bps": "Blocks/s",
+  "speedometer.speed.knot": "Knot",
+  "speedometer.speed.error": "Unknown Speed Type"
+}

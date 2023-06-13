@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "speedometer",
+  "version": "${version}",
+
+  "name": "speedometer",
+  "description": "just displaying your speed",
+  "authors": [],
+  "contact": {},
+
+  "license": "All Rights Reserved",
+  "icon": "icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": ["me.zacharias.speedometer.fabric.SpeedometerFabric"],
+    "modmenu": ["me.zacharias.speedometer.fabric.Config"]
+  },
+  "depends": {
+    "fabricloader": ">=0.14.21",
+    "minecraft": ">=1.20"
+  }
+}
