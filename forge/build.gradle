@@ -27,10 +27,6 @@ dependencies {
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
-
-    implementation 'org.json:json:20230227'
-    include 'org.json:json:20230227'
-    forgeRuntimeLibrary 'org.json:json:20230227'
 }
 
 processResources {
