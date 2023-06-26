@@ -7,7 +7,10 @@ import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import me.zacharias.speedometer.SpeedTypes;
 import me.zacharias.speedometer.Speedometer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
+
+import static me.zacharias.speedometer.Speedometer.LOGGER;
 
 public class Config implements ModMenuApi {
         @Override

@@ -1,11 +1,8 @@
 package me.zacharias.speedometer;
 
 import dev.architectury.platform.Platform;
-import net.minecraft.world.phys.Vec3;
-import org.joml.Vector3i;
 import org.json.JSONObject;
 
-import javax.swing.plaf.ColorUIResource;
 import java.io.*;
 
 import me.shedaniel.math.Color;
@@ -14,6 +11,7 @@ import static me.zacharias.speedometer.Speedometer.MOD_ID;
 
 public class Config {
     private static JSONObject Config;
+    public static final int configVersion = 2;
 
     public static void initialize(){
         if(Config != null) throw new RuntimeException("Already Initialized");
@@ -27,27 +25,76 @@ public class Config {
             }
             Config = new JSONObject();
 
-
-            Config.put("speed", SpeedTypes.BlockPS);
-            Config.put("useKnot", false);
-            Config.put("color", new JSONObject()
-                    .put("r", 16)
-                    .put("g", 146)
-                    .put("b", 158)
-            );
-            Config.put("debug", false);
+            defualt();
         }else {
             try {
                 BufferedReader in = new BufferedReader(new FileReader(config));
-                String tmp = "";
+                String tmp;
                 StringBuilder builder = new StringBuilder();
                 while((tmp = in.readLine()) != null){
                     builder.append(tmp);
                 }
                 Config = new JSONObject(builder.toString());
+                if(Config.has("version")){
+                    if(Config.getInt("version")!=configVersion){
+                        if(Config.getInt("version") > configVersion){
+                            defualt();
+
+                            save();
+                        }else if(Config.getInt("version") < configVersion){
+                            Config = new JSONObject();
+
+                            defualt();
+                            save();
+                        }
+                    }
+                }else{
+                    Config = new JSONObject();
+                    defualt();
+                    save();
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        }
+    }
+
+    private static void defualt() {
+        if(!Config.has("speed")) {
+            Config.put("speed", SpeedTypes.BlockPS);
+        }
+        if(!Config.has("useKnot")) {
+            Config.put("useKnot", false);
+        }
+        if(!Config.has("color")) {
+            Config.put("color", new JSONObject()
+                    .put("r", 16)
+                    .put("g", 146)
+                    .put("b", 158)
+            );
+        }
+        if(!Config.has("visualSpeedometer")) {
+            Config.put("visualSpeedometer", false);
+        }
+        if(!Config.has("xPositionVisual")) {
+            Config.put("xPositionVisual", "W-23");
+        }
+        if(!Config.has("yPositionVisual")) {
+            Config.put("yPositionVisual", "H-23");
+        }
+        if(!Config.has("xPositionText")) {
+            Config.put("xPositionText", "W-70");
+        }
+        if(!Config.has("yPositionText")) {
+            Config.put("yPositionText", "H-15");
+        }
+
+        if(!Config.has("debug")) {
+            Config.put("debug", false);
+        }
+
+        if(!Config.has("version")) {
+            Config.put("version", configVersion);
         }
     }
 
@@ -100,11 +147,50 @@ public class Config {
         }
     }
 
-    public static boolean getIsDebug() {
+    public static boolean isDebug() {
         if(Config.has("debug")){
             return Config.getBoolean("debug");
         }else{
             return false;
+        }
+    }
+
+    public static boolean getVisualSpeedometer(){
+        if(Config.has("visualSpeedometer")){
+            return Config.getBoolean("visualSpeedometer");
+        }else {
+            return false;
+        }
+    }
+
+    public static String getXPositionVisual(){
+        if(Config.has("xPositionVisual")) {
+            return Config.getString("xPositionVisual");
+        }else{
+            return "W-23";
+        }
+    }
+
+    public static String getYPositionVisual() {
+        if (Config.has("yPositionVisual")) {
+            return Config.getString("yPositionVisual");
+        } else {
+            return "H-23";
+        }
+    }
+    public static String getXPositionText(){
+        if(Config.has("xPositionText")) {
+            return Config.getString("xPositionText");
+        }else{
+            return "W-70";
+        }
+    }
+
+    public static String getYPositionText(){
+        if(Config.has("yPositionText")) {
+            return Config.getString("yPositionText");
+        }else{
+            return "H-15";
         }
     }
 
@@ -122,5 +208,29 @@ public class Config {
 
     public static void setSpeedType(SpeedTypes speedType) {
         Config.put("speed", speedType);
+    }
+
+    public static void setVisualSpeedometer(boolean visualSpeedometer){
+        Config.put("visualSpeedometer", visualSpeedometer);
+    }
+
+    public static void setXPositionVisual(String xPositionVisual){
+        Config.put("xPositionVisual", xPositionVisual);
+    }
+
+    public static void setYPositionVisual(String yPositionVisual){
+        Config.put("yPositionVisual", yPositionVisual);
+    }
+
+    public static void setXPositionText(String xPositionText){
+        Config.put("xPositionText", xPositionText);
+    }
+
+    public static void setYPositionText(String yPositionText){
+        Config.put("yPositionText", yPositionText);
+    }
+
+    public static void setDebug(boolean debug){
+        Config.put("debug", debug);
     }
 }
