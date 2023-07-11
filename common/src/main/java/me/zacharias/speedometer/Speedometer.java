@@ -470,18 +470,18 @@ public class Speedometer
         .build()
     );
 
+    // Size of visual image
+
+    category.addEntry(entryBuilder.startIntField(Component.translatable("speedometer.config.imageSize"), Config.getImageSize())
+        .setSaveConsumer(Config::setImageSize)
+        .setTooltip(Component.translatable("speedometer.config.tooltip.imageSize"))
+        .build()
+    );
+
     category.addEntry(entryBuilder.startBooleanToggle(Component.translatable("speedometer.config.debug"),Config.isDebug())
         .setSaveConsumer(Config::setDebug)
         .setYesNoTextSupplier(isDebug -> Component.translatable("speedometer.debug."+isDebug))
         .setTooltip(Component.translatable("speedometer.config.tooltip.debug"))
-        .build()
-    );
-
-    // Size of visual image
-
-    category.addEntry(entryBuilder.startIntField(Component.translatable("speedometer.config.imageWidth"), Config.getImageSize())
-        .setSaveConsumer(Config::setImageSize)
-        .setTooltip(Component.translatable("speedometer.config.tooltip.imageWidth"))
         .build()
     );
 

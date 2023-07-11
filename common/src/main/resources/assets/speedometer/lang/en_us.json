@@ -10,7 +10,7 @@
   "speedometer.config.xPosition.text": "X Position for Text Meter",
   "speedometer.config.yPosition.text": "Y Position for Text Meter",
   "speedometer.config.debug": "Debug",
-  "speedometer.config.imageWidth": "Image Width",
+  "speedometer.config.imageSize": "Image Size",
 
   "speedometer.key.configKey": "Config Key",
   "speedometer.key.debugKey": "Debug Key",
@@ -25,6 +25,7 @@
 
   "speedometer.meter.large": "Large",
   "speedometer.meter.small": "Small",
+  "speedometer.meter.medium": "Small",
 
   "speedometer.visualSpeedometer.true": "Visual",
   "speedometer.visualSpeedometer.false": "Text",
@@ -45,7 +46,7 @@
 
   "speedometer.config.tooltip.debug": "Debug Information",
 
-  "speedometer.config.tooltip.imageWidth": "Image width",
+  "speedometer.config.tooltip.imageSize": "Size of the image. This sets both the height and width",
 
   "speedometer.invalid": "Invalid String"
 }
