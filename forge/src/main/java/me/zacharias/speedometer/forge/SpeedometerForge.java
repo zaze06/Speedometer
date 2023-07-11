@@ -7,9 +7,9 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(Speedometer.MOD_ID)
 public class SpeedometerForge {
-    public SpeedometerForge() {
-		// Submit our event bus to let architectury register our content on the right time
-        EventBuses.registerModEventBus(Speedometer.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
-        Speedometer.init();
-    }
+  public SpeedometerForge() {
+    // Submit our event bus to let architectury register our content on the right time
+    EventBuses.registerModEventBus(Speedometer.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
+    Speedometer.init();
+  }
 }

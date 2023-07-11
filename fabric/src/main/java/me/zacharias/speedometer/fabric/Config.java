@@ -13,12 +13,11 @@ import net.minecraft.network.chat.Component;
 import static me.zacharias.speedometer.Speedometer.LOGGER;
 
 public class Config implements ModMenuApi {
-        @Override
-        public ConfigScreenFactory<?> getModConfigScreenFactory() {
-            return parent -> {
-                ConfigBuilder builder = Speedometer.getConfig(parent);
-
-                return builder.build();
-            };
-        }
-    }
+  @Override
+  public ConfigScreenFactory<?> getModConfigScreenFactory() {
+    return parent -> {
+      ConfigBuilder builder = Speedometer.getConfig(parent);
+      return builder.build();
+    };
+  }
+}
