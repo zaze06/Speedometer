@@ -18,6 +18,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.entity.vehicle.Minecart;
@@ -105,7 +106,7 @@ public class Speedometer
 			} else if (e.isInWater()) {
 				yOffset = 0;
 			}
-		} else if (entity instanceof Boat || entity instanceof Minecart) {
+		} else if (entity instanceof Boat || entity instanceof Minecart || entity instanceof Pig) {
 			yOffset = 0;
 		}
 
