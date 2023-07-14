@@ -108,7 +108,7 @@ public class Speedometer
       if (!e.onGround() && e.isCreative()) {
         yOffset = 0;
       } else if (e.isInWater()) {
-        yOffset = 0;
+        yOffset = 0.005;
       }
     } else if (entity instanceof Boat || entity instanceof Minecart || entity instanceof Pig) {
       yOffset = 0;
