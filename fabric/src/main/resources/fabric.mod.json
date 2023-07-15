@@ -14,15 +14,14 @@
   "license": "All Rights Reserved",
   "icon": "icon.png",
 
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
-    "main": ["me.zacharias.speedometer.fabric.SpeedometerFabric"],
-    "modmenu": ["me.zacharias.speedometer.fabric.Config"]
+    "main": ["me.zacharias.speedometer.fabric.SpeedometerFabric"]
   },
   "depends": {
     "fabricloader": ">=0.14.21",
     "minecraft": ">=1.20",
     "cloth-config": ">=11.1.106",
-    "architectury": ">= 9.1.10"
+    "architectury": ">=9.1.10"
   }
 }

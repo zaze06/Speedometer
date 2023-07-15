@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import static me.zacharias.speedometer.Speedometer.LOGGER;
+import static me.zacharias.speedometer.Speedometer.MOD_ID;
 
 public class Client {
   public static final KeyMapping CONFIG_KEY = new KeyMapping(
@@ -44,6 +45,9 @@ public class Client {
   public static BufferedImage img = null;
 
   public static void init(){
+
+    Platform.getMod(MOD_ID).registerConfigurationScreen(parent -> ConfigMenu.getConfig(parent).build());
+
     KeyMappingRegistry.register(CONFIG_KEY);
     ClientTickEvent.CLIENT_POST.register(minecraft -> {
       if(CONFIG_KEY.consumeClick()){
