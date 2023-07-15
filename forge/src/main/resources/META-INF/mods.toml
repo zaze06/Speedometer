@@ -23,9 +23,9 @@ version="${version}" #mandatory
 # A display name for the mod
 displayName="speedometer" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification <here>
-#updateJSONURL="http://myurl.me/" #optional
+updateJSONURL="https://raw.githubusercontent.com/zaze06/Speedometer/master/forge/src/main/resources/updateChecker.json" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
-#displayURL="http://example.com/" #optional
+displayURL="https://modrinth.com/mod/speedometer" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="icon.png" #optional
 # A text field displayed in the mod UI
