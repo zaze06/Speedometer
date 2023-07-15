@@ -64,3 +64,15 @@ just displaying your speed
    versionRange="[1.20,1.21)"
    ordering="NONE"
    side="BOTH"
+[[dependencies.speedometer]]
+   modId="architectury"
+   mandatory=true
+   versionRange="[9.1.10,)"
+   ordering="NONE"
+   side="CLIENT"
+[[dependencies.speedometer]]
+   modId="cloth_config"
+   mandatory=true
+   versionRange="[11.1.106,)"
+   ordering="NONE"
+   side="CLIENT"
