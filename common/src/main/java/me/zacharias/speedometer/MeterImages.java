@@ -4,7 +4,6 @@ import net.minecraft.network.chat.Component;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.Objects;
 
 public enum MeterImages {
