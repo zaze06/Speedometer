@@ -47,7 +47,7 @@ public class ConfigMenu {
     String yRegex = "H*h*S*s*\\+*-*\\**/*[0-9]*";
 
     // Text Placement
-
+    /*
     category.addEntry(entryBuilder.startStringDropdownMenu(Component.translatable("speedometer.config.xPosition.text"), Config.getXPositionText())
         .setSaveConsumer(Config::setXPositionText)
         .setErrorSupplier(xPosition -> {
@@ -101,6 +101,7 @@ public class ConfigMenu {
         .build()
     );
 
+
     category.addEntry(entryBuilder.startStringDropdownMenu(Component.translatable("speedometer.config.yPosition.visual"), Config.getYPositionVisual())
         .setSaveConsumer(Config::setYPositionVisual)
         .setErrorSupplier(yPosition -> {
@@ -114,6 +115,39 @@ public class ConfigMenu {
             Component.translatable("speedometer.config.tooltip.yPosition.line1"),
             Component.translatable("speedometer.config.tooltip.yPosition.line2"),
             Component.translatable("speedometer.config.tooltip.yPosition.line3")
+        )
+        .build()
+    );*/
+
+    category.addEntry(entryBuilder.startStringDropdownMenu(Component.translatable("speedometer.config.xPosition"), Config.getXPosition())
+        .setSaveConsumer(Config::setXPosition)
+        .setErrorSupplier(xPosition -> {
+          if(xPosition.matches(xRegex)){
+            return Optional.empty();
+          }else{
+            return Optional.of(Component.translatable("speedometer.invalid"));
+          }
+        })
+        .setTooltip(
+            Component.translatable("speedometer.config.tooltip.xPosition.line1"),
+            Component.translatable("speedometer.config.tooltip.xPosition.line2")
+        )
+        .build()
+    );
+
+
+    category.addEntry(entryBuilder.startStringDropdownMenu(Component.translatable("speedometer.config.yPosition"), Config.getYPosition())
+        .setSaveConsumer(Config::setYPosition)
+        .setErrorSupplier(yPosition -> {
+          if(yPosition.matches(yRegex)){
+            return Optional.empty();
+          }else{
+            return Optional.of(Component.translatable("speedometer.invalid"));
+          }
+        })
+        .setTooltip(
+            Component.translatable("speedometer.config.tooltip.yPosition.line1"),
+            Component.translatable("speedometer.config.tooltip.yPosition.line2")
         )
         .build()
     );

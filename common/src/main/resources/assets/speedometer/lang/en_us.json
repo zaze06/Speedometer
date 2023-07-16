@@ -9,6 +9,8 @@
   "speedometer.config.yPosition.visual": "Y Position for Visual Meter",
   "speedometer.config.xPosition.text": "X Position for Text Meter",
   "speedometer.config.yPosition.text": "Y Position for Text Meter",
+  "speedometer.config.xPosition": "X Position for Meters",
+  "speedometer.config.yPosition": "Y Position for Meters",
   "speedometer.config.debug": "Debug",
   "speedometer.config.imageSize": "Image Size",
 

@@ -11,7 +11,7 @@ import static me.zacharias.speedometer.Speedometer.MOD_ID;
 
 public class Config {
   private static JSONObject Config;
-  public static final float configVersion = 2.1f;
+  public static final float configVersion = 3f;
 
   public static void initialize(){
     if(Config != null) throw new RuntimeException("Already Initialized");
@@ -76,17 +76,25 @@ public class Config {
     if(!Config.has("visualSpeedometer")) {
       Config.put("visualSpeedometer", false);
     }
-    if(!Config.has("xPositionVisual")) {
+
+    /*if(!Config.has("xPositionVisual")) {
       Config.put("xPositionVisual", "W-3");
     }
     if(!Config.has("yPositionVisual")) {
       Config.put("yPositionVisual", "H-3");
     }
     if(!Config.has("xPositionText")) {
-      Config.put("xPositionText", "W-70");
+      Config.put("xPositionText", "W-3");
     }
     if(!Config.has("yPositionText")) {
-      Config.put("yPositionText", "H-15");
+      Config.put("yPositionText", "H-3");
+    }*/
+
+    if(!Config.has("xPosition")) {
+      Config.put("xPosition", "W-3");
+    }
+    if(!Config.has("yPosition")) {
+      Config.put("yPosition", "H-3");
     }
 
     if(!Config.has("debug")) {
@@ -167,7 +175,7 @@ public class Config {
     }
   }
 
-  public static String getXPositionVisual(){
+  /*public static String getXPositionVisual(){
     if(Config.has("xPositionVisual")) {
       return Config.getString("xPositionVisual");
     }else{
@@ -195,6 +203,22 @@ public class Config {
       return Config.getString("yPositionText");
     }else{
       return "H-15";
+    }
+  }*/
+
+  public static String getYPosition(){
+    if(Config.has("yPosition")) {
+      return Config.getString("yPosition");
+    }else{
+      return "H-15";
+    }
+  }
+
+  public static String getXPosition(){
+    if(Config.has("xPosition")) {
+      return Config.getString("xPosition");
+    }else{
+      return "W-70";
     }
   }
 
@@ -226,6 +250,7 @@ public class Config {
     Config.put("visualSpeedometer", visualSpeedometer);
   }
 
+  /*
   public static void setXPositionVisual(String xPositionVisual){
     Config.put("xPositionVisual", xPositionVisual);
   }
@@ -240,6 +265,14 @@ public class Config {
 
   public static void setYPositionText(String yPositionText){
     Config.put("yPositionText", yPositionText);
+  }*/
+
+  public static void setXPosition(String xPosition){
+    Config.put("xPosition", xPosition);
+  }
+
+  public static void setYPosition(String yPosition){
+    Config.put("yPosition", yPosition);
   }
 
   public static void setDebug(boolean debug){

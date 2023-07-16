@@ -115,7 +115,7 @@ public class Client {
     }
     speed = speed / speeds.size();
 
-    double speedTypeSpeed = 0D;
+    double speedTypeSpeed;
 
     SpeedTypes speedType = Config.getSpeedType();
     if (speedType == SpeedTypes.KNOT || (entity instanceof Boat && Config.getUseKnot())) {
@@ -170,8 +170,8 @@ public class Client {
 
       g2d.drawLine(x3,y3,img.getWidth()/2,img.getHeight()/2);
 
-      int xPos = getPos(graphics, Config.getXPositionVisual(), 0, false, img.getWidth());
-      int yPos = getPos(graphics, Config.getYPositionVisual(), 1, true, img.getHeight());
+      int xPos = getPos(graphics, Config.getXPosition(), 0, false);
+      int yPos = getPos(graphics, Config.getYPosition(), 1, true);
 
       for(int x1 = 0; x1 < img.getWidth(); x1++){
         for(int y1 = 0; y1 < img.getHeight(); y1++){
@@ -202,11 +202,13 @@ public class Client {
       // j -> y
       // k -> color RGB int
       String speedString = format + " " + SpeedTypes.getName(speedType).getString();
+      int width = Minecraft.getInstance().font.width(speedString);
+      int lineHeight = Minecraft.getInstance().font.lineHeight;
       graphics.drawString(
           Minecraft.getInstance().font,
           speedString,
-          getPos(graphics, Config.getXPositionText(), 0, false, Minecraft.getInstance().font.width(speedString)),
-          getPos(graphics, Config.getYPositionText(), 1, true, Minecraft.getInstance().font.lineHeight),
+          getPos(graphics, Config.getXPosition(), 0, false) - width,
+          getPos(graphics, Config.getYPosition(), 1, true) - lineHeight,
           Config.getColor().getColor()
       );
     }
@@ -253,7 +255,7 @@ public class Client {
 
   static boolean flag = true;
 
-  private static int getPos(GuiGraphics event, String input, int type, boolean changeFlag, int Size) {
+  private static int getPos(GuiGraphics event, String input, int type, boolean changeFlag) {
     ArrayList<String> passerPose = new ArrayList<>();
     final char[] s = input.toCharArray();
     try{
@@ -279,8 +281,6 @@ public class Client {
           }catch (NumberFormatException e){
             passerPose.add(Character.toString(s[i]));
           }
-        }else if(s[i] == 'S' || s[i] == 's'){
-          passerPose.add(String.valueOf(Size));
         }else{
           throw new Exception();
         }
