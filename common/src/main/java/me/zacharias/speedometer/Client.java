@@ -40,6 +40,13 @@ public class Client {
       "speedometer.key.category"
   );
 
+  public static final KeyMapping SPEED_KEY = new KeyMapping(
+      "speedometer.key.speedKey",
+      InputConstants.Type.KEYSYM,
+      InputConstants.KEY_UP,
+      "speedometer.key.category"
+  );
+
   private static final ArrayList<Double> speeds = new ArrayList<>();
   private static boolean speedometerVisualDisplayFailed = false;
   public static BufferedImage img = null;
@@ -62,19 +69,22 @@ public class Client {
       }
     });
 
+    //KeyMappingRegistry.register(SPEED_KEY);
+    ClientTickEvent.CLIENT_POST.register(minecraft -> {
+      if(SPEED_KEY.consumeClick()){
+        if(minecraft.player != null) {
+          minecraft.player.addDeltaMovement(new Vec3(1, 0, 0));
+        }
+      }
+    });
+
     Config.initialize();
     Config.save();
 
     ClientGuiEvent.RENDER_HUD.register(Client::render);
 
-    try {
-      img = ImageIO.read(Objects.requireNonNull(Speedometer.class.getResourceAsStream("/assets/speedometer/meter/meter-19.png")));
-    }catch (NullPointerException | IOException e){
-      LOGGER.warn("Can't load speedometer icon. speedometer visual display is disabled");
-      speedometerVisualDisplayFailed = true;
-    }
-
-    if(img == null){
+    LOGGER.info("Loading speedometer ");
+    if(!MeterImages.LARGE.initiate()){
       speedometerVisualDisplayFailed = true;
     }
 
@@ -143,26 +153,22 @@ public class Client {
 
       //double v = speedTypeSpeed / speedType.gatMaxVisual();
 
-      MeterImages meterImage = null;
-      int minDiff = 10000;
+      img = ImageHandler.clone(MeterImages.LARGE.getImage());
 
-      for(MeterImages meterImage1 : MeterImages.values()){
-        int diff = Math.abs(meterImage1.getSize()-Config.getImageSize());
-        if(minDiff > diff && meterImage1.getImage() != null){
-          minDiff = diff;
-          meterImage = meterImage1;
-        }
-      }
+      Graphics2D g2d = img.createGraphics();
 
-      img = meterImage.getImage();
-
-      int radius = Config.getImageSize()/2-4;
-
-      int x3 = (int) Math.round(radius*Math.cos(Math.toRadians(i+90)))+(Config.getImageSize()/2);
-      int y3 = (int) Math.round(radius*Math.sin(Math.toRadians(i+90)))+(Config.getImageSize()/2);
+      g2d.setColor(new Color(138, 0, 0));
+      g2d.setFont(new Font(g2d.getFont().getName(), Font.PLAIN, 15));
+      g2d.drawString(SpeedTypes.getName(speedType).getString(), img.getWidth()/2-27,img.getHeight()/2+25);
 
       BufferedImage img = ImageHandler.scale(Client.img, Config.getImageSize(), Config.getImageSize());
-      Graphics2D g2d = img.createGraphics();
+
+      int radius = img.getWidth()/2-4;
+
+      int x3 = (int) Math.round(radius*Math.cos(Math.toRadians(i+90)))+(img.getWidth()/2);
+      int y3 = (int) Math.round(radius*Math.sin(Math.toRadians(i+90)))+(img.getHeight()/2);
+
+      g2d = img.createGraphics();
 
       g2d.setColor(new Color(138, 0, 0));
 
@@ -170,8 +176,8 @@ public class Client {
 
       g2d.drawLine(x3,y3,img.getWidth()/2,img.getHeight()/2);
 
-      int xPos = getPos(graphics, Config.getXPosition(), 0, false);
-      int yPos = getPos(graphics, Config.getYPosition(), 1, true);
+      int xPos = getPos(graphics, Config.getXPosition(), 0);
+      int yPos = getPos(graphics, Config.getYPosition(), 1);
 
       for(int x1 = 0; x1 < img.getWidth(); x1++){
         for(int y1 = 0; y1 < img.getHeight(); y1++){
@@ -207,8 +213,8 @@ public class Client {
       graphics.drawString(
           Minecraft.getInstance().font,
           speedString,
-          getPos(graphics, Config.getXPosition(), 0, false) - width,
-          getPos(graphics, Config.getYPosition(), 1, true) - lineHeight,
+          getPos(graphics, Config.getXPosition(), 0) - width,
+          getPos(graphics, Config.getYPosition(), 1) - lineHeight,
           Config.getColor().getColor()
       );
     }
@@ -231,7 +237,8 @@ public class Client {
           "Velocity total average: " + speed + "\n" +
           "Velocity total in " + speedType.name() + ": " + speedTypeSpeed + "\n" +
           "Percentage point of visual speedometer: " + v + "\n" +
-          "Degree end point: " + (i+45);
+          "Degree end point: " + (i+45) +"\n" +
+          (Config.getVisualSpeedometer()?"Visual Size: ":"Textual display") + Config.getImageSize();
 
       Color color = new Color(255, 255, 255);
 
@@ -253,9 +260,7 @@ public class Client {
     );
   }
 
-  static boolean flag = true;
-
-  private static int getPos(GuiGraphics event, String input, int type, boolean changeFlag) {
+  private static int getPos(GuiGraphics event, String input, int type) {
     ArrayList<String> passerPose = new ArrayList<>();
     final char[] s = input.toCharArray();
     try{
@@ -274,7 +279,7 @@ public class Client {
           passerPose.add("/");
         }else if(s[i] == '/'){
           passerPose.add("/");
-        }else if(testIfInt(s[i])){
+        }else if(Character.isDigit(s[i])){
           try{
             Integer.parseInt(passerPose.get(i-1));
             passerPose.add(i-1,passerPose.get(i-1)+s[i]);
@@ -290,7 +295,7 @@ public class Client {
       defaultValues(event, type, passerPose);
     }
 
-
+    //
 
     int xPos;
     try{
@@ -320,11 +325,12 @@ public class Client {
         xPos /= Integer.parseInt(s2);
       }
     }
-    if((Platform.isDevelopmentEnvironment() || Config.isDebug()) && flag) {
+    if((Config.isDebug()) && Config.getCounter() < 2) {
       LOGGER.info("Selected speed type: "+SpeedTypes.getName(Config.getSpeedType()).getString()+"\n"+
           Arrays.toString(passerPose.toArray())+"\n\n"+
-          xPos);
-      flag = !changeFlag;
+          xPos+"\n\n"+
+          (type==0?Config.getXPosition():Config.getYPosition()));
+      Config.addCounter();
     }
     return xPos;
   }
@@ -333,19 +339,11 @@ public class Client {
     if(type == 0){
       passerPose.add(String.valueOf(event.guiWidth()));
       passerPose.add("-");
-      passerPose.add("70");
+      passerPose.add("3");
     }else if(type == 1){
       passerPose.add(String.valueOf(event.guiHeight()));
       passerPose.add("-");
-      passerPose.add("15");
+      passerPose.add("3");
     }
-  }
-
-  private static boolean testIfInt(char c) {
-    int i = Integer.parseInt(Character.toString(c));
-    return (i == 0 || i == 1 || i == 2 ||
-        i == 3 || i == 4 || i == 5 ||
-        i == 6 || i == 7 || i == 8 ||
-        i == 9);
   }
 }

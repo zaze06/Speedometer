@@ -12,6 +12,7 @@ import static me.zacharias.speedometer.Speedometer.MOD_ID;
 public class Config {
   private static JSONObject Config;
   public static final float configVersion = 3f;
+  private static int counter = 0;
 
   public static void initialize(){
     if(Config != null) throw new RuntimeException("Already Initialized");
@@ -128,6 +129,7 @@ public class Config {
     }catch (Exception e){
       throw new RuntimeException(e);
     }
+    counter=0;
   }
 
   public static SpeedTypes getSpeedType(){
@@ -175,6 +177,13 @@ public class Config {
     }
   }
 
+  public static int getCounter(){
+    return counter;
+  }
+  public static void addCounter(){
+    counter++;
+  }
+
   /*public static String getXPositionVisual(){
     if(Config.has("xPositionVisual")) {
       return Config.getString("xPositionVisual");
@@ -210,7 +219,7 @@ public class Config {
     if(Config.has("yPosition")) {
       return Config.getString("yPosition");
     }else{
-      return "H-15";
+      return "H-3";
     }
   }
 
@@ -218,7 +227,7 @@ public class Config {
     if(Config.has("xPosition")) {
       return Config.getString("xPosition");
     }else{
-      return "W-70";
+      return "W-3";
     }
   }
 
