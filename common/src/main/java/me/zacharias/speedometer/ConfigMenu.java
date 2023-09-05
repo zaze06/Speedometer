@@ -167,6 +167,16 @@ public class ConfigMenu {
         .build()
     );
 
+    // Show visual speed type
+
+    category.addEntry(entryBuilder.startBooleanToggle(Component.translatable("speedometer.config.showVisualSpeedType"), Config.getShowVisualSpeedType())
+        .setSaveConsumer(Config::setShowVisualSpeedType)
+        .setYesNoTextSupplier(showVisualSpeedType -> Component.translatable("speedometer."+(Config.getShowVisualSpeedType()?"show":"hide")))
+        .setTooltip(Component.translatable("speedometer.config.tooltip.showVisualSpeedType.line1"),
+                    Component.translatable("speedometer.config.tooltip.showVisualSpeedType.line2"))
+        .build()
+    );
+
     builder.setSavingRunnable(me.zacharias.speedometer.Config::save);
 
     return builder;

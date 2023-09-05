@@ -40,13 +40,6 @@ public class Client {
       "speedometer.key.category"
   );
 
-  public static final KeyMapping SPEED_KEY = new KeyMapping(
-      "speedometer.key.speedKey",
-      InputConstants.Type.KEYSYM,
-      InputConstants.KEY_UP,
-      "speedometer.key.category"
-  );
-
   private static final ArrayList<Double> speeds = new ArrayList<>();
   private static boolean speedometerVisualDisplayFailed = false;
   public static BufferedImage img = null;
@@ -66,15 +59,6 @@ public class Client {
     ClientTickEvent.CLIENT_POST.register(minecraft -> {
       if(DEBUG_KEY.consumeClick()){
         Config.setDebug(!Config.isDebug());
-      }
-    });
-
-    //KeyMappingRegistry.register(SPEED_KEY);
-    ClientTickEvent.CLIENT_POST.register(minecraft -> {
-      if(SPEED_KEY.consumeClick()){
-        if(minecraft.player != null) {
-          minecraft.player.addDeltaMovement(new Vec3(1, 0, 0));
-        }
       }
     });
 
@@ -159,7 +143,10 @@ public class Client {
 
       g2d.setColor(new Color(138, 0, 0));
       g2d.setFont(new Font(g2d.getFont().getName(), Font.PLAIN, 15));
-      g2d.drawString(SpeedTypes.getName(speedType).getString(), img.getWidth()/2-27,img.getHeight()/2+25);
+
+      if(Config.getShowVisualSpeedType()) {
+        g2d.drawString(SpeedTypes.getName(speedType).getString(), img.getWidth() / 2 - 27, img.getHeight() / 2 + 25);
+      }
 
       BufferedImage img = ImageHandler.scale(Client.img, Config.getImageSize(), Config.getImageSize());
 

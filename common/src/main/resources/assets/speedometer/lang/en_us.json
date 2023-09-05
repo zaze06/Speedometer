@@ -13,6 +13,7 @@
   "speedometer.config.yPosition": "Y Position for Meters",
   "speedometer.config.debug": "Debug",
   "speedometer.config.imageSize": "Image Size",
+  "speedometer.config.showVisualSpeedType": "Show Visual Speed Type",
 
   "speedometer.key.configKey": "Config Key",
   "speedometer.key.debugKey": "Debug Key",
@@ -38,6 +39,9 @@
   "speedometer.debug.true": "\u00A74Yes",
   "speedometer.debug.false": "\u00A74No",
 
+  "speedometer.show": "Show",
+  "speedometer.hide": "Hide",
+
   "speedometer.config.tooltip.xPosition.line1": "W = the width of the screen",
   "speedometer.config.tooltip.xPosition.line2": "w = half the width of the screen",
   "speedometer.config.tooltip.xPosition.line3": "s = the width of the text or image",
@@ -49,6 +53,9 @@
   "speedometer.config.tooltip.debug": "Debug Information",
 
   "speedometer.config.tooltip.imageSize": "Size of the image. This sets both the height and width",
+
+  "speedometer.config.tooltip.showVisualSpeedType.line1": "This setting doesn't work fully.",
+  "speedometer.config.tooltip.showVisualSpeedType.line2": "I(the developer) discourages the use of this setting since it doesn't work on smaller sises and the fps breaks at larger",
 
   "speedometer.invalid": "Invalid String"
 }

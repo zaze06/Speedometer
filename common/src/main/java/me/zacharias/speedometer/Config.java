@@ -109,6 +109,10 @@ public class Config {
     if(!Config.has("version")) {
       Config.put("version", configVersion);
     }
+
+    if(!Config.has("showVisualSpeedType")){
+      Config.put("showVisualSpeedType", false);
+    }
   }
 
   public static void save(){
@@ -239,6 +243,14 @@ public class Config {
     }
   }
 
+  public static boolean getShowVisualSpeedType() {
+    if(Config.has("showVisualSpeedType")){
+      return Config.getBoolean("showVisualSpeedType");
+    }else{
+      return false;
+    }
+  }
+
   public static void setColor(Color color){
     Config.put("color", new JSONObject()
         .put("r", color.getRed())
@@ -290,5 +302,9 @@ public class Config {
 
   public static void setImageSize(int imageSize){
     Config.put("imageSize", imageSize);
+  }
+
+  public static void setShowVisualSpeedType(boolean showVisualSpeedType){
+    Config.put("showVisualSpeedType", showVisualSpeedType);
   }
 }
