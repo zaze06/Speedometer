@@ -4,7 +4,7 @@ This is a simple mod for forge and fabric that displays your current speed
 ## Compile your own version?
 1. Download source code
    * Run `git clone https://github.com/zaze06/Speedometer`
-   * Download the source code from github page [master.zip](https://github.com/zaze06/Speedometer/archive/refs/heads/master.zip)
+   * Download the source code from GitHub page [master.zip](https://github.com/zaze06/Speedometer/archive/refs/heads/master.zip)
      * unzip the folder
 2. Open the folder
 3. Run `gradlew build`(Windows cmd) or `./gradlew build`(Linux, MacOS, Windows powershell)
