@@ -1,6 +1,9 @@
 # Speedometer
 This is a simple mod for forge and fabric that displays your current speed
 
+## Credits to
+[org.json](https://www.json.org/json-en.html) *Included due to problems whit ForgeGradle*
+
 ## Compile your own version?
 1. Download source code
    * Run `git clone https://github.com/zaze06/Speedometer`

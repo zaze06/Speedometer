@@ -13,7 +13,8 @@
   "speedometer.config.yPosition": "Y Position for Meters",
   "speedometer.config.debug": "Debug",
   "speedometer.config.imageSize": "Image Size",
-  "speedometer.config.showVisualSpeedType": "Show Visual Speed Type",
+  "speedometer.config.showVisualSpeedType": "\u00A74⨻\u00A7rShow Visual Speed Type",
+  "speedometer.config.showSpeedType": "Show Visual Speed Type",
 
   "speedometer.key.configKey": "Config Key",
   "speedometer.key.debugKey": "Debug Key",
@@ -56,6 +57,8 @@
 
   "speedometer.config.tooltip.showVisualSpeedType.line1": "This setting doesn't work fully.",
   "speedometer.config.tooltip.showVisualSpeedType.line2": "I(the developer) discourages the use of this setting since it doesn't work on smaller sises and the fps breaks at larger",
+
+  "speedometer.config.tooltip.showSpeedType.line1": "This setting shows the speed type above the visual meter which is better then within the visual meter",
 
   "speedometer.invalid": "Invalid String"
 }

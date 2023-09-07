@@ -3,6 +3,7 @@ package me.zacharias.speedometer;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
@@ -46,79 +47,6 @@ public class ConfigMenu {
     String xRegex = "W*w*S*s*\\+*-*\\**/*[0-9]*";
     String yRegex = "H*h*S*s*\\+*-*\\**/*[0-9]*";
 
-    // Text Placement
-    /*
-    category.addEntry(entryBuilder.startStringDropdownMenu(Component.translatable("speedometer.config.xPosition.text"), Config.getXPositionText())
-        .setSaveConsumer(Config::setXPositionText)
-        .setErrorSupplier(xPosition -> {
-          if(xPosition.matches(xRegex)){
-            return Optional.empty();
-          }else{
-            return Optional.of(Component.translatable("speedometer.invalid"));
-          }
-        })
-        .setTooltip(
-            Component.translatable("speedometer.config.tooltip.xPosition.line1"),
-            Component.translatable("speedometer.config.tooltip.xPosition.line2"),
-            Component.translatable("speedometer.config.tooltip.xPosition.line3")
-        )
-        .build()
-    );
-
-    category.addEntry(entryBuilder.startStringDropdownMenu(Component.translatable("speedometer.config.yPosition.text"), Config.getYPositionText())
-        .setSaveConsumer(Config::setYPositionText)
-        .setErrorSupplier(yPosition -> {
-          if(yPosition.matches(yRegex)){
-            return Optional.empty();
-          }else{
-            return Optional.of(Component.translatable("speedometer.invalid"));
-          }
-        })
-        .setTooltip(
-            Component.translatable("speedometer.config.tooltip.yPosition.line1"),
-            Component.translatable("speedometer.config.tooltip.yPosition.line2"),
-            Component.translatable("speedometer.config.tooltip.yPosition.line3")
-        )
-        .build()
-    );
-
-    // Visual location
-
-    category.addEntry(entryBuilder.startStringDropdownMenu(Component.translatable("speedometer.config.xPosition.visual"), Config.getXPositionVisual())
-        .setSaveConsumer(Config::setXPositionVisual)
-        .setErrorSupplier(xPosition -> {
-          if(xPosition.matches(xRegex)){
-            return Optional.empty();
-          }else{
-            return Optional.of(Component.translatable("speedometer.invalid"));
-          }
-        })
-        .setTooltip(
-            Component.translatable("speedometer.config.tooltip.xPosition.line1"),
-            Component.translatable("speedometer.config.tooltip.xPosition.line2"),
-            Component.translatable("speedometer.config.tooltip.xPosition.line3")
-        )
-        .build()
-    );
-
-
-    category.addEntry(entryBuilder.startStringDropdownMenu(Component.translatable("speedometer.config.yPosition.visual"), Config.getYPositionVisual())
-        .setSaveConsumer(Config::setYPositionVisual)
-        .setErrorSupplier(yPosition -> {
-          if(yPosition.matches(yRegex)){
-            return Optional.empty();
-          }else{
-            return Optional.of(Component.translatable("speedometer.invalid"));
-          }
-        })
-        .setTooltip(
-            Component.translatable("speedometer.config.tooltip.yPosition.line1"),
-            Component.translatable("speedometer.config.tooltip.yPosition.line2"),
-            Component.translatable("speedometer.config.tooltip.yPosition.line3")
-        )
-        .build()
-    );*/
-
     category.addEntry(entryBuilder.startStringDropdownMenu(Component.translatable("speedometer.config.xPosition"), Config.getXPosition())
         .setSaveConsumer(Config::setXPosition)
         .setErrorSupplier(xPosition -> {
@@ -160,20 +88,29 @@ public class ConfigMenu {
         .build()
     );
 
+    // Show visual speed type
+
+    category.addEntry(entryBuilder.startBooleanToggle(Component.translatable("speedometer.config.showSpeedType"), Config.getShowSpeedType())
+        .setSaveConsumer(Config::setShowSpeedType)
+        .setYesNoTextSupplier(showSpeedType -> Component.translatable("speedometer."+(showSpeedType?"show":"hide")))
+        .setTooltip(Component.translatable("speedometer.config.tooltip.showSpeedType.line1"))
+        .build()
+    );
+
+    category.addEntry(entryBuilder.startBooleanToggle(Component.translatable("speedometer.config.showVisualSpeedType"), Config.getShowVisualSpeedType())
+        .setSaveConsumer(Config::setShowVisualSpeedType)
+        .setYesNoTextSupplier(showVisualSpeedType -> Component.translatable("speedometer."+(showVisualSpeedType?"show":"hide")).withStyle(ChatFormatting.DARK_RED))
+        .setTooltip(Component.translatable("speedometer.config.tooltip.showVisualSpeedType.line1"),
+                    Component.translatable("speedometer.config.tooltip.showVisualSpeedType.line2"))
+        .build()
+    );
+
+
+
     category.addEntry(entryBuilder.startBooleanToggle(Component.translatable("speedometer.config.debug"),Config.isDebug())
         .setSaveConsumer(Config::setDebug)
         .setYesNoTextSupplier(isDebug -> Component.translatable("speedometer.debug."+isDebug))
         .setTooltip(Component.translatable("speedometer.config.tooltip.debug"))
-        .build()
-    );
-
-    // Show visual speed type
-
-    category.addEntry(entryBuilder.startBooleanToggle(Component.translatable("speedometer.config.showVisualSpeedType"), Config.getShowVisualSpeedType())
-        .setSaveConsumer(Config::setShowVisualSpeedType)
-        .setYesNoTextSupplier(showVisualSpeedType -> Component.translatable("speedometer."+(Config.getShowVisualSpeedType()?"show":"hide")))
-        .setTooltip(Component.translatable("speedometer.config.tooltip.showVisualSpeedType.line1"),
-                    Component.translatable("speedometer.config.tooltip.showVisualSpeedType.line2"))
         .build()
     );
 

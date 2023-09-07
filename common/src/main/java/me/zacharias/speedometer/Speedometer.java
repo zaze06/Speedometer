@@ -20,7 +20,7 @@ public class Speedometer
 
 
     if(Platform.getEnvironment() != Env.CLIENT) {
-      LOGGER.error("You're running speedometer on somthing other then a client, this is not supported");
+      LOGGER.error("You're running speedometer on something other then a client, this is not supported");
       try {
         for (File f : Objects.requireNonNull(Platform.getModsFolder().toFile().listFiles())) {
           if (f.getName().startsWith("speedometer")) {

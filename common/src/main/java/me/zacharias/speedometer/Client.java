@@ -15,10 +15,8 @@ import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.phys.Vec3;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -133,6 +131,11 @@ public class Client {
     }/100;
     double i = (v *(316-45))+45;
 
+    int yPos = getPos(graphics, Config.getYPosition(), 1);
+    int xPos = getPos(graphics, Config.getXPosition(), 0);
+
+    int lineHeight = Minecraft.getInstance().font.lineHeight;
+
     if(Config.getVisualSpeedometer() && !speedometerVisualDisplayFailed){
 
       //double v = speedTypeSpeed / speedType.gatMaxVisual();
@@ -146,6 +149,11 @@ public class Client {
 
       if(Config.getShowVisualSpeedType()) {
         g2d.drawString(SpeedTypes.getName(speedType).getString(), img.getWidth() / 2 - 27, img.getHeight() / 2 + 25);
+      }
+      if(Config.getShowSpeedType()){
+        String speedString = SpeedTypes.getName(speedType).getString();
+        int width = Minecraft.getInstance().font.width(speedString);
+        drawString(graphics, xPos - width, yPos - Config.getImageSize() - lineHeight - 1, speedString, Config.getColor().getColor());
       }
 
       BufferedImage img = ImageHandler.scale(Client.img, Config.getImageSize(), Config.getImageSize());
@@ -162,9 +170,6 @@ public class Client {
       g2d.setStroke(new BasicStroke(2));
 
       g2d.drawLine(x3,y3,img.getWidth()/2,img.getHeight()/2);
-
-      int xPos = getPos(graphics, Config.getXPosition(), 0);
-      int yPos = getPos(graphics, Config.getYPosition(), 1);
 
       for(int x1 = 0; x1 < img.getWidth(); x1++){
         for(int y1 = 0; y1 < img.getHeight(); y1++){
@@ -196,12 +201,11 @@ public class Client {
       // k -> color RGB int
       String speedString = format + " " + SpeedTypes.getName(speedType).getString();
       int width = Minecraft.getInstance().font.width(speedString);
-      int lineHeight = Minecraft.getInstance().font.lineHeight;
       graphics.drawString(
           Minecraft.getInstance().font,
           speedString,
-          getPos(graphics, Config.getXPosition(), 0) - width,
-          getPos(graphics, Config.getYPosition(), 1) - lineHeight,
+          xPos - width,
+          yPos - lineHeight,
           Config.getColor().getColor()
       );
     }
