@@ -1,0 +1,30 @@
+{
+  "homepage": "https://modrinth.com/mod/speedometer/versions",
+  "1.20.1": {
+    "1.0": "First version",
+    "2.0": "Made the speedometer text movable, added debug data display, added visual speedometer",
+    "3.0": "Added size setting for visual speedometer, changed how the visual speedometer location is set",
+    "3.1": "Fixed error in language file",
+    "3.2": "Correct checker for Client or Server environment, updated dependencies, added dependency check in mod data file, added a renamer to rename the mod file if it's on a server",
+    "4.0": "Removed the Size part of the position string, combined the visual and text location strings, updated config version to 3, fixed bug where the text would start to drift of screen if you where too fast",
+    "5.0": "Visual speed display has been added",
+    "5.1": "Added second speed display"
+  },
+  "1.20": {
+    "1.0": "First version",
+    "2.0": "Made the speedometer text movable, added debug data display, added visual speedometer",
+    "3.0": "Added size setting for visual speedometer, changed how the visual speedometer location is set",
+    "3.1": "Fixed error in language file",
+    "3.2": "Correct checker for Client or Server environment, updated dependencies, added dependency check in mod data file, added a renamer to rename the mod file if it's on a server",
+    "4.0": "Removed the Size part of the position string, combined the visual and text location strings, updated config version to 3, fixed bug where the text would start to drift of screen if you where too fast",
+    "5.0": "Visual speed display has been added",
+    "5.1": "Added second speed display"
+  },
+  "promos": {
+    "1.20.1-latest": "5.1",
+    "1.20.1-recommended": "5.1",
+    
+    "1.20-latest": "5.1",
+    "1.20-recommended": "5.1"
+  }
+}
