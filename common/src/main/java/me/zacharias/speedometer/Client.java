@@ -5,15 +5,19 @@ import dev.architectury.event.events.client.ClientGuiEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.platform.Platform;
 import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -43,13 +47,41 @@ public class Client {
   public static BufferedImage img = null;
 
   public static void init(){
-
-    Platform.getMod(MOD_ID).registerConfigurationScreen(parent -> ConfigMenu.getConfig(parent).build());
-
+    
+    final boolean isClothLoaded = false;//Platform.isModLoaded("cloth_config") || Platform.isModLoaded("cloth-config");
+    
+    if(isClothLoaded) {
+      Platform.getMod(MOD_ID).registerConfigurationScreen(parent -> ConfigMenu.getConfig(parent).build());
+    }
+    else
+    {
+      LOGGER.warn("Missing Cloth Config API, In game config menu will not be available");
+    }
+    
     KeyMappingRegistry.register(CONFIG_KEY);
     ClientTickEvent.CLIENT_POST.register(minecraft -> {
       if(CONFIG_KEY.consumeClick()){
-        Minecraft.getInstance().setScreen(ConfigMenu.getConfig(Minecraft.getInstance().screen).build());
+        if(isClothLoaded) {
+          Minecraft.getInstance().setScreen(ConfigMenu.getConfig(Minecraft.getInstance().screen).build());
+        }
+        else if(Minecraft.getInstance().player != null)
+        {
+            Minecraft.getInstance().player.sendSystemMessage(
+                Component
+                    .translatable("speedometer.error.missing_cloth")
+                    .withColor(new Color(190, 0, 0).getRGB())
+                    .append(" ")
+                    .append(Component
+                        .literal("Open Config")
+                        .withStyle(ChatFormatting.UNDERLINE)
+                        .withStyle((style) -> style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, Config.getConfigPath())))
+                    ));
+          LOGGER.warn(Component.translatable("speedometer.error.missing_cloth").getString());
+        }
+        else
+        {
+          LOGGER.warn(Component.translatable("speedometer.error.missing_cloth").getString());
+        }
       }
     });
 
@@ -73,7 +105,7 @@ public class Client {
     LOGGER.info("Finished loading speedometer");
   }
 
-  private static void render(GuiGraphics graphics, float tick) {
+  private static void render(GuiGraphics graphics, DeltaTracker deltaTracker) {
     if(Minecraft.getInstance().player == null) return;
     Entity entity = Minecraft.getInstance().player.getRootVehicle();
 
@@ -129,10 +161,19 @@ public class Client {
       case MPH -> speedTypeSpeed;
       case KNOT -> Math.pow(speedTypeSpeed,1.05);
     }/100;
+    
     double i = (v *(316-45))+45;
+    
+    String speedString = format + " " + SpeedTypes.getName(speedType).getString();
+    
+    int width = switch ((Config.getVisualSpeedometer() && !speedometerVisualDisplayFailed) ? 1 : 0){
+      case 1 -> Config.getImageSize();
+      case 0 -> Minecraft.getInstance().font.width(speedString);
+      default -> 0;
+    };
 
-    int yPos = getPos(graphics, Config.getYPosition(), 1);
-    int xPos = getPos(graphics, Config.getXPosition(), 0);
+    int yPos = getPos(graphics, width, Config.getYPosition(), 1);
+    int xPos = getPos(graphics, width, Config.getXPosition(), 0);
 
     int lineHeight = Minecraft.getInstance().font.lineHeight;
 
@@ -147,13 +188,9 @@ public class Client {
       g2d.setColor(new Color(138, 0, 0));
       g2d.setFont(new Font(g2d.getFont().getName(), Font.PLAIN, 15));
 
-      if(Config.getShowVisualSpeedType()) {
-        g2d.drawString(SpeedTypes.getName(speedType).getString(), img.getWidth() / 2 - 27, img.getHeight() / 2 + 25);
-      }
       if(Config.getShowSpeedType()){
-        String speedString = SpeedTypes.getName(speedType).getString();
-        int width = Minecraft.getInstance().font.width(speedString);
-        drawString(graphics, xPos - width, yPos - Config.getImageSize() - lineHeight - 1, speedString, Config.getColor().getColor());
+        speedString = SpeedTypes.getName(speedType).getString();
+        drawString(graphics, xPos - width, yPos - Config.getImageSize() - lineHeight - 1, speedString, Config.getColor().getRGB());
       }
 
       BufferedImage img = ImageHandler.scale(Client.img, Config.getImageSize(), Config.getImageSize());
@@ -199,14 +236,12 @@ public class Client {
       // i -> x
       // j -> y
       // k -> color RGB int
-      String speedString = format + " " + SpeedTypes.getName(speedType).getString();
-      int width = Minecraft.getInstance().font.width(speedString);
       graphics.drawString(
           Minecraft.getInstance().font,
           speedString,
           xPos - width,
           yPos - lineHeight,
-          Config.getColor().getColor()
+          Config.getColor().getRGB()
       );
     }
 
@@ -228,7 +263,7 @@ public class Client {
           "Velocity total average: " + speed + "\n" +
           "Velocity total in " + speedType.name() + ": " + speedTypeSpeed + "\n" +
           "Percentage point of visual speedometer: " + v + "\n" +
-          "Degree end point: " + (i+45) +"\n" +
+          "Degree end point: " + i +"\n" +
           (Config.getVisualSpeedometer()?"Visual Size: ":"Textual display") + Config.getImageSize();
 
       Color color = new Color(255, 255, 255);
@@ -251,7 +286,7 @@ public class Client {
     );
   }
 
-  private static int getPos(GuiGraphics event, String input, int type) {
+  private static int getPos(GuiGraphics event, int width, String input, int type) {
     ArrayList<String> passerPose = new ArrayList<>();
     final char[] s = input.toCharArray();
     try{
@@ -262,6 +297,9 @@ public class Client {
         }else if(s[i] == 'h' || s[i] == 'w'){
           if(type == 0) passerPose.add(String.valueOf(event.guiWidth() / 2));
           else if(type == 1) passerPose.add(String.valueOf(event.guiHeight() / 2));
+        }else if(s[i] == 'S' || s[i] == 's'){
+          if(type == 0) passerPose.add(String.valueOf(width));
+          else if(type == 1) passerPose.add(String.valueOf(width));
         }else if(s[i] == '+'){
           passerPose.add("+");
         }else if(s[i] == '-'){
@@ -272,8 +310,14 @@ public class Client {
           passerPose.add("/");
         }else if(Character.isDigit(s[i])){
           try{
-            Integer.parseInt(passerPose.get(i-1));
-            passerPose.add(i-1,passerPose.get(i-1)+s[i]);
+            if(i-1 > 0) {
+              Integer.parseInt(passerPose.get(i - 1));
+              passerPose.add(i - 1, passerPose.get(i - 1) + s[i]);
+            }
+            else
+            {
+              passerPose.add(Character.toString(s[i]));
+            }
           }catch (NumberFormatException e){
             passerPose.add(Character.toString(s[i]));
           }

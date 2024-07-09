@@ -5,7 +5,7 @@
 
   "name": "speedometer",
   "description": "just displaying your speed",
-  "authors": ["Allen"],
+  "authors": ["Zacharias"],
   "contact": {
     "sources": "https://github.com/zaze06/Speedometer",
     "issues": "https://github.com/zaze06/Speedometer/issues"
@@ -19,9 +19,8 @@
     "main": ["me.zacharias.speedometer.fabric.SpeedometerFabric"]
   },
   "depends": {
-    "fabricloader": ">=0.14.21",
-    "minecraft": ">=1.20",
-    "cloth-config": ">=11.1.106",
-    "architectury": ">=9.1.10"
+    "fabricloader": ">=0.15.11",
+    "minecraft": ">=1.21",
+    "architectury": ">=13.0.1"
   }
 }

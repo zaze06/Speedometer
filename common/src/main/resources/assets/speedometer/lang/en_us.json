@@ -60,5 +60,7 @@
 
   "speedometer.config.tooltip.showSpeedType.line1": "This setting shows the speed type above the visual meter which is better then within the visual meter",
 
-  "speedometer.invalid": "Invalid String"
+  "speedometer.invalid": "Invalid String",
+  
+  "speedometer.error.missing_cloth": "Missing Cloth Config API for Config Screen"
 }

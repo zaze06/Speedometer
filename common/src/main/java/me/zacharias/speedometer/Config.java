@@ -3,9 +3,9 @@ package me.zacharias.speedometer;
 import dev.architectury.platform.Platform;
 import org.json.JSONObject;
 
+import java.awt.*;
 import java.io.*;
 
-import me.shedaniel.math.Color;
 
 import static me.zacharias.speedometer.Speedometer.MOD_ID;
 
@@ -13,10 +13,12 @@ public class Config {
   private static JSONObject config;
   public static final float configVersion = 3f;
   private static int counter = 0;
+  private static String configPath;
 
   public static void initialize(){
     if(config != null) throw new RuntimeException("Already Initialized");
-    File configFile = new File(Platform.getConfigFolder().toString()+"/"+MOD_ID+"/config.json");
+    configPath = Platform.getConfigFolder().toString()+"/"+MOD_ID+"/config.json";
+    File configFile = new File(configPath);
     if(!configFile.exists()){
       try {
         configFile.getParentFile().mkdir();
@@ -107,7 +109,7 @@ public class Config {
   }
 
   public static void save(){
-    File config = new File(Platform.getConfigFolder().toString()+"/"+MOD_ID+"/config.json");
+    File config = new File(configPath);
     if(!config.exists()){
       try {
         config.getParentFile().mkdir();
@@ -146,13 +148,13 @@ public class Config {
   public static Color getColor(){
     if(config.has("color")){
       JSONObject color = config.getJSONObject("color");
-      return Color.ofRGB(
+      return new Color(
           color.getInt("r"),
           color.getInt("g"),
           color.getInt("b")
       );
     }else{
-      return Color.ofRGB(16, 146, 158);
+      return new Color(16, 146, 158);
     }
   }
 
@@ -203,14 +205,6 @@ public class Config {
     }
   }
 
-  public static boolean getShowVisualSpeedType() {
-    if(config.has("showVisualSpeedType")){
-      return config.getBoolean("showVisualSpeedType");
-    }else{
-      return false;
-    }
-  }
-
   public static boolean getShowSpeedType(){
     if(config.has("getShowSpeedType")){
       return config.getBoolean("showSpeedType");
@@ -219,11 +213,11 @@ public class Config {
     }
   }
 
-  public static void setColor(Color color){
+  public static void setColor(int r, int g, int b){
     config.put("color", new JSONObject()
-        .put("r", color.getRed())
-        .put("g", color.getGreen())
-        .put("b", color.getBlue())
+        .put("r", r)
+        .put("g", g)
+        .put("b", b)
     );
   }
 
@@ -255,11 +249,12 @@ public class Config {
     config.put("imageSize", imageSize);
   }
 
-  public static void setShowVisualSpeedType(boolean showVisualSpeedType){
-    config.put("showVisualSpeedType", showVisualSpeedType);
-  }
-
   public static void setShowSpeedType(boolean showSpeedType){
     config.put("showSpeedType", showSpeedType);
+  }
+  
+  public static String getConfigPath()
+  {
+    return configPath;
   }
 }

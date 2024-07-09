@@ -25,8 +25,10 @@ public class ConfigMenu {
         .build()
     );
 
-    category.addEntry(entryBuilder.startColorField(Component.translatable("speedometer.config.color"), me.zacharias.speedometer.Config.getColor())
-        .setSaveConsumer2(me.zacharias.speedometer.Config::setColor)
+    category.addEntry(entryBuilder.startColorField(Component.translatable("speedometer.config.color"), me.zacharias.speedometer.Config.getColor().getRGB())
+        .setSaveConsumer2(color -> {
+            me.zacharias.speedometer.Config.setColor(color.getRed(), color.getGreen(), color.getBlue());
+        })
         .build()
     );
 
@@ -58,7 +60,8 @@ public class ConfigMenu {
         })
         .setTooltip(
             Component.translatable("speedometer.config.tooltip.xPosition.line1"),
-            Component.translatable("speedometer.config.tooltip.xPosition.line2")
+            Component.translatable("speedometer.config.tooltip.xPosition.line2"),
+            Component.translatable("speedometer.config.tooltip.xPosition.line3")
         )
         .build()
     );
@@ -75,7 +78,8 @@ public class ConfigMenu {
         })
         .setTooltip(
             Component.translatable("speedometer.config.tooltip.yPosition.line1"),
-            Component.translatable("speedometer.config.tooltip.yPosition.line2")
+            Component.translatable("speedometer.config.tooltip.yPosition.line2"),
+            Component.translatable("speedometer.config.tooltip.yPosition.line3")
         )
         .build()
     );
@@ -94,14 +98,6 @@ public class ConfigMenu {
         .setSaveConsumer(Config::setShowSpeedType)
         .setYesNoTextSupplier(showSpeedType -> Component.translatable("speedometer."+(showSpeedType?"show":"hide")))
         .setTooltip(Component.translatable("speedometer.config.tooltip.showSpeedType.line1"))
-        .build()
-    );
-
-    category.addEntry(entryBuilder.startBooleanToggle(Component.translatable("speedometer.config.showVisualSpeedType"), Config.getShowVisualSpeedType())
-        .setSaveConsumer(Config::setShowVisualSpeedType)
-        .setYesNoTextSupplier(showVisualSpeedType -> Component.translatable("speedometer."+(showVisualSpeedType?"show":"hide")).withStyle(ChatFormatting.DARK_RED))
-        .setTooltip(Component.translatable("speedometer.config.tooltip.showVisualSpeedType.line1"),
-                    Component.translatable("speedometer.config.tooltip.showVisualSpeedType.line2"))
         .build()
     );
 
