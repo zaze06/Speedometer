@@ -1,5 +1,60 @@
 {
   "homepage": "https://modrinth.com/mod/speedometer/versions",
+  "1.20.6": {
+    "1.0": "First version",
+    "2.0": "Made the speedometer text movable, added debug data display, added visual speedometer",
+    "3.0": "Added size setting for visual speedometer, changed how the visual speedometer location is set",
+    "3.1": "Fixed error in language file",
+    "3.2": "Correct checker for Client or Server environment, updated dependencies, added dependency check in mod data file, added a renamer to rename the mod file if it's on a server",
+    "4.0": "Removed the Size part of the position string, combined the visual and text location strings, updated config version to 3, fixed bug where the text would start to drift of screen if you where too fast",
+    "5.0": "Visual speed display has been added",
+    "5.1": "Added second speed display",
+    "5.2": "Fixed issue #1"
+  },
+  "1.20.5": {
+    "1.0": "First version",
+    "2.0": "Made the speedometer text movable, added debug data display, added visual speedometer",
+    "3.0": "Added size setting for visual speedometer, changed how the visual speedometer location is set",
+    "3.1": "Fixed error in language file",
+    "3.2": "Correct checker for Client or Server environment, updated dependencies, added dependency check in mod data file, added a renamer to rename the mod file if it's on a server",
+    "4.0": "Removed the Size part of the position string, combined the visual and text location strings, updated config version to 3, fixed bug where the text would start to drift of screen if you where too fast",
+    "5.0": "Visual speed display has been added",
+    "5.1": "Added second speed display",
+    "5.2": "Fixed issue #1"
+  },
+  "1.20.4": {
+    "1.0": "First version",
+    "2.0": "Made the speedometer text movable, added debug data display, added visual speedometer",
+    "3.0": "Added size setting for visual speedometer, changed how the visual speedometer location is set",
+    "3.1": "Fixed error in language file",
+    "3.2": "Correct checker for Client or Server environment, updated dependencies, added dependency check in mod data file, added a renamer to rename the mod file if it's on a server",
+    "4.0": "Removed the Size part of the position string, combined the visual and text location strings, updated config version to 3, fixed bug where the text would start to drift of screen if you where too fast",
+    "5.0": "Visual speed display has been added",
+    "5.1": "Added second speed display",
+    "5.2": "Fixed issue #1"
+  },
+  "1.20.3": {
+    "1.0": "First version",
+    "2.0": "Made the speedometer text movable, added debug data display, added visual speedometer",
+    "3.0": "Added size setting for visual speedometer, changed how the visual speedometer location is set",
+    "3.1": "Fixed error in language file",
+    "3.2": "Correct checker for Client or Server environment, updated dependencies, added dependency check in mod data file, added a renamer to rename the mod file if it's on a server",
+    "4.0": "Removed the Size part of the position string, combined the visual and text location strings, updated config version to 3, fixed bug where the text would start to drift of screen if you where too fast",
+    "5.0": "Visual speed display has been added",
+    "5.1": "Added second speed display",
+    "5.2": "Fixed issue #1"
+  },
+  "1.20.2": {
+    "1.0": "First version",
+    "2.0": "Made the speedometer text movable, added debug data display, added visual speedometer",
+    "3.0": "Added size setting for visual speedometer, changed how the visual speedometer location is set",
+    "3.1": "Fixed error in language file",
+    "3.2": "Correct checker for Client or Server environment, updated dependencies, added dependency check in mod data file, added a renamer to rename the mod file if it's on a server",
+    "4.0": "Removed the Size part of the position string, combined the visual and text location strings, updated config version to 3, fixed bug where the text would start to drift of screen if you where too fast",
+    "5.0": "Visual speed display has been added",
+    "5.1": "Added second speed display",
+    "5.2": "Fixed issue #1"
+  },
   "1.20.1": {
     "1.0": "First version",
     "2.0": "Made the speedometer text movable, added debug data display, added visual speedometer",
@@ -8,7 +63,8 @@
     "3.2": "Correct checker for Client or Server environment, updated dependencies, added dependency check in mod data file, added a renamer to rename the mod file if it's on a server",
     "4.0": "Removed the Size part of the position string, combined the visual and text location strings, updated config version to 3, fixed bug where the text would start to drift of screen if you where too fast",
     "5.0": "Visual speed display has been added",
-    "5.1": "Added second speed display"
+    "5.1": "Added second speed display",
+    "5.2": "Fixed issue #1"
   },
   "1.20": {
     "1.0": "First version",
@@ -18,13 +74,29 @@
     "3.2": "Correct checker for Client or Server environment, updated dependencies, added dependency check in mod data file, added a renamer to rename the mod file if it's on a server",
     "4.0": "Removed the Size part of the position string, combined the visual and text location strings, updated config version to 3, fixed bug where the text would start to drift of screen if you where too fast",
     "5.0": "Visual speed display has been added",
-    "5.1": "Added second speed display"
+    "5.1": "Added second speed display",
+    "5.2": "Fixed issue #1"
   },
   "promos": {
-    "1.20.1-latest": "5.1",
-    "1.20.1-recommended": "5.1",
+    "1.20.6-latest": "5.2",
+    "1.20.6-recommended": "5.2",
     
-    "1.20-latest": "5.1",
-    "1.20-recommended": "5.1"
+    "1.20.5-latest": "5.2",
+    "1.20.5-recommended": "5.2",
+    
+    "1.20.4-latest": "5.2",
+    "1.20.4-recommended": "5.2",
+    
+    "1.20.3-latest": "5.2",
+    "1.20.3-recommended": "5.2",
+    
+    "1.20.2-latest": "5.2",
+    "1.20.2-recommended": "5.2",
+    
+    "1.20.1-latest": "5.2",
+    "1.20.1-recommended": "5.2",
+    
+    "1.20-latest": "5.2",
+    "1.20-recommended": "5.2"
   }
 }
