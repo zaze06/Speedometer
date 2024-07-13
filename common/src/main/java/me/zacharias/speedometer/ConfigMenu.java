@@ -1,9 +1,6 @@
 package me.zacharias.speedometer;
 
-import me.shedaniel.clothconfig2.api.ConfigBuilder;
-import me.shedaniel.clothconfig2.api.ConfigCategory;
-import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
-import net.minecraft.ChatFormatting;
+import me.shedaniel.clothconfig2.api.*;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
@@ -41,6 +38,7 @@ public class ConfigMenu {
     category.addEntry(entryBuilder.startBooleanToggle(Component.translatable("speedometer.config.visualSpeedometer"), me.zacharias.speedometer.Config.getVisualSpeedometer())
         .setSaveConsumer(me.zacharias.speedometer.Config::setVisualSpeedometer)
         .setYesNoTextSupplier((visualSpeedometer -> Component.translatable("speedometer.visualSpeedometer."+visualSpeedometer)))
+        .setRequirement(Requirement.isFalse(Config::isDisableVisualSpeedometer))
         .build()
     );
 

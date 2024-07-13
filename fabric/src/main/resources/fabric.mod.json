@@ -3,7 +3,7 @@
   "id": "speedometer",
   "version": "${version}",
 
-  "name": "speedometer",
+  "name": "Speedometer",
   "description": "just displaying your speed",
   "authors": ["Zacharias"],
   "contact": {
@@ -15,12 +15,15 @@
   "icon": "icon.png",
 
   "environment": "client",
-  "entrypoints": {
+  "entrypoint": {
     "main": ["me.zacharias.speedometer.fabric.SpeedometerFabric"]
   },
   "depends": {
     "fabricloader": ">=0.15.11",
     "minecraft": ">=1.21",
     "architectury": ">=13.0.1"
+  },
+  "suggests": {
+    "cloth-config1": ">=15.0.127"
   }
 }

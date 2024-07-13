@@ -1,0 +1,110 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "A name for your speedometer"
+    },
+    "background": {
+      "type": "string",
+      "description": "Path to the background texture file (e.g., 'meter/speedometer.png')"
+    },
+    "start": {
+      "type": "integer",
+      "description": "Start value for the speedometer scale in degrees"
+    },
+    "end": {
+      "type": "integer",
+      "description": "End value for the speedometer scale in degrees"
+    },
+    "maxSpeed": {
+      "type": "number",
+      "description": "The max speed, as in the end point angle in Blocks/s"
+    },
+    "overflow": {
+      "type": "boolean",
+      "description": "Dose the pointer overflow after maxSpeed"
+    },
+    "pointer": {
+      "type": "object",
+      "properties": {
+        "color": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$",
+          "description": "Color code for the pointer (e.g., '#8a0000')"
+        },
+        "start": {
+          "oneOf": [
+            {
+              "type": "string",
+              "enum": ["center", "left", "right"],
+              "description": "Starting position of the pointer"
+            },
+            {
+              "type": "string",
+              "pattern": "^\\([0-9]+,( )?[0-9]\\)+$",
+              "description": "Starting position of the pointer"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "number",
+                  "description": "X position"
+                },
+                "y": {
+                  "type": "number",
+                  "description": "Y position"
+                }
+              },
+              "required": ["x", "y"],
+              "description": "Starting position of the pointer",
+              "additionalProperties": false
+            }
+          ]
+        },
+        "length": {
+          "oneOf": [
+            {
+              "type": "string",
+              "enum": ["half", "full"],
+              "description": "Length of the pointer relative to the scale"
+            },
+            {
+              "type": "number",
+              "description": "Length of the pointer relative to the scale"
+            }
+          ]
+        },
+        "image":{
+          "type": "string",
+          "description": "Image location for a pointer"
+        }
+      },
+      "required": ["start"],
+      "anyOf": [
+        {
+          "required": [
+            "image"
+          ]
+        },
+        {
+          "required": [
+            "color",
+            "length"
+          ]
+        }
+      ],
+      "additionalProperties": false
+    },
+    "scale": {
+      "type": "number",
+      "minimum": 0.1,
+      "maximum": 2.0,
+      "description": "Scale factor for the speedometer"
+    }
+  },
+  "required": ["background", "start", "end", "pointer", "scale", "maxSpeed", "overflow"],
+  "additionalProperties": false
+}

@@ -1,0 +1,13 @@
+{
+  "background": "speedometer:meter/speedometer.png",
+  "start": 45,
+  "end": 215,
+  "maxSpeed": 120,
+  "overflow": true,
+  "pointer": {
+    "image": "speedometer:meter/pointer.png",
+    "start": "(0,0)"
+  },
+  "scale": 1,
+  "name": "Test"
+}

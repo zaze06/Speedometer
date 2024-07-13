@@ -4,6 +4,7 @@ import dev.architectury.platform.Platform;
 import org.json.JSONObject;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 
 
@@ -14,6 +15,8 @@ public class Config {
   public static final float configVersion = 3f;
   private static int counter = 0;
   private static String configPath;
+  private static BufferedImage speedometer;
+  private static boolean disableVisualSpeedometer = false;
 
   public static void initialize(){
     if(config != null) throw new RuntimeException("Already Initialized");
@@ -128,7 +131,8 @@ public class Config {
     }
     counter=0;
   }
-
+  
+  //region Config Getters
   public static SpeedTypes getSpeedType(){
     if(config.has("speed")){
       return config.getEnum(SpeedTypes.class, "speed");
@@ -169,7 +173,9 @@ public class Config {
   public static boolean getVisualSpeedometer(){
     if(config.has("visualSpeedometer")){
       return config.getBoolean("visualSpeedometer");
-    }else {
+    }
+    else
+    {
       return false;
     }
   }
@@ -212,7 +218,23 @@ public class Config {
       return true;
     }
   }
-
+  
+  public static String getConfigPath()
+  {
+    return configPath;
+  }
+  
+  public static BufferedImage getSpeedometer() {
+    return speedometer;
+  }
+  
+  public static boolean isDisableVisualSpeedometer() {
+    return disableVisualSpeedometer;
+  }
+  
+  //endregion
+  
+  //region Config Setters
   public static void setColor(int r, int g, int b){
     config.put("color", new JSONObject()
         .put("r", r)
@@ -253,8 +275,12 @@ public class Config {
     config.put("showSpeedType", showSpeedType);
   }
   
-  public static String getConfigPath()
-  {
-    return configPath;
+  public static void setSpeedometer(BufferedImage speedometer) {
+    Config.speedometer = speedometer;
   }
+  
+  public static void setDisableVisualSpeedometer (boolean disableVisualSpeedometer){
+    Config.disableVisualSpeedometer = disableVisualSpeedometer;
+  }
+  //endregion
 }

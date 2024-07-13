@@ -11,22 +11,21 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.animal.Pig;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
-import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.network.chat.Component;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
-import static me.zacharias.speedometer.Speedometer.LOGGER;
-import static me.zacharias.speedometer.Speedometer.MOD_ID;
+import static me.zacharias.speedometer.Speedometer.*;
 
 public class Client {
   public static final KeyMapping CONFIG_KEY = new KeyMapping(
@@ -44,11 +43,10 @@ public class Client {
 
   private static final ArrayList<Double> speeds = new ArrayList<>();
   private static boolean speedometerVisualDisplayFailed = false;
-  public static BufferedImage img = null;
 
   public static void init(){
     
-    final boolean isClothLoaded = false;//Platform.isModLoaded("cloth_config") || Platform.isModLoaded("cloth-config");
+    final boolean isClothLoaded = Platform.isModLoaded("cloth_config") || Platform.isModLoaded("cloth-config");
     
     if(isClothLoaded) {
       Platform.getMod(MOD_ID).registerConfigurationScreen(parent -> ConfigMenu.getConfig(parent).build());
@@ -97,11 +95,6 @@ public class Client {
 
     ClientGuiEvent.RENDER_HUD.register(Client::render);
 
-    LOGGER.info("Loading speedometer ");
-    if(!MeterImages.LARGE.initiate()){
-      speedometerVisualDisplayFailed = true;
-    }
-
     LOGGER.info("Finished loading speedometer");
   }
 
@@ -109,28 +102,22 @@ public class Client {
     if(Minecraft.getInstance().player == null) return;
     Entity entity = Minecraft.getInstance().player.getRootVehicle();
 
-    Vec3 vec = entity.getDeltaMovement();
+    Vec3 vec = new Vec3(
+        entity.getX() - entity.xOld,
+        entity.getY() - entity.yOld,
+        entity.getZ() - entity.zOld
+    );
 
-    double yOffset = 0.0784000015258789D;
+    double yOffset = 0D;
     double xOffset = 0D;
     double zOffset = 0D;
     double vOffset = 0D;
-
-    if (entity instanceof Player e) {
-      if (!e.onGround() && e.isCreative()) {
-        yOffset = 0;
-      } else if (e.isInWater()) {
-        yOffset = 0.005;
-      }
-    } else if (entity instanceof Boat || entity instanceof Minecart || entity instanceof Pig) {
-      yOffset = 0;
-    }
 
     double speed = (Math.sqrt(Math.pow(vec.x + xOffset, 2) + Math.pow(vec.y + yOffset, 2) + Math.pow(vec.z + zOffset, 2)) * 20)+vOffset;
     double lSpeed = speed;
 
     if (speeds.size() >= 30) {
-      speeds.remove(0);
+      speeds.removeFirst();
     }
     speeds.add(speed);
     speed = 0;
@@ -153,54 +140,32 @@ public class Client {
     }
 
     String format = String.format("%.2f", speedTypeSpeed);
-
-    //double v = (Math.pow(1.0233435, speedTypeSpeed)-1)/100;
-    double v = switch (speedType){
-      case KMPH -> Math.pow(speedTypeSpeed,0.87)-1;
-      case BlockPS, MPS -> Math.pow(speedTypeSpeed,1.25);
-      case MPH -> speedTypeSpeed;
-      case KNOT -> Math.pow(speedTypeSpeed,1.05);
-    }/100;
-    
-    double i = (v *(316-45))+45;
     
     String speedString = format + " " + SpeedTypes.getName(speedType).getString();
     
-    int width = switch ((Config.getVisualSpeedometer() && !speedometerVisualDisplayFailed) ? 1 : 0){
+    int width = switch ((Config.getVisualSpeedometer() && !Config.isDisableVisualSpeedometer()) ? 1 : 0){
       case 1 -> Config.getImageSize();
       case 0 -> Minecraft.getInstance().font.width(speedString);
       default -> 0;
     };
 
-    int yPos = getPos(graphics, width, Config.getYPosition(), 1);
-    int xPos = getPos(graphics, width, Config.getXPosition(), 0);
+    int yPos = getPos(graphics, width, Config.getYPosition(), false);
+    int xPos = getPos(graphics, width, Config.getXPosition(), true);
 
     int lineHeight = Minecraft.getInstance().font.lineHeight;
 
-    if(Config.getVisualSpeedometer() && !speedometerVisualDisplayFailed){
+    if(Config.getVisualSpeedometer() && !Config.isDisableVisualSpeedometer()){
 
       //double v = speedTypeSpeed / speedType.gatMaxVisual();
 
-      img = ImageHandler.clone(MeterImages.LARGE.getImage());
+      BufferedImage img = ImageHandler.scale(ICON.getSpeedometerIcon(speedTypeSpeed), Config.getImageSize(), Config.getImageSize());
 
-      Graphics2D g2d = img.createGraphics();
-
-      g2d.setColor(new Color(138, 0, 0));
-      g2d.setFont(new Font(g2d.getFont().getName(), Font.PLAIN, 15));
-
-      if(Config.getShowSpeedType()){
-        speedString = SpeedTypes.getName(speedType).getString();
-        drawString(graphics, xPos - width, yPos - Config.getImageSize() - lineHeight - 1, speedString, Config.getColor().getRGB());
-      }
-
-      BufferedImage img = ImageHandler.scale(Client.img, Config.getImageSize(), Config.getImageSize());
-
-      int radius = img.getWidth()/2-4;
+      /*int radius = img.getWidth()/2-4;
 
       int x3 = (int) Math.round(radius*Math.cos(Math.toRadians(i+90)))+(img.getWidth()/2);
       int y3 = (int) Math.round(radius*Math.sin(Math.toRadians(i+90)))+(img.getHeight()/2);
 
-      g2d = img.createGraphics();
+      Graphics2D g2d = img.createGraphics();
 
       g2d.setColor(new Color(138, 0, 0));
 
@@ -227,9 +192,21 @@ public class Client {
             Minecraft.getInstance().font,
             string,
             xPos-Minecraft.getInstance().font.width(string),
-            (int)(yPos-4.5-(Config.getImageSize()/2)),
+            (int)(yPos-4.5-((double) Config.getImageSize() /2)),
             new Color(138, 0, 0).getRGB()
         );
+      }*/
+      for(int x1 = 0; x1 < img.getWidth(); x1++){
+        for(int y1 = 0; y1 < img.getHeight(); y1++){
+          int x2 = x1 + xPos - img.getWidth();
+          int y2 = y1 + yPos - img.getHeight();
+          
+          int rgb = img.getRGB(x1, y1);
+          
+          if(new Color(rgb).equals(Color.black)) continue;
+          
+          graphics.fill(x2, y2, x2+1, y2+1, rgb);
+        }
       }
 
     }else {
@@ -262,8 +239,8 @@ public class Client {
           "  Total: " + lSpeed + "\n" +
           "Velocity total average: " + speed + "\n" +
           "Velocity total in " + speedType.name() + ": " + speedTypeSpeed + "\n" +
-          "Percentage point of visual speedometer: " + v + "\n" +
-          "Degree end point: " + i +"\n" +
+          "Percentage point of visual speedometer: " + /*v*/"error" + "\n" +
+          "Degree end point: " + /*i*/"error" +"\n" +
           (Config.getVisualSpeedometer()?"Visual Size: ":"Textual display") + Config.getImageSize();
 
       Color color = new Color(255, 255, 255);
@@ -286,20 +263,20 @@ public class Client {
     );
   }
 
-  private static int getPos(GuiGraphics event, int width, String input, int type) {
+  private static int getPos(GuiGraphics event, int width, String input, boolean isXPosition) {
     ArrayList<String> passerPose = new ArrayList<>();
     final char[] s = input.toCharArray();
+    
     try{
       for(int i = 0; i <s.length; i++){
         if(s[i] == 'W' || s[i] == 'H'){
-          if(type == 0) passerPose.add(String.valueOf(event.guiWidth()));
-          else if(type == 1) passerPose.add(String.valueOf(event.guiHeight()));
+          if(isXPosition) passerPose.add(String.valueOf(event.guiWidth()));
+          else passerPose.add(String.valueOf(event.guiHeight()));
         }else if(s[i] == 'h' || s[i] == 'w'){
-          if(type == 0) passerPose.add(String.valueOf(event.guiWidth() / 2));
-          else if(type == 1) passerPose.add(String.valueOf(event.guiHeight() / 2));
+          if(isXPosition) passerPose.add(String.valueOf(event.guiWidth() / 2));
+          else passerPose.add(String.valueOf(event.guiHeight() / 2));
         }else if(s[i] == 'S' || s[i] == 's'){
-          if(type == 0) passerPose.add(String.valueOf(width));
-          else if(type == 1) passerPose.add(String.valueOf(width));
+          passerPose.add(String.valueOf(width));
         }else if(s[i] == '+'){
           passerPose.add("+");
         }else if(s[i] == '-'){
@@ -310,7 +287,7 @@ public class Client {
           passerPose.add("/");
         }else if(Character.isDigit(s[i])){
           try{
-            if(i-1 > 0) {
+            if(i-1 > 0 && passerPose.get(i - 1).matches("^[0-9]+$")) {
               Integer.parseInt(passerPose.get(i - 1));
               passerPose.add(i - 1, passerPose.get(i - 1) + s[i]);
             }
@@ -327,17 +304,17 @@ public class Client {
       }
     }catch (Exception e){
       passerPose.clear();
-      defaultValues(event, type, passerPose);
+      defaultValues(event, isXPosition, passerPose);
     }
 
     //
 
-    int xPos;
+    int position;
     try{
-      xPos = Integer.parseInt(passerPose.get(0));
+      position = Integer.parseInt(passerPose.getFirst());
     }catch (NumberFormatException e){
-      defaultValues(event, type, passerPose);
-      xPos = Integer.parseInt(passerPose.get(0));
+      defaultValues(event, isXPosition, passerPose);
+      position = Integer.parseInt(passerPose.getFirst());
     }
 
     for(int i = 1; i < passerPose.size(); i++){
@@ -351,31 +328,34 @@ public class Client {
       }
 
       if(Objects.equals(s1, "+") && !first){
-        xPos += Integer.parseInt(s2);
+        position += Integer.parseInt(s2);
       }else if(Objects.equals(s1, "-") && !first){
-        xPos -= Integer.parseInt(s2);
+        position -= Integer.parseInt(s2);
       }else if(Objects.equals(s1, "*") && !first){
-        xPos *= Integer.parseInt(s2);
+        position *= Integer.parseInt(s2);
       }else if(Objects.equals(s1, "/") && !first){
-        xPos /= Integer.parseInt(s2);
+        position /= Integer.parseInt(s2);
       }
     }
     if((Config.isDebug()) && Config.getCounter() < 2) {
-      LOGGER.info("Selected speed type: "+SpeedTypes.getName(Config.getSpeedType()).getString()+"\n"+
-          Arrays.toString(passerPose.toArray())+"\n\n"+
-          xPos+"\n\n"+
-          (type==0?Config.getXPosition():Config.getYPosition()));
+      String speedDisplayType = SpeedTypes.getName(Config.getSpeedType()).getString();
+      String splitRawSpeedPosition = Arrays.toString(passerPose.toArray());
+      String rawSpeedPosition = isXPosition ? Config.getXPosition() : Config.getYPosition();
+      LOGGER.info("Selected speed type: {}\n{}\n\n{}\n\n{}", speedDisplayType, splitRawSpeedPosition, position, rawSpeedPosition);
       Config.addCounter();
     }
-    return xPos;
+    return position;
   }
 
-  private static void defaultValues(GuiGraphics event, int type, ArrayList<String> passerPose) {
-    if(type == 0){
+  private static void defaultValues(GuiGraphics event, boolean isXPosition, ArrayList<String> passerPose) {
+    if(isXPosition)
+    {
       passerPose.add(String.valueOf(event.guiWidth()));
       passerPose.add("-");
       passerPose.add("3");
-    }else if(type == 1){
+    }
+    else
+    {
       passerPose.add(String.valueOf(event.guiHeight()));
       passerPose.add("-");
       passerPose.add("3");
