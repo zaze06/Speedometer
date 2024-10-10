@@ -15,7 +15,7 @@
   "icon": "icon.png",
 
   "environment": "client",
-  "entrypoint": {
+  "entrypoints": {
     "main": ["me.zacharias.speedometer.fabric.SpeedometerFabric"]
   },
   "depends": {

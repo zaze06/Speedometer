@@ -15,6 +15,7 @@
   "speedometer.config.imageSize": "Image Size",
   "speedometer.config.showVisualSpeedType": "\u00A74⨻\u00A7rShow Visual Speed Type",
   "speedometer.config.showSpeedType": "Show Visual Speed Type",
+  "speedometer.config.override_color": "Override color",
 
   "speedometer.key.configKey": "Config Key",
   "speedometer.key.debugKey": "Debug Key",
@@ -29,7 +30,7 @@
 
   "speedometer.meter.large": "Large",
   "speedometer.meter.small": "Small",
-  "speedometer.meter.medium": "Small",
+  "speedometer.meter.medium": "Medium",
 
   "speedometer.visualSpeedometer.true": "Visual",
   "speedometer.visualSpeedometer.false": "Text",
@@ -60,7 +61,14 @@
 
   "speedometer.config.tooltip.showSpeedType.line1": "This setting shows the speed type above the visual meter which is better then within the visual meter",
 
+  "speedometer.config.tooltip.override_color.line1": "Override the color of a line pointer",
+  "speedometer.config.tooltip.override_color.line2": "OPS doesn't work if the pointer is an image!",
+
   "speedometer.invalid": "Invalid String",
+
+  "speedometer.config.error.size_outofbounds": "The size is out of bounds 10<=size<=300",
   
-  "speedometer.error.missing_cloth": "Missing Cloth Config API for Config Screen"
+  "speedometer.error.missing_cloth": "Missing Cloth Config API for Config Screen",
+
+  "resourcepack.speedometer.quarter_circle_speedometer": "Quarter circle Speedometer"
 }

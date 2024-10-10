@@ -58,6 +58,9 @@ description='''
 Just displaying your speed
 '''
 
+[[resource_packs]]
+   secondary = "resourcepacks/quarter_circle_speedometer"
+
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.speedometer]] #optional
    # the modid of the dependency

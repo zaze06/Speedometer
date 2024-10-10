@@ -11,18 +11,13 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.ClickEvent;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.network.chat.Component;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 
 import static me.zacharias.speedometer.Speedometer.*;
@@ -96,6 +91,39 @@ public class Client {
     ClientGuiEvent.RENDER_HUD.register(Client::render);
 
     LOGGER.info("Finished loading speedometer");
+
+    /*((IPackRepository) Minecraft.getInstance().getResourcePackRepository()).addSource(new RepositorySource() {
+      @Override
+      public void loadPacks(Consumer<Pack> consumer) {
+        consumer.accept(new Pack(new PackLocationInfo(
+                "quarter_circle_speedometer",
+                Component.translatable("resourcepack.speedometer.quarter_circle_speedometer"),
+                new PackSource() {
+                  @Override
+                  public Component decorate(Component component) {
+                    return component;
+                  }
+
+                  @Override
+                  public boolean shouldAddAutomatically() {
+                    return false;
+                  }
+                },
+                Optional.empty()
+        ),
+                new Pack.ResourcesSupplier() {
+                  @Override
+                  public PackResources openPrimary(PackLocationInfo packLocationInfo) {
+                    return packLocationInfo.;
+                  }
+
+                  @Override
+                  public PackResources openFull(PackLocationInfo packLocationInfo, Pack.Metadata metadata) {
+                    return null;
+                  }
+                }));
+      }
+    });*/
   }
 
   private static void render(GuiGraphics graphics, DeltaTracker deltaTracker) {
@@ -239,9 +267,9 @@ public class Client {
           "  Total: " + lSpeed + "\n" +
           "Velocity total average: " + speed + "\n" +
           "Velocity total in " + speedType.name() + ": " + speedTypeSpeed + "\n" +
-          "Percentage point of visual speedometer: " + /*v*/"error" + "\n" +
-          "Degree end point: " + /*i*/"error" +"\n" +
-          (Config.getVisualSpeedometer()?"Visual Size: ":"Textual display") + Config.getImageSize();
+          "Endpoint position: (" + Debuger.x + ", " + Debuger.y + ")\n" +
+          "Percentage point of visual speedometer: " + Debuger.angle + "\n" +
+          (Config.getVisualSpeedometer()?"Visual Size: "+Config.getImageSize():"Textual display");
 
       Color color = new Color(255, 255, 255);
 

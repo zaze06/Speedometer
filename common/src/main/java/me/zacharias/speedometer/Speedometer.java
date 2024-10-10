@@ -3,6 +3,7 @@ package me.zacharias.speedometer;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -12,9 +13,9 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStream;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 public class Speedometer
 {
@@ -53,8 +54,9 @@ public class Speedometer
   
   public static void loadSpeedometers(ResourceManager resourceManager)
   {
+    //List< Resource > resource = Minecraft.getInstance().getResourceManager().getResourceStack(ResourceLocation.fromNamespaceAndPath(MOD_ID, "models/speedometer.json"));
     Optional< Resource > resource = resourceManager.getResource(ResourceLocation.fromNamespaceAndPath(MOD_ID, "models/speedometer.json"));
-    
+
     if(resource.isEmpty())
     {
       Config.setDisableVisualSpeedometer(true);
@@ -70,6 +72,10 @@ public class Speedometer
         builder.append(tmp);
       }
       JSONObject data = new JSONObject(builder.toString());
+      if(Config.isDebug())
+      {
+        LOGGER.info("Loaded speedometer from {}, with speedometer name: {}", resource.get().source().packId(), data.get("name"));
+      }
       ICON = new SpeedometerIcon(data, resourceManager);
     }
     catch (Exception e){
@@ -79,5 +85,16 @@ public class Speedometer
     }
     
     LOGGER.info("Successfully loaded speedometer config from {}", resource.get().source().packId());
+  }
+
+  public static String formatMillisToDHMS(long millis) {
+    // Calculate the days, hours, minutes, and seconds
+    long seconds = TimeUnit.MILLISECONDS.toSeconds(millis) % 60;
+    long minutes = TimeUnit.MILLISECONDS.toMinutes(millis) % 60;
+    long hours = TimeUnit.MILLISECONDS.toHours(millis) % 24;
+    long days = TimeUnit.MILLISECONDS.toDays(millis);
+
+    // Format the result as DD+HH-MM-SS
+    return String.format("%02d+%02d-%02d-%02d", days, hours, minutes, seconds);
   }
 }

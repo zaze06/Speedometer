@@ -26,6 +26,7 @@ public class SpeedometerIcon {
     private float scale;
     private int max;
     private boolean overflow;
+    private boolean g = false;
     
     public SpeedometerIcon(JSONObject config, ResourceManager resourceManager) throws MissingPropertyException, IOException, JSONException
     {
@@ -70,15 +71,17 @@ public class SpeedometerIcon {
     
     public BufferedImage getSpeedometerIcon(double speed)
     {
-        Graphics2D graphics = ImageHandler.clone(speedometerIcon).createGraphics();
+        BufferedImage img = ImageHandler.clone(speedometerIcon);
+        Graphics2D graphics = img.createGraphics();
         pointer.draw(graphics, start, end, max, overflow, Math.pow(speed, scale));
-        return speedometerIcon;
+        return img;
     }
 }
 
 class Pointer
 {
     private BufferedImage image;
+    private Color color;
     private Vector2i start;
     private int length;
     private boolean g = false;
@@ -96,7 +99,7 @@ class Pointer
         {
             if(str.isEmpty()) throw new MissingPropertyException("pointer/start");
             
-            if(str.matches("^\\([0-9]+,( )?[0-9]\\)+$"))
+            if(str.matches("^\\([0-9]+,( )?[0-9]+\\)+$"))
             {
                 String[] split = str.split(",");
                 start = new Vector2i(Integer.parseInt(split[0].substring(1)), Integer.parseInt(split[1].substring(0, split[1].length()-1)));
@@ -126,7 +129,7 @@ class Pointer
             if(image.isEmpty()) throw new MissingPropertyException("pointer/image");
             
             InputStream stream = image.get().open();
-            this.image = ImageIO.read(stream);
+            this.image = ImageHandler.scale(ImageIO.read(stream), size.x, size.y);
             stream.close();
         }
         else if(pointer.has("length"))
@@ -145,32 +148,52 @@ class Pointer
                 length = integer;
             }
             else throw new MissingPropertyException("pointer/length");
+
+            if(pointer.has("color"))
+            {
+                String c = pointer.getString("color");
+                if(!c.matches("^#[0-9a-fA-F]{6}$")) throw new MissingPropertyException("pointer/color");
+                color = new Color(Integer.parseInt(c.substring(1), 16));
+            }
+            else throw new MissingPropertyException("pointer/color");
         }
         else throw new MissingPropertyException("pointer/image or pointer/length");
     }
     
     public void draw(Graphics2D g2d, int start, int end, int max, boolean overflow, double speed)
     {
-        double angle = (speed * end)+start;
-        if(angle > max && overflow) angle = end;
+        Color c = color;
+        if(Config.isOverrideColor())
+        {
+            c = Config.getColor();
+        }
+        double angle = ((speed/max) * end)+start;
+        if(angle > end && !overflow) angle = end;
+        Debuger.angle = angle;
         
         if(Objects.nonNull(image))
         {
-            BufferedImage image = ImageHandler.rotate(this.image, angle);
-            if(angle>start+10 && !g) {
-                try {
-                    File output = new File("./dev.png");
-                    ImageIO.write(image, "png", output);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                g = true;
-            }
-            g2d.drawImage(image, this.start.x, this.start.y, null);
+            int centerX = this.start.x;
+            int centerY = this.start.y;
+            BufferedImage image = ImageHandler.rotateImage(this.image, angle, centerX, centerY);
+            g2d.drawImage(image, 0, 0, null);
+        }
+        else if(c != null && length > 0)
+        {
+            double angleRads = Math.toRadians(180+angle);
+            int endX = (int) (Math.cos(angleRads) * length + this.start.x);
+            int endY = (int) (Math.sin(angleRads) * length + this.start.y);
+            Debuger.x = endX;
+            Debuger.y = endY;
+
+            g2d.setColor(c);
+            g2d.setStroke(new BasicStroke(3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+            g2d.drawLine(this.start.x, this.start.y, endX, endY);
         }
         else
         {
-        
+            Config.setDisableVisualSpeedometer(true);
+            throw new NullPointerException("image and line pointer both are undefined");
         }
     }
 }

@@ -1,0 +1,13 @@
+{
+  "background": "speedometer:meter/speedometer.png",
+  "start": 0,
+  "end": 85,
+  "maxSpeed": 120,
+  "overflow": false,
+  "pointer": {
+    "image": "speedometer:meter/pointer.png",
+    "start": "(115,115)"
+  },
+  "scale": 1,
+  "name": "Quarter circle"
+}

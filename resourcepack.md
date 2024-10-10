@@ -69,9 +69,11 @@ base
   - length *not required if `image` is not defined*
     The length in picture based on the original size of the background.
   - start
-    The start parameter defines where the pointer begins. You can use predefined strings (center, left, right) or specify a custom position using the format (x, y), where x and y are the coordinates. Alternatively, you can define an object with x and y keys to set exact positions.
+    The start parameter defines where the pointer begins. You can use predefined strings (center, left, right) or specify a custom position using the format (x, y), where x and y are the coordinates. Alternatively, you can define an object with x and y keys to set exact positions.<br>
+    If you use this with an image, it's the point of where the pointer image is rotates around
   - image
-    This defines the scaling factor for speed. The actual speed is calculated as baseSpeed^scale, where the base speed is raised to the power of the scale.
+    This defines the scaling factor for speed. The actual speed is calculated as baseSpeed^scale, where the base speed is raised to the power of the scale. <br>
+    OPS this picture should be the same size as the background to not cause issues
 - scale
   The scale of how to modify the speed as a power, this is the speed that `maxSpeed` is based of. the way the speed passed to `maxSpeed` is calculated is `baseSpeed^scale`.
 - name

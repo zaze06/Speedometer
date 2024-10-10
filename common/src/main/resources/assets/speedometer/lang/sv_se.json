@@ -1,0 +1,74 @@
+{
+    "speedometer.config.name": "Speedometer Config",
+    "speedometer.config.category.name": "Speedometer Konfigurationskatigori",
+    "speedometer.config.speed": "Fart Typ",
+    "speedometer.config.color": "Färg",
+    "speedometer.config.knot": "Använd Knot i Båtar",
+    "speedometer.config.visualSpeedometer": "Visuel Fartmätare",
+    "speedometer.config.xPosition.visual": "X Positionen för Visuel Mätare",
+    "speedometer.config.yPosition.visual": "Y Positionen för Visuel Mätare",
+    "speedometer.config.xPosition.text": "X Positionen för Text Mätare",
+    "speedometer.config.yPosition.text": "Y Positionen för Text Mätare",
+    "speedometer.config.xPosition": "X Positionen för Mätare",
+    "speedometer.config.yPosition": "Y Positionen för Mätare",
+    "speedometer.config.debug": "Debug",
+    "speedometer.config.imageSize": "Bildstorlek",
+    "speedometer.config.showVisualSpeedType": "\u00A74⨻\u00A7rVisa Visuell Farttyp",
+    "speedometer.config.showSpeedType": "Visa Visuell Farttyp",
+    "speedometer.config.override_color": "Överskrid färgen",
+
+    "speedometer.key.configKey": "Konfigurations Knapp",
+    "speedometer.key.debugKey": "Debug Knapp",
+    "speedometer.key.category": "Speedometer",
+  
+    "speedometer.speed.mph": "MPH",
+    "speedometer.speed.mps": "Meter/s",
+    "speedometer.speed.kmph": "Km/h",
+    "speedometer.speed.bps": "Blocks/s",
+    "speedometer.speed.knot": "Knot",
+    "speedometer.speed.error": "Okänd Fart Typ",
+  
+    "speedometer.meter.large": "Stor",
+    "speedometer.meter.small": "Liten",
+    "speedometer.meter.medium": "Mellan",
+  
+    "speedometer.visualSpeedometer.true": "Visuel",
+    "speedometer.visualSpeedometer.false": "Text",
+  
+    "speedometer.useKnot.true": "Ja",
+    "speedometer.useKnot.false": "Nej",
+  
+    "speedometer.debug.true": "\u00A74Ja",
+    "speedometer.debug.false": "\u00A74Nej",
+  
+    "speedometer.show": "Visa",
+    "speedometer.hide": "Göm",
+  
+    "speedometer.config.tooltip.xPosition.line1": "W = fönstrets bred",
+    "speedometer.config.tooltip.xPosition.line2": "w = halva fönstrets bred",
+    "speedometer.config.tooltip.xPosition.line3": "s = breden på texten eller bilden",
+  
+    "speedometer.config.tooltip.yPosition.line1": "H = fönstrets höjd",
+    "speedometer.config.tooltip.yPosition.line2": "h = halva fönstrets höjd",
+    "speedometer.config.tooltip.yPosition.line3": "s = höjden av texten eller bilden",
+  
+    "speedometer.config.tooltip.debug": "Debug Information",
+  
+    "speedometer.config.tooltip.imageSize": "Storleken på bilden. Detta bestämmer både bredden och höjden av bilden",
+  
+    "speedometer.config.tooltip.showVisualSpeedType.line1": "Denna instälningen funkar inte helt och hållet",
+    "speedometer.config.tooltip.showVisualSpeedType.line2": "Jag (utvecklaren) avråder användandet av denna inställning då den inte fungerar vid mindre storlekar och förstör FPS vid större storlekar",
+  
+    "speedometer.config.tooltip.showSpeedType.line1": "Denna inställning visar farttypen ovanför den visuella mätaren, vilket är bättre än inuti mätaren",
+
+    "speedometer.config.tooltip.override_color.line1": "Överskrider förgen av linjen pekaren",
+    "speedometer.config.tooltip.override_color.line2": "OBS funkar inte om pekaren är en bild!",
+  
+    "speedometer.invalid": "Inte korrekt Sträng",
+
+    "speedometer.config.error.size_outofbounds": "Stolekten är felakting 10<=stolek<=300",
+
+    "speedometer.error.missing_cloth": "Saknar Cloth Config API för konfigurationsskärmen",
+
+    "resourcepack.speedometer.quarter_circle_speedometer": "Quarter circle Speedometer"
+  }

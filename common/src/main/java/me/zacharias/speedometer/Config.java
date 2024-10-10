@@ -1,18 +1,19 @@
 package me.zacharias.speedometer;
 
 import dev.architectury.platform.Platform;
+import net.minecraft.client.Minecraft;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 
-
-import static me.zacharias.speedometer.Speedometer.MOD_ID;
+import static me.zacharias.speedometer.Speedometer.*;
 
 public class Config {
   private static JSONObject config;
-  public static final float configVersion = 3f;
+  public static final float configVersion = 4f;
   private static int counter = 0;
   private static String configPath;
   private static BufferedImage speedometer;
@@ -40,15 +41,43 @@ public class Config {
         while((tmp = in.readLine()) != null){
           builder.append(tmp);
         }
-        config = new JSONObject(builder.toString());
+
+        try{
+          config = new JSONObject(builder.toString());
+        }catch (JSONException e){
+          File dump = new File(Platform.getConfigFolder().toString()+"/"+MOD_ID+"/config-dump_"+formatMillisToDHMS(System.currentTimeMillis())+"_.json");
+          LOGGER.error("Config is reset due to invalid content, dumping old content to {}", dump.getPath());
+          if(!dump.exists()){
+            dump.createNewFile();
+          }
+
+          try{
+            BufferedWriter out = new BufferedWriter(new FileWriter(dump));
+            out.write(builder.toString());
+            out.close();
+          }catch (IOException ex)
+          {
+            LOGGER.error("Failed to create a dump file and write to it.", ex);
+            LOGGER.warn("Dump content: \n{{}}", builder.toString());
+          }
+
+          config = new JSONObject();
+          defualt();
+          return;
+        }
+
+        LOGGER.info("Loaded config successfully");
+
         if(config.has("version")){
           if(config.getFloat("version")!=configVersion){
             if(config.getFloat("version") > configVersion){
+              LOGGER.warn("Config version is too new, resting");
               defualt();
 
               save();
             }else if(config.getFloat("version") < configVersion){
               config = new JSONObject();
+              LOGGER.warn("Config version is outdated, resting");
 
               defualt();
               save();
@@ -109,6 +138,10 @@ public class Config {
     if(!config.has("showSpeedType")){
       config.put("showSpeedType", false);
     }
+
+    if(!config.has("overrideColor")) {
+      config.put("overrideColor", false);
+    }
   }
 
   public static void save(){
@@ -160,6 +193,11 @@ public class Config {
     }else{
       return new Color(16, 146, 158);
     }
+  }
+
+  public static int getColorRGB()
+  {
+    return getColor().getRGB() & 0xFFFFFF;
   }
 
   public static boolean isDebug() {
@@ -231,10 +269,19 @@ public class Config {
   public static boolean isDisableVisualSpeedometer() {
     return disableVisualSpeedometer;
   }
+
+  public static boolean isOverrideColor() {
+    if(config.has("overrideColor")){
+      return config.getBoolean("overrideColor");
+    } else {
+      return false;
+    }
+  }
   
   //endregion
   
   //region Config Setters
+
   public static void setColor(int r, int g, int b){
     config.put("color", new JSONObject()
         .put("r", r)
@@ -281,6 +328,11 @@ public class Config {
   
   public static void setDisableVisualSpeedometer (boolean disableVisualSpeedometer){
     Config.disableVisualSpeedometer = disableVisualSpeedometer;
+  }
+
+  public static void setOverrideColor (boolean overrideColor)
+  {
+    config.put("overrideColor", overrideColor);
   }
   //endregion
 }

@@ -22,7 +22,7 @@ public class ConfigMenu {
         .build()
     );
 
-    category.addEntry(entryBuilder.startColorField(Component.translatable("speedometer.config.color"), me.zacharias.speedometer.Config.getColor().getRGB())
+    category.addEntry(entryBuilder.startColorField(Component.translatable("speedometer.config.color"), me.zacharias.speedometer.Config.getColorRGB())
         .setSaveConsumer2(color -> {
             me.zacharias.speedometer.Config.setColor(color.getRed(), color.getGreen(), color.getBlue());
         })
@@ -87,6 +87,15 @@ public class ConfigMenu {
     category.addEntry(entryBuilder.startIntField(Component.translatable("speedometer.config.imageSize"), Config.getImageSize())
         .setSaveConsumer(Config::setImageSize)
         .setTooltip(Component.translatable("speedometer.config.tooltip.imageSize"))
+        .setErrorSupplier(size -> {
+            if(size > 300 || size < 10)
+            {
+                return Optional.of(Component.translatable("speedometer.config.error.size_outofbounds"));
+            }
+            else {
+                return Optional.empty();
+            }
+        })
         .build()
     );
 
@@ -99,7 +108,14 @@ public class ConfigMenu {
         .build()
     );
 
-
+    category.addEntry(entryBuilder.startBooleanToggle(Component.translatable("speedometer.config.override_color"), Config.isOverrideColor())
+        .setSaveConsumer(Config::setOverrideColor)
+        .setTooltip(
+                Component.translatable("speedometer.config.tooltip.override_color.line1"),
+                Component.translatable("speedometer.config.tooltip.override_color.line2")
+        )
+        .build()
+    );
 
     category.addEntry(entryBuilder.startBooleanToggle(Component.translatable("speedometer.config.debug"),Config.isDebug())
         .setSaveConsumer(Config::setDebug)

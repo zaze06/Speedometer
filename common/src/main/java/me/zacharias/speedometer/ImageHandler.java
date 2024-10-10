@@ -24,25 +24,44 @@ public class ImageHandler {
     }
     return out;
   }
-  
-  public static BufferedImage rotate(BufferedImage img, double angle) {
-    double rads = Math.toRadians(angle);
-    int w = img.getWidth();
-    int h = img.getHeight();
-    
-    BufferedImage rotated = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2d = rotated.createGraphics();
-    AffineTransform at = new AffineTransform();
-    at.translate(w / 2d, h / 2d);
-    
-    int x = w / 2;
-    int y = h / 2;
-    
-    at.rotate(rads, x, y);
-    g2d.setTransform(at);
-    g2d.drawImage(img, 0, h, null);
+
+  /**
+   * Rotates a BufferedImage around a specific point.
+   *
+   * @param image The original BufferedImage to rotate.
+   * @param angle The angle to rotate in degrees (double precision).
+   * @param x The x coordinate of the point to rotate around (int precision).
+   * @param y The y coordinate of the point to rotate around (int precision).
+   * @return A new BufferedImage containing the rotated image.
+   */
+  public static BufferedImage rotateImage(BufferedImage image, double angle, int x, int y) {
+    // Convert the angle from degrees to radians
+    double radians = Math.toRadians(angle);
+
+    // Get image dimensions
+    int width = image.getWidth();
+    int height = image.getHeight();
+
+    // Create a new BufferedImage with the same width and height
+    BufferedImage rotatedImage = new BufferedImage(width, height, image.getType());
+
+    // Create a Graphics2D object from the new image
+    Graphics2D g2d = rotatedImage.createGraphics();
+
+    // Perform the rotation around the specified point (x, y)
+    AffineTransform transform = new AffineTransform();
+    // Translate the rotation point to the origin (0, 0)
+    transform.translate(x, y);
+    // Rotate around the origin
+    transform.rotate(radians);
+    // Translate back to the original position
+    transform.translate(-x, -y);
+
+    // Draw the rotated image
+    g2d.setTransform(transform);
+    g2d.drawImage(image, 0, 0, null);
     g2d.dispose();
-    
-    return rotated;
+
+    return rotatedImage;
   }
 }

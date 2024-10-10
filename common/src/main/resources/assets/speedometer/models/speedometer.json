@@ -1,13 +1,14 @@
 {
   "background": "speedometer:meter/speedometer.png",
-  "start": 45,
-  "end": 215,
+  "start": -45,
+  "end": 225,
   "maxSpeed": 120,
   "overflow": true,
   "pointer": {
-    "image": "speedometer:meter/pointer.png",
-    "start": "(0,0)"
+    "color": "#b00219",
+    "length": 50,
+    "start": "center"
   },
   "scale": 1,
-  "name": "Test"
+  "name": "Full cycle style"
 }
