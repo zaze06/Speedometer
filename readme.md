@@ -1,8 +1,8 @@
 # Speedometer
-This is a simple mod for forge and fabric that displays your current speed
+This is a simple mod for Forge, Fabric, and NeoForged that displays your current speed
 
 ## Credits to
-[org.json](https://www.json.org/json-en.html) *Included due to problems whit ForgeGradle*
+[org.json](https://www.json.org/json-en.html) *Included due to problems whit Gradle and building*
 
 ## Compile your own version?
 1. Download source code
@@ -13,7 +13,10 @@ This is a simple mod for forge and fabric that displays your current speed
 3. Run `gradlew build`(Windows cmd) or `./gradlew build`(Linux, MacOS, Windows powershell)
 4. the compiled version will be in
    * Fabic: `fabric/build/libs`
-   * Forge: `forge/build/libs`
+   * Forge: `neoforged/build/libs`
+
+## Forge Support Transition
+As of version 1.21 I chose to no longer support Forge in fevour of NeoForged
 
 
 # This mod is a newer version of [speedometer-forge](https://github.com/zaze06/speedometer-forge)
