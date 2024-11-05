@@ -4,10 +4,11 @@
     "6.0": "Lost support for Forge and gain NeoForge support",
     "6.0.1": "Small bug fix in Parser",
     "6.1": "Small bug fix in Parser",
-    "6.2": "Making speedometer and pointer resource pack based"
+    "6.2": "Making speedometer and pointer resource pack based",
+    "6.2.1": "Fixed issue #3"
   },
   "promos": {
-    "1.21-latest": "6.1",
-    "1.21-recommended": "6.1"
+    "1.21-latest": "6.2.1",
+    "1.21-recommended": "6.2.1"
   }
 }

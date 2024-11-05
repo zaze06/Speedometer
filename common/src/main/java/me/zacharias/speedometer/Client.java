@@ -128,6 +128,7 @@ public class Client {
 
   private static void render(GuiGraphics graphics, DeltaTracker deltaTracker) {
     if(Minecraft.getInstance().player == null) return;
+    if(Minecraft.getInstance().options.hideGui) return;
     Entity entity = Minecraft.getInstance().player.getRootVehicle();
 
     Vec3 vec = new Vec3(
