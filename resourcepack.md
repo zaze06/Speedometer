@@ -9,6 +9,13 @@ This feature is supported in
 ## `pack.mcmeta`
 The mcmeta file has no differences just make sure it's a valid pack_format for the version
 - 1.21.x: `"pack_format": 34`
+- I recommend adding this, so that you dont need to update the format since the only real requirement is using version 6.2 or newer of this mod
+```json
+"supported_formats": {
+  "min_inclusive": 34,
+  "max_inclusive": 57 // This needs to be the leatest pack_format
+}
+```
 
 ## File Locations
 So the speedometer is built upon 2 main things
@@ -33,7 +40,7 @@ base
 ```
 
 ## `speedometer.json` example *Standard speedometer.json file*
-```
+```json
 {
   "background": "speedometer:meter/speedometer.png",
   "start": -45,
@@ -78,3 +85,10 @@ base
   The scale of how to modify the speed as a power, this is the speed that `maxSpeed` is based of. the way the speed passed to `maxSpeed` is calculated is `baseSpeed^scale`.
 - name
   A string that is the name of this speedometer. *This is just used to send a log message about the speedometer*
+
+## JSON formating help
+I have created a JSON schema for this that is available at [speedometer_config_schema.json](https://github.com/zaze06/Speedometer/blob/master/schemas/speedometer_config_schema.json), please refer to your Advanced Text Editor on how to add a schema, if your editor supports the `$schema` feature then add 
+```json
+"$schema": "https://raw.githubusercontent.com/zaze06/Speedometer/refs/heads/master/schemas/speedometer_config_schema.json",
+```
+in the root object, and the schema shuld apply, else if your editor supports it you can add the schema to all `speedometer.json` files
