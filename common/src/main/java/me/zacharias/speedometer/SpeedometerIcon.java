@@ -10,13 +10,10 @@ import org.json.JSONObject;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 import java.util.Optional;
-
-import static me.zacharias.speedometer.Speedometer.MOD_ID;
 
 public class SpeedometerIcon {
     private BufferedImage speedometerIcon;
@@ -169,7 +166,7 @@ class Pointer
         }
         double angle = ((speed/max) * end)+start;
         if(angle > end && !overflow) angle = end;
-        Debuger.angle = angle;
+        Debugger.angle = angle;
         
         if(Objects.nonNull(image))
         {
@@ -183,8 +180,8 @@ class Pointer
             double angleRads = Math.toRadians(180+angle);
             int endX = (int) (Math.cos(angleRads) * length + this.start.x);
             int endY = (int) (Math.sin(angleRads) * length + this.start.y);
-            Debuger.x = endX;
-            Debuger.y = endY;
+            Debugger.x = endX;
+            Debugger.y = endY;
 
             g2d.setColor(c);
             g2d.setStroke(new BasicStroke(3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));

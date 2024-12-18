@@ -9,7 +9,7 @@ This feature is supported in
 ## `pack.mcmeta`
 The mcmeta file has no differences just make sure it's a valid pack_format for the version
 - 1.21.x: `"pack_format": 34`
-- I recommend adding this, so that you dont need to update the format since the only real requirement is using version 6.2 or newer of this mod
+- I recommend adding this, so that you don't need to update the format since the only real requirement is using version 6.2 or newer of this mod
 ```json
 "supported_formats": {
   "min_inclusive": 34,
@@ -91,4 +91,4 @@ I have created a JSON schema for this that is available at [speedometer_config_s
 ```json
 "$schema": "https://raw.githubusercontent.com/zaze06/Speedometer/refs/heads/master/schemas/speedometer_config_schema.json",
 ```
-in the root object, and the schema shuld apply, else if your editor supports it you can add the schema to all `speedometer.json` files
+in the root object, and the schema should apply, else if your editor supports it you can add the schema to all `speedometer.json` files

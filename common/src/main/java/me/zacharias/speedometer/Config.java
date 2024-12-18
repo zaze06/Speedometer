@@ -1,7 +1,6 @@
 package me.zacharias.speedometer;
 
 import dev.architectury.platform.Platform;
-import net.minecraft.client.Minecraft;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,7 +31,7 @@ public class Config {
       }
       config = new JSONObject();
 
-      defualt();
+      defaultValues();
     }else {
       try {
         BufferedReader in = new BufferedReader(new FileReader(configFile));
@@ -62,7 +61,7 @@ public class Config {
           }
 
           config = new JSONObject();
-          defualt();
+          defaultValues();
           return;
         }
 
@@ -72,20 +71,20 @@ public class Config {
           if(config.getFloat("version")!=configVersion){
             if(config.getFloat("version") > configVersion){
               LOGGER.warn("Config version is too new, resting");
-              defualt();
+              defaultValues();
 
               save();
             }else if(config.getFloat("version") < configVersion){
               config = new JSONObject();
               LOGGER.warn("Config version is outdated, resting");
 
-              defualt();
+              defaultValues();
               save();
             }
           }
         }else{
           config = new JSONObject();
-          defualt();
+          defaultValues();
           save();
         }
       } catch (IOException e) {
@@ -94,7 +93,7 @@ public class Config {
     }
   }
 
-  private static void defualt() {
+  private static void defaultValues() {
     if(!config.has("speed")) {
       config.put("speed", SpeedTypes.BlockPS);
     }

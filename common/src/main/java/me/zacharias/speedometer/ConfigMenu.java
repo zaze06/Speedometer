@@ -23,9 +23,7 @@ public class ConfigMenu {
     );
 
     category.addEntry(entryBuilder.startColorField(Component.translatable("speedometer.config.color"), me.zacharias.speedometer.Config.getColorRGB())
-        .setSaveConsumer2(color -> {
-            me.zacharias.speedometer.Config.setColor(color.getRed(), color.getGreen(), color.getBlue());
-        })
+        .setSaveConsumer2(color -> Config.setColor(color.getRed(), color.getGreen(), color.getBlue()))
         .build()
     );
 

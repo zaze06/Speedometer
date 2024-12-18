@@ -37,7 +37,7 @@ public class Client {
   );
 
   private static final ArrayList<Double> speeds = new ArrayList<>();
-  private static boolean speedometerVisualDisplayFailed = false;
+
 
   public static void init(){
     
@@ -59,7 +59,7 @@ public class Client {
         }
         else if(Minecraft.getInstance().player != null)
         {
-            Minecraft.getInstance().player.sendSystemMessage(
+            Minecraft.getInstance().player.displayClientMessage(
                 Component
                     .translatable("speedometer.error.missing_cloth")
                     .withColor(new Color(190, 0, 0).getRGB())
@@ -68,7 +68,7 @@ public class Client {
                         .literal("Open Config")
                         .withStyle(ChatFormatting.UNDERLINE)
                         .withStyle((style) -> style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, Config.getConfigPath())))
-                    ));
+                    ), false);
           LOGGER.warn(Component.translatable("speedometer.error.missing_cloth").getString());
         }
         else
@@ -91,39 +91,6 @@ public class Client {
     ClientGuiEvent.RENDER_HUD.register(Client::render);
 
     LOGGER.info("Finished loading speedometer");
-
-    /*((IPackRepository) Minecraft.getInstance().getResourcePackRepository()).addSource(new RepositorySource() {
-      @Override
-      public void loadPacks(Consumer<Pack> consumer) {
-        consumer.accept(new Pack(new PackLocationInfo(
-                "quarter_circle_speedometer",
-                Component.translatable("resourcepack.speedometer.quarter_circle_speedometer"),
-                new PackSource() {
-                  @Override
-                  public Component decorate(Component component) {
-                    return component;
-                  }
-
-                  @Override
-                  public boolean shouldAddAutomatically() {
-                    return false;
-                  }
-                },
-                Optional.empty()
-        ),
-                new Pack.ResourcesSupplier() {
-                  @Override
-                  public PackResources openPrimary(PackLocationInfo packLocationInfo) {
-                    return packLocationInfo.;
-                  }
-
-                  @Override
-                  public PackResources openFull(PackLocationInfo packLocationInfo, Pack.Metadata metadata) {
-                    return null;
-                  }
-                }));
-      }
-    });*/
   }
 
   private static void render(GuiGraphics graphics, DeltaTracker deltaTracker) {
@@ -189,42 +156,6 @@ public class Client {
 
       BufferedImage img = ImageHandler.scale(ICON.getSpeedometerIcon(speedTypeSpeed), Config.getImageSize(), Config.getImageSize());
 
-      /*int radius = img.getWidth()/2-4;
-
-      int x3 = (int) Math.round(radius*Math.cos(Math.toRadians(i+90)))+(img.getWidth()/2);
-      int y3 = (int) Math.round(radius*Math.sin(Math.toRadians(i+90)))+(img.getHeight()/2);
-
-      Graphics2D g2d = img.createGraphics();
-
-      g2d.setColor(new Color(138, 0, 0));
-
-      g2d.setStroke(new BasicStroke(2));
-
-      g2d.drawLine(x3,y3,img.getWidth()/2,img.getHeight()/2);
-
-      for(int x1 = 0; x1 < img.getWidth(); x1++){
-        for(int y1 = 0; y1 < img.getHeight(); y1++){
-          int x2 = x1 + xPos - img.getWidth();
-          int y2 = y1 + yPos - img.getHeight();
-
-          int rgb = img.getRGB(x1, y1);
-
-          if(new Color(rgb).equals(Color.black)) continue;
-
-          graphics.fill(x2, y2, x2+1, y2+1, rgb);
-        }
-      }
-
-      if(i >= 360+45){
-        String string = "x" + (int)Math.floor(i/(365+45));
-        graphics.drawString(
-            Minecraft.getInstance().font,
-            string,
-            xPos-Minecraft.getInstance().font.width(string),
-            (int)(yPos-4.5-((double) Config.getImageSize() /2)),
-            new Color(138, 0, 0).getRGB()
-        );
-      }*/
       for(int x1 = 0; x1 < img.getWidth(); x1++){
         for(int y1 = 0; y1 < img.getHeight(); y1++){
           int x2 = x1 + xPos - img.getWidth();
@@ -268,8 +199,8 @@ public class Client {
           "  Total: " + lSpeed + "\n" +
           "Velocity total average: " + speed + "\n" +
           "Velocity total in " + speedType.name() + ": " + speedTypeSpeed + "\n" +
-          "Endpoint position: (" + Debuger.x + ", " + Debuger.y + ")\n" +
-          "Percentage point of visual speedometer: " + Debuger.angle + "\n" +
+          "Endpoint position: (" + Debugger.x + ", " + Debugger.y + ")\n" +
+          "Percentage point of visual speedometer: " + Debugger.angle + "\n" +
           (Config.getVisualSpeedometer()?"Visual Size: "+Config.getImageSize():"Textual display");
 
       Color color = new Color(255, 255, 255);
@@ -298,36 +229,35 @@ public class Client {
     
     try{
       for(int i = 0; i <s.length; i++){
-        if(s[i] == 'W' || s[i] == 'H'){
+        char c = s[i];
+        if(c == 'W' || c == 'H'){
           if(isXPosition) passerPose.add(String.valueOf(event.guiWidth()));
           else passerPose.add(String.valueOf(event.guiHeight()));
-        }else if(s[i] == 'h' || s[i] == 'w'){
+        }
+        else if(c == 'h' || c == 'w'){
           if(isXPosition) passerPose.add(String.valueOf(event.guiWidth() / 2));
           else passerPose.add(String.valueOf(event.guiHeight() / 2));
-        }else if(s[i] == 'S' || s[i] == 's'){
+        }
+        else if(c == 'S' || c == 's'){
           passerPose.add(String.valueOf(width));
-        }else if(s[i] == '+'){
-          passerPose.add("+");
-        }else if(s[i] == '-'){
-          passerPose.add("-");
-        }else if(s[i] == '*'){
-          passerPose.add("/");
-        }else if(s[i] == '/'){
-          passerPose.add("/");
-        }else if(Character.isDigit(s[i])){
-          try{
-            if(i-1 > 0 && passerPose.get(i - 1).matches("^[0-9]+$")) {
-              Integer.parseInt(passerPose.get(i - 1));
-              passerPose.add(i - 1, passerPose.get(i - 1) + s[i]);
-            }
-            else
-            {
-              passerPose.add(Character.toString(s[i]));
-            }
-          }catch (NumberFormatException e){
-            passerPose.add(Character.toString(s[i]));
+        }
+        else if(c == '+' ||
+                c == '-' ||
+                c == '*' ||
+                c == '/'){
+          passerPose.add(Character.toString(c));
+        }
+        else if(Character.isDigit(c)){
+          int lastIndex = i - 1;
+          if(lastIndex > 0 && passerPose.get(lastIndex).matches("^[0-9]+$")) {
+            passerPose.add(passerPose.removeLast() + c);
           }
-        }else{
+          else
+          {
+            passerPose.add(Character.toString(c));
+          }
+        }
+        else{
           throw new Exception();
         }
       }
@@ -342,6 +272,7 @@ public class Client {
     try{
       position = Integer.parseInt(passerPose.getFirst());
     }catch (NumberFormatException e){
+      passerPose.clear();
       defaultValues(event, isXPosition, passerPose);
       position = Integer.parseInt(passerPose.getFirst());
     }

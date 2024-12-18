@@ -21,9 +21,9 @@
   "depends": {
     "fabricloader": ">=0.15.11",
     "minecraft": ">=1.21",
-    "architectury": ">=13.0.1"
+    "architectury": ">=13.0.5"
   },
   "suggests": {
-    "cloth-config1": ">=15.0.127"
+    "cloth-config1": ">=15.0.140"
   }
 }

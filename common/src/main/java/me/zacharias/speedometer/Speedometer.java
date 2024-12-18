@@ -3,7 +3,6 @@ package me.zacharias.speedometer;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -64,8 +63,7 @@ public class Speedometer
       return;
     }
     
-    try {
-      BufferedReader stream = resource.get().openAsReader();
+    try(BufferedReader stream = resource.get().openAsReader()) {
       String tmp;
       StringBuilder builder = new StringBuilder();
       while ((tmp = stream.readLine()) != null) {
