@@ -71,7 +71,7 @@ base
   This boolean is false if the pointer locks at the `end` angle when the speed exceeds `maxSpeed`.
 - pointer
   This defines properties of the pointer.
-  - color *not required, but if not present then `ìmage` most be*
+  - color *not required, but if not present then `image` most be*
     The color value should be a hexadecimal RGB code, e.g., #b00219, where # is followed by six characters representing red, green, and blue values (00-FF for each component).
   - length *not required if `image` is not defined*
     The length in picture based on the original size of the background.
