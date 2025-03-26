@@ -10,7 +10,7 @@ This feature is supported in
 The mcmeta file has no differences just make sure it's a valid pack_format for the version
 - 1.21.x: `"pack_format": 34`
 - I recommend adding this, so that you don't need to update the format since the only real requirement is using version 6.2 or newer of this mod
-```json
+```jsonc
 "supported_formats": {
   "min_inclusive": 34,
   "max_inclusive": 57 // This needs to be the leatest pack_format
