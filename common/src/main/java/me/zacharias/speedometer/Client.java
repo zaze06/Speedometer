@@ -145,8 +145,8 @@ public class Client {
       default -> 0;
     };
 
-    int yPos = getPos(graphics, width, Config.getYPosition(), false);
-    int xPos = getPos(graphics, width, Config.getXPosition(), true);
+    int yPos = getPosImp(graphics, width, Config.getYPosition(), false);
+    int xPos = getPosImp(graphics, width, Config.getXPosition(), true);
 
     int lineHeight = Minecraft.getInstance().font.lineHeight;
 
@@ -221,6 +221,22 @@ public class Client {
         y,
         colorRGB
     );
+  }
+
+  private static int getPosImp(GuiGraphics event, int width, String input, boolean isXPosition){
+    input = input.trim();
+    input = input
+            .replaceAll("(W+)|(H+)", String.valueOf(isXPosition?event.guiWidth():event.guiHeight()))
+            .replaceAll("(w+)|(h+)", String.valueOf(isXPosition?event.guiWidth()/2:event.guiHeight()/2))
+            .replaceAll("(S+)|(s+)", String.valueOf(width));
+    if((Config.isDebug()) && Config.getCounter() < 2) {
+      //String speedDisplayType = SpeedTypes.getName(Config.getSpeedType()).getString();
+      //String splitRawSpeedPosition = Arrays.toString(passerPose.toArray());
+      //String rawSpeedPosition = isXPosition ? Config.getXPosition() : Config.getYPosition();
+      LOGGER.info("Selected speed type(DEBUG): {}\n{}\n\n\n", isXPosition, input);
+      Config.addCounter();
+    }
+    return getPos(event, width, input, isXPosition);
   }
 
   private static int getPos(GuiGraphics event, int width, String input, boolean isXPosition) {

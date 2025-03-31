@@ -2,6 +2,7 @@ package me.zacharias.speedometer.forge;
 
 import com.mojang.datafixers.util.Unit;
 import me.zacharias.speedometer.Speedometer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -11,10 +12,12 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
+import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent;
 import org.jetbrains.annotations.NotNull;
 
-@Mod(Speedometer.MOD_ID)
+import static me.zacharias.speedometer.Speedometer.MOD_ID;
+
+@Mod(MOD_ID)
 public class SpeedometerNeoForge {
   public SpeedometerNeoForge(IEventBus eventBus) {
     // Submit our event bus to let architectury register our content on the right time
@@ -24,7 +27,7 @@ public class SpeedometerNeoForge {
   }
 }
 
-@EventBusSubscriber(modid = Speedometer.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 class EventHandler
 {
   /**
@@ -34,8 +37,8 @@ class EventHandler
    * @param event The event that is fired when the client reloads resources
    */
   @SubscribeEvent
-  private static void onResourceReload(RegisterClientReloadListenersEvent event) {
-    event.registerReloadListener(new SimplePreparableReloadListener<Unit>() {
+  private static void onResourceReload(AddClientReloadListenersEvent event) {
+    event.addListener(ResourceLocation.fromNamespaceAndPath(MOD_ID, "reload_listener"), new SimplePreparableReloadListener<Unit>() {
       @Override
       protected @NotNull Unit prepare(@NotNull ResourceManager arg, @NotNull ProfilerFiller arg2) {
         return Unit.INSTANCE;
