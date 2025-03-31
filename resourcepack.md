@@ -10,7 +10,7 @@ This feature is supported in
 The mcmeta file has no differences just make sure it's a valid pack_format for the version
 - 1.21.x: `"pack_format": 34`
 - I recommend adding this, so that you don't need to update the format since the only real requirement is using version 6.2 or newer of this mod
-```json
+```jsonc
 "supported_formats": {
   "min_inclusive": 34,
   "max_inclusive": 57 // This needs to be the leatest pack_format
@@ -71,7 +71,7 @@ base
   This boolean is false if the pointer locks at the `end` angle when the speed exceeds `maxSpeed`.
 - pointer
   This defines properties of the pointer.
-  - color *not required, but if not present then `ìmage` most be*
+  - color *not required, but if not present then `image` most be*
     The color value should be a hexadecimal RGB code, e.g., #b00219, where # is followed by six characters representing red, green, and blue values (00-FF for each component).
   - length *not required if `image` is not defined*
     The length in picture based on the original size of the background.
