@@ -67,7 +67,7 @@ public class Client {
                     .append(Component
                         .literal("Open Config")
                         .withStyle(ChatFormatting.UNDERLINE)
-                        .withStyle((style) -> style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, Config.getConfigPath())))
+                        .withStyle((style) -> style.withClickEvent(new ClickEvent.OpenFile(Config.getConfigPath())))
                     ), false);
           LOGGER.warn(Component.translatable("speedometer.error.missing_cloth").getString());
         }
