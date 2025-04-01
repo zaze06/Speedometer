@@ -63,9 +63,8 @@ public class Client {
                 Component
                     .translatable("speedometer.error.missing_cloth")
                     .withColor(new Color(190, 0, 0).getRGB())
-                    .append(" ")
                     .append(Component
-                        .literal("Open Config")
+                        .translatable("speedometer.error.missing_cloth.open_config")
                         .withStyle(ChatFormatting.UNDERLINE)
                         .withStyle((style) -> style.withClickEvent(new ClickEvent.OpenFile(Config.getConfigPath())))
                     ), false);

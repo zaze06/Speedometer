@@ -68,7 +68,8 @@
 
     "speedometer.config.error.size_outofbounds": "Stolekten är felakting 10<=stolek<=300",
 
-    "speedometer.error.missing_cloth": "Saknar Cloth Config API för konfigurationsskärmen",
+    "speedometer.error.missing_cloth": "Saknar Cloth Config API för konfigurationsskärmen, ",
+    "speedometer.error.missing_cloth.open_config": "Öppna Config",
 
     "resourcepack.speedometer.quarter_circle_speedometer": "Quarter circle Speedometer"
   }
