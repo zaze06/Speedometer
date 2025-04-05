@@ -1,6 +1,7 @@
 package me.zacharias.speedometer;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public enum SpeedTypes {
   MPH,
@@ -11,7 +12,7 @@ public enum SpeedTypes {
 
   public static Component getName(Enum anEnum) {
     if(anEnum instanceof SpeedTypes speedType) {
-      return Component.translatable("speedometer.speed." + switch (speedType) {
+      return new TranslatableComponent("speedometer.speed." + switch (speedType) {
         case MPH -> "mph";
         case MPS -> "mps";
         case KMPH -> "kmph";
@@ -19,7 +20,7 @@ public enum SpeedTypes {
         case KNOT -> "knot";
       });
     }else {
-      return Component.translatable("speedometer.speed.error");
+      return new TranslatableComponent("speedometer.speed.error");
     }
   }
 }

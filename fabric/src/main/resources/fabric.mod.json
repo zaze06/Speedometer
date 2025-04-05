@@ -19,11 +19,11 @@
     "main": ["me.zacharias.speedometer.fabric.SpeedometerFabric"]
   },
   "depends": {
-    "fabricloader": ">=0.15.11",
-    "minecraft": ">=1.21",
-    "architectury": ">=13.0.5"
+    "fabricloader": ">=0.12.12",
+    "minecraft": ">=1.17 <1.19",
+    "architectury": ">=2.10.10"
   },
   "suggests": {
-    "cloth-config1": ">=15.0.140"
+    "cloth-config1": ">=5.3.63"
   }
 }

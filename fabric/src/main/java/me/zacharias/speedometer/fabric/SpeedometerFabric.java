@@ -8,6 +8,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
 
+import java.io.IOException;
+
 public class SpeedometerFabric implements ModInitializer {
   @Override
   public void onInitialize() {
@@ -16,7 +18,7 @@ public class SpeedometerFabric implements ModInitializer {
     //Minecraft.getInstance().getResourcePackRepository().addPack()
 
     ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
-      /**
+       /**
        * Register the reload listener for the speedometers
        * This is required since i haven't found how to put this in the Architecture Abstraction layer(Common module)
        * TODO: Find a way to put this in the Abstraction layer
@@ -24,12 +26,16 @@ public class SpeedometerFabric implements ModInitializer {
        */
       @Override
       public void onResourceManagerReload(ResourceManager resourceManager) {
-        Speedometer.loadSpeedometers(resourceManager);
+          try {
+              Speedometer.loadSpeedometers(resourceManager);
+          } catch (IOException e) {
+              throw new RuntimeException(e);
+          }
       }
       
       @Override
       public ResourceLocation getFabricId() {
-        return ResourceLocation.fromNamespaceAndPath("speedometer", "visual_speedometer_reload_listener");
+        return new ResourceLocation("speedometer", "visual_speedometer_reload_listener");
       }
     });
   }

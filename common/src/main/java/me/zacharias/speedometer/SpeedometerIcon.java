@@ -1,9 +1,11 @@
 package me.zacharias.speedometer;
 
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+//import org.joml.Vector2i;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
-import org.joml.Vector2i;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,8 +27,7 @@ public class SpeedometerIcon {
     private boolean overflow;
     private boolean g = false;
     
-    public SpeedometerIcon(JSONObject config, ResourceManager resourceManager) throws MissingPropertyException, IOException, JSONException
-    {
+    public SpeedometerIcon(JSONObject config, ResourceManager resourceManager) throws MissingPropertyException, IOException, JSONException, CommandSyntaxException {
         if(!config.has("background")) throw new MissingPropertyException("background");
         
         String background = config.getString("background");
@@ -40,10 +41,10 @@ public class SpeedometerIcon {
             background = "textures/"+background;
         }
         
-        Optional<Resource> speedometerIcon = resourceManager.getResource(ResourceLocation.read(background).getOrThrow(s -> new MissingPropertyException("background")));
+        Optional<Resource> speedometerIcon = Optional.of(resourceManager.getResource(ResourceLocation.read(new StringReader(background))));//.getOrThrow(s -> new MissingPropertyException("background")));
         if(speedometerIcon.isEmpty()) throw new MissingPropertyException("background");
         
-        InputStream stream = speedometerIcon.get().open();
+        InputStream stream = speedometerIcon.get().getInputStream();
         this.speedometerIcon = ImageIO.read(stream);
         stream.close();
         
@@ -83,8 +84,7 @@ class Pointer
     private int length;
     private boolean g = false;
     
-    public Pointer(JSONObject pointer, ResourceManager resourceManager, Vector2i size) throws MissingPropertyException, IOException, JSONException
-    {
+    public Pointer(JSONObject pointer, ResourceManager resourceManager, Vector2i size) throws MissingPropertyException, IOException, JSONException, CommandSyntaxException {
         if(!pointer.has("start")) throw new MissingPropertyException("pointer/start");
         if(pointer.get("start") instanceof JSONObject jsonObject)
         {
@@ -122,10 +122,10 @@ class Pointer
                 imageResourceLocation = "textures/"+imageResourceLocation;
             }
             
-            Optional<Resource> image = resourceManager.getResource(ResourceLocation.read(imageResourceLocation).getOrThrow(s -> new MissingPropertyException("pointer/image")));
+            Optional<Resource> image = Optional.of(resourceManager.getResource(ResourceLocation.read(new StringReader(imageResourceLocation))));//.getOrThrow(s -> new MissingPropertyException("pointer/image")));
             if(image.isEmpty()) throw new MissingPropertyException("pointer/image");
             
-            InputStream stream = image.get().open();
+            InputStream stream = image.get().getInputStream();//.open();
             this.image = ImageHandler.scale(ImageIO.read(stream), size.x, size.y);
             stream.close();
         }

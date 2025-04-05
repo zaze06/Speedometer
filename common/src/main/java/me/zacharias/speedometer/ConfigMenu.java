@@ -2,7 +2,7 @@ package me.zacharias.speedometer;
 
 import me.shedaniel.clothconfig2.api.*;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import java.util.Optional;
 
@@ -10,33 +10,34 @@ public class ConfigMenu {
   public static ConfigBuilder getConfig(Screen parent) {
     ConfigBuilder builder = ConfigBuilder.create()
         .setParentScreen(parent)
-        .setTitle(Component.translatable("speedometer.config.name"));
+        .setTitle(new TranslatableComponent("speedometer.config.name"));
 
-    ConfigCategory category = builder.getOrCreateCategory(Component.translatable("speedometer.config.category.name"));
+    ConfigCategory category = builder.getOrCreateCategory(new TranslatableComponent("speedometer.config.category.name"));
 
     ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
-    category.addEntry(entryBuilder.startEnumSelector(Component.translatable("speedometer.config.speed"), SpeedTypes.class, me.zacharias.speedometer.Config.getSpeedType())
+    category.addEntry(entryBuilder.startEnumSelector(new TranslatableComponent("speedometer.config.speed"), SpeedTypes.class, me.zacharias.speedometer.Config.getSpeedType())
         .setEnumNameProvider(SpeedTypes::getName)
         .setSaveConsumer(me.zacharias.speedometer.Config::setSpeedType)
+                    //.setDefaultValue(SpeedTypes.BlockPS)
         .build()
     );
 
-    category.addEntry(entryBuilder.startColorField(Component.translatable("speedometer.config.color"), me.zacharias.speedometer.Config.getColorRGB())
+    category.addEntry(entryBuilder.startColorField(new TranslatableComponent("speedometer.config.color"), me.zacharias.speedometer.Config.getColorRGB())
         .setSaveConsumer2(color -> Config.setColor(color.getRed(), color.getGreen(), color.getBlue()))
         .build()
     );
 
-    category.addEntry(entryBuilder.startBooleanToggle(Component.translatable("speedometer.config.knot"), me.zacharias.speedometer.Config.getUseKnot())
+    category.addEntry(entryBuilder.startBooleanToggle(new TranslatableComponent("speedometer.config.knot"), me.zacharias.speedometer.Config.getUseKnot())
         .setSaveConsumer(me.zacharias.speedometer.Config::setUseKnot)
-        .setYesNoTextSupplier(useKnot -> Component.translatable("speedometer.useKnot."+useKnot))
+        .setYesNoTextSupplier(useKnot -> new TranslatableComponent("speedometer.useKnot."+useKnot))
         .build()
     );
 
-    category.addEntry(entryBuilder.startBooleanToggle(Component.translatable("speedometer.config.visualSpeedometer"), me.zacharias.speedometer.Config.getVisualSpeedometer())
+    category.addEntry(entryBuilder.startBooleanToggle(new TranslatableComponent("speedometer.config.visualSpeedometer"), me.zacharias.speedometer.Config.getVisualSpeedometer())
         .setSaveConsumer(me.zacharias.speedometer.Config::setVisualSpeedometer)
-        .setYesNoTextSupplier((visualSpeedometer -> Component.translatable("speedometer.visualSpeedometer."+visualSpeedometer)))
-        .setRequirement(Requirement.isFalse(Config::isDisableVisualSpeedometer))
+        .setYesNoTextSupplier((visualSpeedometer -> new TranslatableComponent("speedometer.visualSpeedometer."+visualSpeedometer)))
+        //.setRequirement(Requirement.isFalse(Config::isDisableVisualSpeedometer))
         .build()
     );
 
@@ -45,50 +46,50 @@ public class ConfigMenu {
     String xRegex = "W*w*S*s*\\+*-*\\**/*[0-9]*";
     String yRegex = "H*h*S*s*\\+*-*\\**/*[0-9]*";
 
-    category.addEntry(entryBuilder.startStringDropdownMenu(Component.translatable("speedometer.config.xPosition"), Config.getXPosition())
+    category.addEntry(entryBuilder.startStringDropdownMenu(new TranslatableComponent("speedometer.config.xPosition"), Config.getXPosition())
         .setSaveConsumer(Config::setXPosition)
         .setErrorSupplier(xPosition -> {
           if(xPosition.matches(xRegex)){
             return Optional.empty();
           }else{
-            return Optional.of(Component.translatable("speedometer.invalid"));
+            return Optional.of(new TranslatableComponent("speedometer.invalid"));
           }
         })
         .setTooltip(
-            Component.translatable("speedometer.config.tooltip.xPosition.line1"),
-            Component.translatable("speedometer.config.tooltip.xPosition.line2"),
-            Component.translatable("speedometer.config.tooltip.xPosition.line3")
+            new TranslatableComponent("speedometer.config.tooltip.xPosition.line1"),
+            new TranslatableComponent("speedometer.config.tooltip.xPosition.line2"),
+            new TranslatableComponent("speedometer.config.tooltip.xPosition.line3")
         )
         .build()
     );
 
 
-    category.addEntry(entryBuilder.startStringDropdownMenu(Component.translatable("speedometer.config.yPosition"), Config.getYPosition())
+    category.addEntry(entryBuilder.startStringDropdownMenu(new TranslatableComponent("speedometer.config.yPosition"), Config.getYPosition())
         .setSaveConsumer(Config::setYPosition)
         .setErrorSupplier(yPosition -> {
           if(yPosition.matches(yRegex)){
             return Optional.empty();
           }else{
-            return Optional.of(Component.translatable("speedometer.invalid"));
+            return Optional.of(new TranslatableComponent("speedometer.invalid"));
           }
         })
         .setTooltip(
-            Component.translatable("speedometer.config.tooltip.yPosition.line1"),
-            Component.translatable("speedometer.config.tooltip.yPosition.line2"),
-            Component.translatable("speedometer.config.tooltip.yPosition.line3")
+            new TranslatableComponent("speedometer.config.tooltip.yPosition.line1"),
+            new TranslatableComponent("speedometer.config.tooltip.yPosition.line2"),
+            new TranslatableComponent("speedometer.config.tooltip.yPosition.line3")
         )
         .build()
     );
 
     // Size of visual image
 
-    category.addEntry(entryBuilder.startIntField(Component.translatable("speedometer.config.imageSize"), Config.getImageSize())
+    category.addEntry(entryBuilder.startIntField(new TranslatableComponent("speedometer.config.imageSize"), Config.getImageSize())
         .setSaveConsumer(Config::setImageSize)
-        .setTooltip(Component.translatable("speedometer.config.tooltip.imageSize"))
+        .setTooltip(new TranslatableComponent("speedometer.config.tooltip.imageSize"))
         .setErrorSupplier(size -> {
             if(size > 300 || size < 10)
             {
-                return Optional.of(Component.translatable("speedometer.config.error.size_outofbounds"));
+                return Optional.of(new TranslatableComponent("speedometer.config.error.size_outofbounds"));
             }
             else {
                 return Optional.empty();
@@ -99,26 +100,26 @@ public class ConfigMenu {
 
     // Show visual speed type
 
-    category.addEntry(entryBuilder.startBooleanToggle(Component.translatable("speedometer.config.showSpeedType"), Config.getShowSpeedType())
+    category.addEntry(entryBuilder.startBooleanToggle(new TranslatableComponent("speedometer.config.showSpeedType"), Config.getShowSpeedType())
         .setSaveConsumer(Config::setShowSpeedType)
-        .setYesNoTextSupplier(showSpeedType -> Component.translatable("speedometer."+(showSpeedType?"show":"hide")))
-        .setTooltip(Component.translatable("speedometer.config.tooltip.showSpeedType.line1"))
+        .setYesNoTextSupplier(showSpeedType -> new TranslatableComponent("speedometer."+(showSpeedType?"show":"hide")))
+        .setTooltip(new TranslatableComponent("speedometer.config.tooltip.showSpeedType.line1"))
         .build()
     );
 
-    category.addEntry(entryBuilder.startBooleanToggle(Component.translatable("speedometer.config.override_color"), Config.isOverrideColor())
+    category.addEntry(entryBuilder.startBooleanToggle(new TranslatableComponent("speedometer.config.override_color"), Config.isOverrideColor())
         .setSaveConsumer(Config::setOverrideColor)
         .setTooltip(
-                Component.translatable("speedometer.config.tooltip.override_color.line1"),
-                Component.translatable("speedometer.config.tooltip.override_color.line2")
+                new TranslatableComponent("speedometer.config.tooltip.override_color.line1"),
+                new TranslatableComponent("speedometer.config.tooltip.override_color.line2")
         )
         .build()
     );
 
-    category.addEntry(entryBuilder.startBooleanToggle(Component.translatable("speedometer.config.debug"),Config.isDebug())
+    category.addEntry(entryBuilder.startBooleanToggle(new TranslatableComponent("speedometer.config.debug"),Config.isDebug())
         .setSaveConsumer(Config::setDebug)
-        .setYesNoTextSupplier(isDebug -> Component.translatable("speedometer.debug."+isDebug))
-        .setTooltip(Component.translatable("speedometer.config.tooltip.debug"))
+        .setYesNoTextSupplier(isDebug -> new TranslatableComponent("speedometer.debug."+isDebug))
+        .setTooltip(new TranslatableComponent("speedometer.config.tooltip.debug"))
         .build()
     );
 

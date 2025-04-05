@@ -1,20 +1,21 @@
 package me.zacharias.speedometer;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.vertex.PoseStack;
 import dev.architectury.event.events.client.ClientGuiEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.platform.Platform;
 import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.TextColor;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.network.chat.Component;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -40,8 +41,8 @@ public class Client {
 
 
   public static void init(){
-    
-    final boolean isClothLoaded = Platform.isModLoaded("cloth_config") || Platform.isModLoaded("cloth-config");
+
+    final boolean isClothLoaded = Platform.isModLoaded("cloth_config") || Platform.isModLoaded("cloth-config") || Platform.isModLoaded("cloth-config2");
     
     if(isClothLoaded) {
       Platform.getMod(MOD_ID).registerConfigurationScreen(parent -> ConfigMenu.getConfig(parent).build());
@@ -59,20 +60,21 @@ public class Client {
         }
         else if(Minecraft.getInstance().player != null)
         {
-            Minecraft.getInstance().player.displayClientMessage(
-                Component
-                    .translatable("speedometer.error.missing_cloth")
-                    .withColor(new Color(190, 0, 0).getRGB())
-                    .append(Component
-                        .translatable("speedometer.error.missing_cloth.open_config")
-                        .withStyle(ChatFormatting.UNDERLINE)
-                        .withStyle((style) -> style.withClickEvent(new ClickEvent.OpenFile(Config.getConfigPath())))
-                    ), false);
-          LOGGER.warn(Component.translatable("speedometer.error.missing_cloth").getString());
+          Minecraft.getInstance().player.displayClientMessage(
+                new TranslatableComponent("speedometer.error.missing_cloth")
+                    .withStyle(style -> style.withColor(ChatFormatting.RED))
+                    .append(
+                        new TranslatableComponent("speedometer.error.missing_cloth.open_config")
+                            .withStyle(style -> style
+                                    .withColor(ChatFormatting.DARK_RED)
+                                    .withUnderlined(true)
+                                    .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, Config.getConfigPath()))))
+                , false);
+          LOGGER.warn(new TranslatableComponent("speedometer.error.missing_cloth").getString());
         }
         else
         {
-          LOGGER.warn(Component.translatable("speedometer.error.missing_cloth").getString());
+          LOGGER.warn(new TranslatableComponent("speedometer.error.missing_cloth").getString());
         }
       }
     });
@@ -92,7 +94,7 @@ public class Client {
     LOGGER.info("Finished loading speedometer");
   }
 
-  private static void render(GuiGraphics graphics, DeltaTracker deltaTracker) {
+  private static void render(PoseStack poseStack, float delta) {
     if(Minecraft.getInstance().player == null) return;
     if(Minecraft.getInstance().options.hideGui) return;
     Entity entity = Minecraft.getInstance().player.getRootVehicle();
@@ -112,7 +114,7 @@ public class Client {
     double lSpeed = speed;
 
     if (speeds.size() >= 30) {
-      speeds.removeFirst();
+      speeds.remove(0);
     }
     speeds.add(speed);
     speed = 0;
@@ -144,8 +146,8 @@ public class Client {
       default -> 0;
     };
 
-    int yPos = getPosImp(graphics, width, Config.getYPosition(), false);
-    int xPos = getPosImp(graphics, width, Config.getXPosition(), true);
+    int yPos = getPosImp(poseStack, width, Config.getYPosition(), false);
+    int xPos = getPosImp(poseStack, width, Config.getXPosition(), true);
 
     int lineHeight = Minecraft.getInstance().font.lineHeight;
 
@@ -163,8 +165,8 @@ public class Client {
           int rgb = img.getRGB(x1, y1);
           
           if(new Color(rgb).equals(Color.black)) continue;
-          
-          graphics.fill(x2, y2, x2+1, y2+1, rgb);
+
+          Gui.fill(poseStack, x2, y2, x2+1, y2+1, rgb);
         }
       }
 
@@ -172,13 +174,13 @@ public class Client {
       // i -> x
       // j -> y
       // k -> color RGB int
-      graphics.drawString(
-          Minecraft.getInstance().font,
-          speedString,
-          xPos - width,
-          yPos - lineHeight,
-          Config.getColor().getRGB()
-      );
+      drawString(
+              poseStack,
+              xPos - width,
+              yPos - lineHeight,
+              speedString,
+              Config.getColor().getRGB()
+              );
     }
 
     if(Config.isDebug()){
@@ -200,20 +202,24 @@ public class Client {
           "Velocity total in " + speedType.name() + ": " + speedTypeSpeed + "\n" +
           "Endpoint position: (" + Debugger.x + ", " + Debugger.y + ")\n" +
           "Percentage point of visual speedometer: " + Debugger.angle + "\n" +
-          (Config.getVisualSpeedometer()?"Visual Size: "+Config.getImageSize():"Textual display");
+          (Config.getVisualSpeedometer()?"Visual Size: "+Config.getImageSize():"Textual display") + "\n" +
+          "Pos: ("+xPos+", "+yPos+") \n" +
+          "Width: "+Minecraft.getInstance().getWindow().getGuiScaledWidth() + "\n" +
+          "Height: "+Minecraft.getInstance().getWindow().getGuiScaledHeight();
 
       Color color = new Color(255, 255, 255);
 
       int y = 0;
       for(String s : debugData.split("\n")){
-        drawString(graphics,0, y, s, color.getRGB());
+        drawString(poseStack,0, y, s, color.getRGB());
         y+=Minecraft.getInstance().font.lineHeight+1;
       }
     }
   }
 
-  private static void drawString(GuiGraphics graphics, int x, int y, String text, int colorRGB){
-    graphics.drawString(
+  private static void drawString(PoseStack poseStack, int x, int y, String text, int colorRGB){
+    Gui.drawString(
+        poseStack,
         Minecraft.getInstance().font,
         text,
         x,
@@ -222,11 +228,14 @@ public class Client {
     );
   }
 
-  private static int getPosImp(GuiGraphics event, int width, String input, boolean isXPosition){
+  private static int getPosImp(PoseStack poseStack, int width, String input, boolean isXPosition){
+    int width1 = Minecraft.getInstance().getWindow().getGuiScaledWidth();
+    int height1 = Minecraft.getInstance().getWindow().getGuiScaledHeight();
+
     input = input.trim();
     input = input
-            .replaceAll("(W+)|(H+)", String.valueOf(isXPosition?event.guiWidth():event.guiHeight()))
-            .replaceAll("(w+)|(h+)", String.valueOf(isXPosition?event.guiWidth()/2:event.guiHeight()/2))
+            .replaceAll("(W+)|(H+)", String.valueOf(isXPosition? width1 : height1))
+            .replaceAll("(w+)|(h+)", String.valueOf(isXPosition? width1/2 : height1/2))
             .replaceAll("(S+)|(s+)", String.valueOf(width));
     if((Config.isDebug()) && Config.getCounter() < 2) {
       //String speedDisplayType = SpeedTypes.getName(Config.getSpeedType()).getString();
@@ -235,10 +244,14 @@ public class Client {
       LOGGER.info("Selected speed type(DEBUG): {}\n{}\n\n\n", isXPosition, input);
       Config.addCounter();
     }
-    return getPos(event, width, input, isXPosition);
+    return getPos(poseStack, width, input, isXPosition);
   }
 
-  private static int getPos(GuiGraphics event, int width, String input, boolean isXPosition) {
+  private static int getPos(PoseStack event, int width, String input, boolean isXPosition) {
+
+    int width1 = Minecraft.getInstance().getWindow().getGuiScaledWidth();
+    int height1 = Minecraft.getInstance().getWindow().getGuiScaledHeight();
+
     ArrayList<String> passerPose = new ArrayList<>();
     final char[] s = input.toCharArray();
     
@@ -246,12 +259,12 @@ public class Client {
       for(int i = 0; i <s.length; i++){
         char c = s[i];
         if(c == 'W' || c == 'H'){
-          if(isXPosition) passerPose.add(String.valueOf(event.guiWidth()));
-          else passerPose.add(String.valueOf(event.guiHeight()));
+          if(isXPosition) passerPose.add(String.valueOf(width1));
+          else passerPose.add(String.valueOf(height1));
         }
         else if(c == 'h' || c == 'w'){
-          if(isXPosition) passerPose.add(String.valueOf(event.guiWidth() / 2));
-          else passerPose.add(String.valueOf(event.guiHeight() / 2));
+          if(isXPosition) passerPose.add(String.valueOf(width1 / 2));
+          else passerPose.add(String.valueOf(height1 / 2));
         }
         else if(c == 'S' || c == 's'){
           passerPose.add(String.valueOf(width));
@@ -264,8 +277,8 @@ public class Client {
         }
         else if(Character.isDigit(c)){
           int lastIndex = i - 1;
-          if(lastIndex > 0 && passerPose.get(lastIndex).matches("^[0-9]+$")) {
-            passerPose.add(passerPose.removeLast() + c);
+          if(lastIndex >= 0 && passerPose.get(passerPose.size()-1).matches("^[0-9]+$")) {
+            passerPose.add(passerPose.remove(passerPose.size()-1) + c);
           }
           else
           {
@@ -285,11 +298,11 @@ public class Client {
 
     int position;
     try{
-      position = Integer.parseInt(passerPose.getFirst());
+      position = Integer.parseInt(passerPose.get(0));
     }catch (NumberFormatException e){
       passerPose.clear();
       defaultValues(event, isXPosition, passerPose);
-      position = Integer.parseInt(passerPose.getFirst());
+      position = Integer.parseInt(passerPose.get(0));
     }
 
     for(int i = 1; i < passerPose.size(); i++){
@@ -322,16 +335,16 @@ public class Client {
     return position;
   }
 
-  private static void defaultValues(GuiGraphics event, boolean isXPosition, ArrayList<String> passerPose) {
+  private static void defaultValues(PoseStack event, boolean isXPosition, ArrayList<String> passerPose) {
     if(isXPosition)
     {
-      passerPose.add(String.valueOf(event.guiWidth()));
+      passerPose.add(String.valueOf(Minecraft.getInstance().getWindow().getGuiScaledWidth()));
       passerPose.add("-");
       passerPose.add("3");
     }
     else
     {
-      passerPose.add(String.valueOf(event.guiHeight()));
+      passerPose.add(String.valueOf(Minecraft.getInstance().getWindow().getGuiScaledHeight()));
       passerPose.add("-");
       passerPose.add("3");
     }

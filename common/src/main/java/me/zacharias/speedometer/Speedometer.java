@@ -12,6 +12,8 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -51,10 +53,9 @@ public class Speedometer
     Client.init();
   }
   
-  public static void loadSpeedometers(ResourceManager resourceManager)
-  {
+  public static void loadSpeedometers(ResourceManager resourceManager) throws IOException {
     //List< Resource > resource = Minecraft.getInstance().getResourceManager().getResourceStack(ResourceLocation.fromNamespaceAndPath(MOD_ID, "models/speedometer.json"));
-    Optional< Resource > resource = resourceManager.getResource(ResourceLocation.fromNamespaceAndPath(MOD_ID, "models/speedometer.json"));
+    Optional<Resource> resource = Optional.of(resourceManager.getResource(new ResourceLocation(MOD_ID, "models/speedometer.json")));
 
     if(resource.isEmpty())
     {
@@ -63,7 +64,7 @@ public class Speedometer
       return;
     }
     
-    try(BufferedReader stream = resource.get().openAsReader()) {
+    try(BufferedReader stream = new BufferedReader(new InputStreamReader(resource.get().getInputStream()))/*.openAsReader()*/) {
       String tmp;
       StringBuilder builder = new StringBuilder();
       while ((tmp = stream.readLine()) != null) {
@@ -72,7 +73,7 @@ public class Speedometer
       JSONObject data = new JSONObject(builder.toString());
       if(Config.isDebug())
       {
-        LOGGER.info("Loaded speedometer from {}, with speedometer name: {}", resource.get().source().packId(), data.get("name"));
+        LOGGER.info("Loaded speedometer from {}, with speedometer name: {}", resource.get().getSourceName(), data.get("name"));
       }
       ICON = new SpeedometerIcon(data, resourceManager);
     }
@@ -82,7 +83,7 @@ public class Speedometer
       return;
     }
     
-    LOGGER.info("Successfully loaded speedometer config from {}", resource.get().source().packId());
+    LOGGER.info("Successfully loaded speedometer config from {}", resource.get().getSourceName());
   }
 
   public static String formatMillisToDHMS(long millis) {
