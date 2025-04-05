@@ -5,10 +5,19 @@
     "6.0.1": "Small bug fix in Parser",
     "6.1": "Small bug fix in Parser",
     "6.2": "Making speedometer and pointer resource pack based",
-    "6.2.1": "Fixed issue #3"
+    "6.2.1": "Fixed issue #3",
+    "6.2.2": "Fixed issue with multi digit position in the parser",
+    "6.2.3": "Fixed crash issue from 6.2.2 when playing in 1.21.4",
+    "6.2.4": "updated to 1.21.5"
   },
   "promos": {
-    "1.21-latest": "6.2.1",
-    "1.21-recommended": "6.2.1"
+    "1.21-latest": "6.2.2",
+    "1.21-recommended": "6.2.2",
+    
+    "1.21.4-latest": "6.2.3",
+    "1.21.4-recommended": "6.2.3",
+    
+    "1.21.5-latest": "6.2.4",
+    "1.21.5-recommended": "6.2.4"
   }
 }
