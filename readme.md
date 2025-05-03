@@ -13,7 +13,8 @@ This is a simple mod for Forge, Fabric, and NeoForged that displays your current
 3. Run `gradlew build`(Windows cmd) or `./gradlew build`(Linux, MacOS, Windows powershell)
 4. the compiled version will be in
    * Fabic: `fabric/build/libs`
-   * Forge: `neoforged/build/libs`
+   * NeoForge: `neoforged/build/libs`
+   * Forge: `forge/build/libs`
 
 ## Forge Support Transition
 As of version 1.21 I chose to no longer support Forge in fevour of NeoForged
