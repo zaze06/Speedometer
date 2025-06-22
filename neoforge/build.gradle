@@ -31,6 +31,8 @@ dependencies {
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive = false }
+
+    forgeRuntimeLibrary "org.json:json:${json_version}"
 }
 
 processResources {
@@ -43,7 +45,6 @@ processResources {
 
 shadowJar {
     exclude "fabric.mod.json"
-
 
     configurations = [project.configurations.shadowCommon]
     archiveClassifier.set("dev-shadow")
@@ -70,6 +71,8 @@ components.java {
         skip()
     }
 }
+
+
 
 publishing {
     publications {

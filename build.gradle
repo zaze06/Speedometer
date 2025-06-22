@@ -21,6 +21,9 @@ subprojects {
         // The following line declares the yarn mappings you may select this one as well.
         // mappings "net.fabricmc:yarn:@YARN_MAPPINGS@:v2"
         //api("org.json:json:${rootProject.json_version}")
+
+        implementation "org.json:json:${json_version}"
+        include "org.json:json:${json_version}"
     }
 }
 
