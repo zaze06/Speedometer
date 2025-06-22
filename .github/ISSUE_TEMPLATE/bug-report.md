@@ -27,7 +27,7 @@ assignees: zaze06
 
 **Config**
 *If needed*
-*Use [GitHub Gist](gist.gihub.com) to upload your speedometer config, located in *
+*Use [GitHub Gist](gist.gihub.com) to upload your speedometer config, located in `<minecraft>/config/speedometer/config.json`*
 
 **Logs**
 *If needed(Most of the times)*
