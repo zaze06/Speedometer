@@ -27,7 +27,7 @@ public class SpeedometerNeoForge {
   }
 }
 
-@EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = MOD_ID,/* bus = EventBusSubscriber.Bus.MOD, */value = Dist.CLIENT)
 class EventHandler
 {
   /**
