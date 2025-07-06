@@ -23,7 +23,7 @@ subprojects {
         //api("org.json:json:${rootProject.json_version}")
 
         implementation "org.json:json:${json_version}"
-        include "org.json:json:${json_version}"
+        //include "org.json:json:${json_version}"
     }
 }
 

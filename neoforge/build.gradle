@@ -33,6 +33,7 @@ dependencies {
     shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive = false }
 
     forgeRuntimeLibrary "org.json:json:${json_version}"
+    include("org.json:json:${json_version}")
 }
 
 processResources {
