@@ -12,6 +12,10 @@ repositories{
         url = 'https://maven.neoforged.net/releases'
     }
     maven { url "https://maven.shedaniel.me/" }
+    maven {
+        name "CreeperHost"
+        url "https://maven.creeperhost.net"
+    }
 }
 
 configurations {
@@ -34,6 +38,7 @@ dependencies {
 
     forgeRuntimeLibrary "org.json:json:${json_version}"
     include("org.json:json:${json_version}")
+    shadowCommon("org.json:json:${json_version}")
 }
 
 processResources {
@@ -49,6 +54,8 @@ shadowJar {
 
     configurations = [project.configurations.shadowCommon]
     archiveClassifier.set("dev-shadow")
+
+    relocate 'org.json', 'speedometer.shaded.org.json'
 }
 
 remapJar {

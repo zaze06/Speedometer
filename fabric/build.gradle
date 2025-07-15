@@ -1,5 +1,5 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "7.1.2"
+    id "com.github.johnrengelman.shadow" version "8.1.1"
 }
 
 architectury {
@@ -35,6 +35,7 @@ dependencies {
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 
     include("org.json:json:${json_version}")
+    shadowCommon("org.json:json:${json_version}")
 }
 
 processResources {
@@ -48,6 +49,7 @@ processResources {
 shadowJar {
     configurations = [project.configurations.shadowCommon]
     archiveClassifier.set("dev-shadow")
+    relocate 'org.json', 'speedometer.shaded.org.json'
 }
 
 remapJar {
