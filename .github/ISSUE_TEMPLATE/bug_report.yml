@@ -69,8 +69,9 @@ body:
   - type: textarea
     id: config
     attributes:
-      label: Config File (required if config-related). This is often important when it comes to crashes related to mod setting
+      label: Config File (required if config-related).
       description: >
+        This is often important when it comes to crashes related to mod setting
         Please upload your `config/speedometer/config.json` to GitHub Gist, or paste it here.
     validations:
       required: true
