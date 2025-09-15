@@ -1,6 +1,8 @@
 package me.zacharias.speedometer;
 
+import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.platform.TextureUtil;
 import dev.architectury.event.events.client.ClientGuiEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.platform.Platform;
@@ -11,7 +13,12 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.texture.SpriteContents;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.phys.Vec3;
@@ -155,6 +162,7 @@ public class Client {
             //double v = speedTypeSpeed / speedType.gatMaxVisual();
 
             BufferedImage img = ImageHandler.scale(ICON.getSpeedometerIcon(speedTypeSpeed), Config.getImageSize(), Config.getImageSize());
+            ImageHandler.register(ResourceLocation.fromNamespaceAndPath(MOD_ID, "speedometer_icon_tmp"), img);
 
             for(int x1 = 0; x1 < img.getWidth(); x1++){
                 for(int y1 = 0; y1 < img.getHeight(); y1++){
@@ -165,9 +173,17 @@ public class Client {
 
                     if(new Color(rgb).equals(Color.black)) continue;
 
-                    graphics.fill(x2, y2, x2+1, y2+1, rgb);
+                    //graphics.fill(x2, y2, x2+1, y2+1, rgb);
                 }
             }
+
+            /*graphics.(ResourceLocation.fromNamespaceAndPath(MOD_ID, "speedometer_icon_tmp"),
+                    xPos - img.getWidth(),
+                    yPos - img.getHeight(),
+                    0, 0,
+                    img.getWidth(), img.getHeight(),
+                    img.getWidth(), img.getHeight()
+            );*/
 
         }else {
             // i -> x
@@ -202,7 +218,8 @@ public class Client {
                     "Velocity total in " + speedType.name() + ": " + speedTypeSpeed + "\n" +
                     "Endpoint position: (" + Debugger.x + ", " + Debugger.y + ")\n" +
                     "Percentage point of visual speedometer: " + Debugger.angle + "\n" +
-                    (Config.getVisualSpeedometer()?"Visual Size: "+Config.getImageSize():"Textual display");
+                    (Config.getVisualSpeedometer()?"Visual Size: "+Config.getImageSize():"Textual display") + "\n" +
+                    (Config.getVisualSpeedometer()?"Creating visual speedometer: " + (Debugger.avrage40SizingTime) + " ms":"");
 
             Color color = new Color(255, 255, 255);
 

@@ -66,7 +66,7 @@
 
   "speedometer.invalid": "Invalid String",
 
-  "speedometer.config.error.size_outofbounds": "The size is out of bounds 10<=size<=300",
+  "speedometer.config.error.size_outofbounds": "The size is out of bounds 10<=size<=200",
   
   "speedometer.error.missing_cloth": "Missing Cloth Config API for Config Screen, ",
   "speedometer.error.missing_cloth.open_config": "Open Config",

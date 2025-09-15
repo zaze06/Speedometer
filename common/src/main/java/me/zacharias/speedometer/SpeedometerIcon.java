@@ -68,9 +68,18 @@ public class SpeedometerIcon {
     
     public BufferedImage getSpeedometerIcon(double speed)
     {
+        long startTime = System.currentTimeMillis();
         BufferedImage img = ImageHandler.clone(speedometerIcon);
         Graphics2D graphics = img.createGraphics();
         pointer.draw(graphics, start, end, max, overflow, Math.pow(speed, scale));
+        graphics.dispose();
+        long endTime = System.currentTimeMillis();
+        Debugger.sizingTime.add(endTime - startTime);
+        if(Debugger.sizingTime.size() > 40)
+        {
+            Debugger.sizingTime.removeLast();
+        }
+        Debugger.avrage40SizingTime = Debugger.sizingTime.stream().mapToLong(Long::longValue).sum() / Debugger.sizingTime.size();
         return img;
     }
 }

@@ -3,11 +3,18 @@ package me.zacharias.speedometer;
 import me.shedaniel.clothconfig2.api.*;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
 
 import java.util.Optional;
 
+import static me.zacharias.speedometer.Config.yRegex;
+import static me.zacharias.speedometer.Config.xRegex;
+import static me.zacharias.speedometer.Config.MIN_IMAGE_SIZE;
+import static me.zacharias.speedometer.Config.MAX_IMAGE_SIZE;
+
 public class ConfigMenu {
-  public static ConfigBuilder getConfig(Screen parent) {
+
+    public static ConfigBuilder getConfig(Screen parent) {
     ConfigBuilder builder = ConfigBuilder.create()
         .setParentScreen(parent)
         .setTitle(Component.translatable("speedometer.config.name"));
@@ -39,11 +46,6 @@ public class ConfigMenu {
         .setRequirement(Requirement.isFalse(Config::isDisableVisualSpeedometer))
         .build()
     );
-
-    // Regex
-
-    String xRegex = "W*w*S*s*\\+*-*\\**/*[0-9]*";
-    String yRegex = "H*h*S*s*\\+*-*\\**/*[0-9]*";
 
     category.addEntry(entryBuilder.startStringDropdownMenu(Component.translatable("speedometer.config.xPosition"), Config.getXPosition())
         .setSaveConsumer(Config::setXPosition)
@@ -82,11 +84,11 @@ public class ConfigMenu {
 
     // Size of visual image
 
-    category.addEntry(entryBuilder.startIntField(Component.translatable("speedometer.config.imageSize"), Config.getImageSize())
+    category.addEntry(entryBuilder.startIntSlider(Component.translatable("speedometer.config.imageSize"), Config.getImageSize(), MIN_IMAGE_SIZE, MAX_IMAGE_SIZE)
         .setSaveConsumer(Config::setImageSize)
         .setTooltip(Component.translatable("speedometer.config.tooltip.imageSize"))
         .setErrorSupplier(size -> {
-            if(size > 300 || size < 10)
+            if(size >= MAX_IMAGE_SIZE || size < MIN_IMAGE_SIZE)
             {
                 return Optional.of(Component.translatable("speedometer.config.error.size_outofbounds"));
             }
