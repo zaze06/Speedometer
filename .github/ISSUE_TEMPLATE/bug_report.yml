@@ -1,0 +1,94 @@
+name: "🐛 Bug Report"
+description: Report a bug with Speedometer
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug! Please fill out the required sections.  
+        If a section doesn’t apply, write `N/A`.  
+
+  - type: input
+    id: what-happened
+    attributes:
+      label: What Happened?
+      description: A short description of the bug you experienced.
+    validations:
+      required: true
+
+  - type: input
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+      description: What should have happened instead?
+      placeholder: The game should not crash.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: loader
+    attributes:
+      label: Mod Loader
+      options:
+        - Fabric
+        - Forge
+        - NeoForge
+      description: Select which mod loader you are using.
+    validations:
+      required: true
+
+  - type: input
+    id: mc-version
+    attributes:
+      label: Minecraft Version
+      placeholder: e.g. 1.21.1
+    validations:
+      required: true
+
+  - type: input
+    id: mod-version
+    attributes:
+      label: Speedometer Version
+      placeholder: e.g. 6.3.0
+    validations:
+      required: true
+  - type: textarea
+    id: other-mods
+    attributes:
+      label: Other Installed Mods
+      description: >
+        List any other mods you have installed including the version of each.
+        If you have a long list, upload it to GitHub Gist, or paste it here.
+      placeholder: |
+        - Architectury API 7.13.49
+        - Lithium 0.11.1
+        - Cloth Config API 6.3.57
+    validations:
+      required: false
+
+  - type: textarea
+    id: config
+    attributes:
+      label: Config File (required if config-related). This is often important when it comes to crashes related to mod setting
+      description: >
+        Please upload your `config/speedometer/config.json` to GitHub Gist, or paste it here.
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Crash Log / latest.log
+      description: >
+        Upload the relevant crash log or paste a link (mclo.gs, Gist, etc.).  
+        Don’t paste huge logs directly here.
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots (if relevant)
+      description: Drag & drop images or paste them here.
+    validations:
+      required: false
