@@ -50,7 +50,7 @@ public class ConfigMenu {
     category.addEntry(entryBuilder.startStringDropdownMenu(Component.translatable("speedometer.config.xPosition"), Config.getXPosition())
         .setSaveConsumer(Config::setXPosition)
         .setErrorSupplier(xPosition -> {
-          if(xPosition.matches(xRegex)){
+          if(xPosition.matches(xRegex) && !xPosition.isEmpty()){
             return Optional.empty();
           }else{
             return Optional.of(Component.translatable("speedometer.invalid"));
@@ -68,7 +68,7 @@ public class ConfigMenu {
     category.addEntry(entryBuilder.startStringDropdownMenu(Component.translatable("speedometer.config.yPosition"), Config.getYPosition())
         .setSaveConsumer(Config::setYPosition)
         .setErrorSupplier(yPosition -> {
-          if(yPosition.matches(yRegex)){
+          if(yPosition.matches(yRegex) && !yPosition.isEmpty()){
             return Optional.empty();
           }else{
             return Optional.of(Component.translatable("speedometer.invalid"));
@@ -88,7 +88,7 @@ public class ConfigMenu {
         .setSaveConsumer(Config::setImageSize)
         .setTooltip(Component.translatable("speedometer.config.tooltip.imageSize"))
         .setErrorSupplier(size -> {
-            if(size >= MAX_IMAGE_SIZE || size < MIN_IMAGE_SIZE)
+            if(size > MAX_IMAGE_SIZE || size < MIN_IMAGE_SIZE)
             {
                 return Optional.of(Component.translatable("speedometer.config.error.size_outofbounds"));
             }

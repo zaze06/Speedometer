@@ -135,47 +135,58 @@ public class Config {
 
         if(!(config.has("useKnot") && config.get("useKnot") instanceof Boolean)){
             validationError("Use knot is missing or invalid, resetting to default values");
+            return;
         }
 
         if(!(config.has("color") && config.get("color") instanceof JSONObject)){
             validationError("Color is missing or invalid, resetting to default values");
+            return;
         }else{
             JSONObject color = config.getJSONObject("color");
             if(!(color.has("r") && color.has("g") && color.has("b") && color.get("r") instanceof Number && color.get("g") instanceof Number && color.get("b") instanceof Number)){
                 validationError("Color is missing or invalid, resetting to default values");
+                return;
             }
         }
 
         if(!(config.has("visualSpeedometer") && config.get("visualSpeedometer") instanceof Boolean)){
             validationError("Visual speedometer is missing or invalid, resetting to default values");
+            return;
         }
 
-        if (!(config.has("xPosition") && config.get("xPosition") instanceof String && config.getString("xPosition").matches(xRegex))) {
+        if (!(config.has("xPosition") && config.get("xPosition") instanceof String && !config.getString("xPosition").isEmpty() && config.getString("xPosition").matches(xRegex))) {
             validationError("X position is missing or invalid, resetting to default values");
+            return;
         }
 
-        if(!(config.has("yPosition") && config.get("yPosition") instanceof String && config.getString("yPosition").matches(yRegex))){
+        if(!(config.has("yPosition") && config.get("yPosition") instanceof String && !config.getString("yPosition").isEmpty() && config.getString("yPosition").matches(yRegex))){
             validationError("Y position is missing or invalid, resetting to default values");
+            return;
         }
 
         if(!(config.has("debug") && config.get("debug") instanceof Boolean)){
             validationError("Debug is missing or invalid, resetting to default values");
+            return;
         }
 
         if(!(config.has("imageSize") && config.get("imageSize") instanceof Number && config.getInt("imageSize") >= MIN_IMAGE_SIZE && config.getInt("imageSize") <= MAX_IMAGE_SIZE)){
             validationError("Image size is missing or invalid, resetting to default values");
+            return;
         }
 
         if(!(config.has("showVisualSpeedType") && config.get("showVisualSpeedType") instanceof Boolean)){
             validationError("Show visual speed type is missing or invalid, resetting to default values");
+            return;
         }
 
         if(!(config.has("showSpeedType") && config.get("showSpeedType") instanceof Boolean)){
             validationError("Show speed type is missing or invalid, resetting to default values");
+            return;
         }
 
         if(!(config.has("overrideColor") && config.get("overrideColor") instanceof Boolean)){
             validationError("Override color is missing or invalid, resetting to default values");
+            return;
         }
         
         LOGGER.info("Validated config successfully");

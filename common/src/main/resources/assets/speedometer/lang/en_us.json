@@ -64,7 +64,7 @@
   "speedometer.config.tooltip.override_color.line1": "Override the color of a line pointer",
   "speedometer.config.tooltip.override_color.line2": "OPS doesn't work if the pointer is an image!",
 
-  "speedometer.invalid": "Invalid String",
+  "speedometer.invalid": "Invalid, or Empty String",
 
   "speedometer.config.error.size_outofbounds": "The size is out of bounds 10<=size<=200",
   

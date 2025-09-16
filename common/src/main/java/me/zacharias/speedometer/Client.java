@@ -173,7 +173,7 @@ public class Client {
 
                     if(new Color(rgb).equals(Color.black)) continue;
 
-                    //graphics.fill(x2, y2, x2+1, y2+1, rgb);
+                    graphics.fill(x2, y2, x2+1, y2+1, rgb);
                 }
             }
 

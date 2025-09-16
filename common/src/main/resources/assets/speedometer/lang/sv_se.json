@@ -64,7 +64,7 @@
     "speedometer.config.tooltip.override_color.line1": "Överskrider förgen av linjen pekaren",
     "speedometer.config.tooltip.override_color.line2": "OBS funkar inte om pekaren är en bild!",
   
-    "speedometer.invalid": "Inte korrekt Sträng",
+    "speedometer.invalid": "Ogiltig eller Inte korrekt Sträng",
 
     "speedometer.config.error.size_outofbounds": "Stolekten är felakting 10<=stolek<=200",
 
