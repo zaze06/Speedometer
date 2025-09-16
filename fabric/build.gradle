@@ -56,6 +56,8 @@ remapJar {
     inputFile.set shadowJar.archiveFile
     dependsOn shadowJar
     archiveClassifier.set(null)
+    // Ensure built archive includes the mod version in the file name
+    archiveFileName.set("${rootProject.archives_base_name}-${project.name}-${rootProject.mod_version}_${rootProject.minecraft_version}.jar")
 }
 
 jar {
