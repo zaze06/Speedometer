@@ -82,7 +82,7 @@ public class ImageHandler {
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             ImageIO.write(img, "png", out);
-            DynamicTexture dt = new DynamicTexture(() -> "png", NativeImage.read(out.toByteArray()));
+            DynamicTexture dt = new DynamicTexture(NativeImage.read(out.toByteArray()));
             Minecraft.getInstance().getTextureManager().register(location, dt);
             out.close();
         }catch (Exception ex)

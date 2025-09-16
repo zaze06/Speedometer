@@ -1,8 +1,6 @@
 package me.zacharias.speedometer;
 
-import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.platform.TextureUtil;
 import dev.architectury.event.events.client.ClientGuiEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.platform.Platform;
@@ -13,10 +11,6 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.texture.SpriteContents;
-import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -74,7 +68,7 @@ public class Client {
                                     .append(Component
                                             .translatable("speedometer.error.missing_cloth.open_config")
                                             .withStyle(ChatFormatting.UNDERLINE)
-                                            .withStyle((style) -> style.withClickEvent(new ClickEvent.OpenFile(Config.getConfigPath())))
+                                            .withStyle((style) -> style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, Config.getConfigPath())))
                                     ), false);
                     LOGGER.warn(Component.translatable("speedometer.error.missing_cloth").getString());
                 }
