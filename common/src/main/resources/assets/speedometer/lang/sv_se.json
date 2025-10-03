@@ -61,12 +61,12 @@
   
     "speedometer.config.tooltip.showSpeedType.line1": "Denna inställning visar farttypen ovanför den visuella mätaren, vilket är bättre än inuti mätaren",
 
-    "speedometer.config.tooltip.override_color.line1": "Överskrider förgen av linjen pekaren",
+    "speedometer.config.tooltip.override_color.line1": "Överskrider färgen av linjen pekaren",
     "speedometer.config.tooltip.override_color.line2": "OBS funkar inte om pekaren är en bild!",
   
     "speedometer.invalid": "Ogiltig eller Inte korrekt Sträng",
 
-    "speedometer.config.error.size_outofbounds": "Stolekten är felakting 10<=stolek<=200",
+    "speedometer.config.error.size_outofbounds": "Stolekten är felakting 10<=storlek<=200",
 
     "speedometer.error.missing_cloth": "Saknar Cloth Config API för konfigurationsskärmen, ",
     "speedometer.error.missing_cloth.open_config": "Öppna Config",
