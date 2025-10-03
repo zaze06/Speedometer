@@ -1,0 +1,75 @@
+{
+  "speedometer.config.name": "Speedometer Config",
+  "speedometer.config.category.name": "Speedometer Config Category",
+  "speedometer.config.speed": "Speed Type",
+  "speedometer.config.color": "Color",
+  "speedometer.config.knot": "Use Knot in Boats",
+  "speedometer.config.visualSpeedometer": "Visual Speedometer Display",
+  "speedometer.config.xPosition.visual": "X Position for Visual Meter",
+  "speedometer.config.yPosition.visual": "Y Position for Visual Meter",
+  "speedometer.config.xPosition.text": "X Position for Text Meter",
+  "speedometer.config.yPosition.text": "Y Position for Text Meter",
+  "speedometer.config.xPosition": "X Position for Meters",
+  "speedometer.config.yPosition": "Y Position for Meters",
+  "speedometer.config.debug": "Debug",
+  "speedometer.config.imageSize": "Image Size",
+  "speedometer.config.showVisualSpeedType": "\u00A74⨻\u00A7rShow Visual Speed Type",
+  "speedometer.config.showSpeedType": "Show Visual Speed Type",
+  "speedometer.config.override_color": "Override color",
+
+  "speedometer.key.configKey": "Config Key",
+  "speedometer.key.debugKey": "Debug Key",
+  "speedometer.key.category": "Speedometer",
+
+  "speedometer.speed.mph": "MPH",
+  "speedometer.speed.mps": "Meters/s",
+  "speedometer.speed.kmph": "Km/h",
+  "speedometer.speed.bps": "Blocks/s",
+  "speedometer.speed.knot": "Knot",
+  "speedometer.speed.error": "Unknown Speed Type",
+
+  "speedometer.meter.large": "Large",
+  "speedometer.meter.small": "Small",
+  "speedometer.meter.medium": "Medium",
+
+  "speedometer.visualSpeedometer.true": "Visual",
+  "speedometer.visualSpeedometer.false": "Text",
+
+  "speedometer.useKnot.true": "Yes",
+  "speedometer.useKnot.false": "No",
+
+  "speedometer.debug.true": "\u00A74Yes",
+  "speedometer.debug.false": "\u00A74No",
+
+  "speedometer.show": "Show",
+  "speedometer.hide": "Hide",
+
+  "speedometer.config.tooltip.xPosition.line1": "W = the width of the screen",
+  "speedometer.config.tooltip.xPosition.line2": "w = half the width of the screen",
+  "speedometer.config.tooltip.xPosition.line3": "s = the width of the text or image",
+
+  "speedometer.config.tooltip.yPosition.line1": "H = the height of the screen",
+  "speedometer.config.tooltip.yPosition.line2": "h = half the height of the screen",
+  "speedometer.config.tooltip.yPosition.line3": "s = the height of the text or image",
+
+  "speedometer.config.tooltip.debug": "Debug Information",
+
+  "speedometer.config.tooltip.imageSize": "Size of the image. This sets both the height and width",
+
+  "speedometer.config.tooltip.showVisualSpeedType.line1": "This setting doesn't work fully.",
+  "speedometer.config.tooltip.showVisualSpeedType.line2": "I(the developer) discourages the use of this setting since it doesn't work on smaller sises and the fps breaks at larger",
+
+  "speedometer.config.tooltip.showSpeedType.line1": "This setting shows the speed type above the visual meter which is better then within the visual meter",
+
+  "speedometer.config.tooltip.override_color.line1": "Override the color of a line pointer",
+  "speedometer.config.tooltip.override_color.line2": "OPS doesn't work if the pointer is an image!",
+
+  "speedometer.invalid": "Invalid, or Empty String",
+
+  "speedometer.config.error.size_outofbounds": "The size is out of bounds 10<=size<=200",
+
+  "speedometer.error.missing_cloth": "Missing Cloth Config API for Config Screen, ",
+  "speedometer.error.missing_cloth.open_config": "Open Config",
+
+  "resourcepack.speedometer.quarter_circle_speedometer": "Quarter circle Speedometer"
+}
