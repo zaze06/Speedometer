@@ -1,11 +1,10 @@
 package me.zacharias.speedometer;
 
-import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.platform.TextureUtil;
 import dev.architectury.event.events.client.ClientGuiEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.platform.Platform;
+import dev.architectury.platform.client.ConfigurationScreenRegistry;
 import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.CrashReport;
@@ -13,10 +12,6 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.texture.SpriteContents;
-import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -31,17 +26,18 @@ import java.util.*;
 import static me.zacharias.speedometer.Speedometer.*;
 
 public class Client {
+    public static final KeyMapping.Category SPEEDOMETER_KEY_CATEGORY = KeyMapping.Category.register(ResourceLocation.fromNamespaceAndPath(MOD_ID, "name"));
     public static final KeyMapping CONFIG_KEY = new KeyMapping(
-            "speedometer.key.configKey",
+            "key.speedometer.configKey",
             InputConstants.Type.KEYSYM,
             InputConstants.KEY_O,
-            "speedometer.key.category"
+            SPEEDOMETER_KEY_CATEGORY
     );
     public static final KeyMapping DEBUG_KEY = new KeyMapping(
-            "speedometer.key.debugKey",
+            "key.speedometer.debugKey",
             InputConstants.Type.KEYSYM,
             InputConstants.KEY_F6,
-            "speedometer.key.category"
+            SPEEDOMETER_KEY_CATEGORY
     );
 
     private static final ArrayList<Double> speeds = new ArrayList<>();
@@ -52,7 +48,7 @@ public class Client {
         final boolean isClothLoaded = Platform.isModLoaded("cloth_config") || Platform.isModLoaded("cloth-config");
 
         if(isClothLoaded) {
-            Platform.getMod(MOD_ID).registerConfigurationScreen(parent -> ConfigMenu.getConfig(parent).build());
+            ConfigurationScreenRegistry.register(Platform.getMod(MOD_ID), parent -> ConfigMenu.getConfig(parent).build());
         }
         else
         {
@@ -97,6 +93,8 @@ public class Client {
 
         ClientGuiEvent.RENDER_HUD.register(Client::render);
 
+
+
         LOGGER.info("Finished loading speedometer");
     }
 
@@ -119,7 +117,7 @@ public class Client {
         double speed = (Math.sqrt(Math.pow(vec.x + xOffset, 2) + Math.pow(vec.y + yOffset, 2) + Math.pow(vec.z + zOffset, 2)) * 20)+vOffset;
         double lSpeed = speed;
 
-        if (speeds.size() >= 30) {
+        if (speeds.size() >= Config.getSpeedAvrageSampleCount()) {
             speeds.removeFirst();
         }
         speeds.add(speed);
@@ -219,7 +217,8 @@ public class Client {
                     "Endpoint position: (" + Debugger.x + ", " + Debugger.y + ")\n" +
                     "Percentage point of visual speedometer: " + Debugger.angle + "\n" +
                     (Config.getVisualSpeedometer()?"Visual Size: "+Config.getImageSize():"Textual display") + "\n" +
-                    (Config.getVisualSpeedometer()?"Creating visual speedometer: " + (Debugger.avrage40SizingTime) + " ms":"");
+                    (Config.getVisualSpeedometer()?"Creating visual speedometer: " + (Debugger.avrage40SizingTime) + " ms":"") + "\n" +
+                    "Sample Size: " + Config.getSpeedAvrageSampleCount();
 
             Color color = new Color(255, 255, 255);
 

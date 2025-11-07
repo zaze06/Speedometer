@@ -40,6 +40,11 @@ public class ConfigMenu {
         .build()
     );
 
+    category.addEntry(entryBuilder.startIntSlider(Component.translatable("speedometer.config.average_speed_sample_count"), me.zacharias.speedometer.Config.getSpeedAvrageSampleCount(), 30, 500)
+        .setSaveConsumer(me.zacharias.speedometer.Config::setSpeedAvrageSampleCount)
+        .build()
+    );
+
     category.addEntry(entryBuilder.startBooleanToggle(Component.translatable("speedometer.config.visualSpeedometer"), me.zacharias.speedometer.Config.getVisualSpeedometer())
         .setSaveConsumer(me.zacharias.speedometer.Config::setVisualSpeedometer)
         .setYesNoTextSupplier((visualSpeedometer -> Component.translatable("speedometer.visualSpeedometer."+visualSpeedometer)))

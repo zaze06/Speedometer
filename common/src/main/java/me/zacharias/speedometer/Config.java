@@ -22,6 +22,7 @@ public class Config {
     // Moved to here from ConfigMenu to avoid dependency on Cloth Config API for this class
     public static final String xRegex = "W*w*S*s*\\+*-*\\**/*[0-9]*";
     public static final String yRegex = "H*h*S*s*\\+*-*\\**/*[0-9]*";
+
     public static final int MIN_IMAGE_SIZE = 10;
     public static final int MAX_IMAGE_SIZE = 200;
 
@@ -188,6 +189,12 @@ public class Config {
             validationError("Override color is missing or invalid, resetting to default values");
             return;
         }
+
+        if(!(config.has("speedAvrageSampleCount") && config.get("speedAvrageSampleCount") instanceof Number))
+        {
+            LOGGER.warn("Speed average sample count is missing or invalid, resetting to default value");
+            config.put("speedAvrageSampleCount", 100);
+        }
         
         LOGGER.info("Validated config successfully");
     }
@@ -251,6 +258,10 @@ public class Config {
 
         if(!config.has("overrideColor")) {
             config.put("overrideColor", false);
+        }
+
+        if(!config.has("speedAvrageSampleCount")) {
+            config.put("speedAvrageSampleCount", 150);
         }
     }
 
@@ -388,6 +399,18 @@ public class Config {
         }
     }
 
+    public static int getSpeedAvrageSampleCount()
+    {
+        if(config.has("speedAvrageSampleCount"))
+        {
+            return config.getInt("speedAvrageSampleCount");
+        }
+        else
+        {
+            return 150;
+        }
+    }
+
     //endregion
 
     //region Config Setters
@@ -443,6 +466,11 @@ public class Config {
     public static void setOverrideColor (boolean overrideColor)
     {
         config.put("overrideColor", overrideColor);
+    }
+
+    public static void setSpeedAvrageSampleCount(int speedAvrageSampleCount)
+    {
+        config.put("speedAvrageSampleCount", speedAvrageSampleCount);
     }
     //endregion
 }

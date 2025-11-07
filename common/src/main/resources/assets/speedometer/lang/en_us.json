@@ -16,10 +16,11 @@
   "speedometer.config.showVisualSpeedType": "\u00A74⨻\u00A7rShow Visual Speed Type",
   "speedometer.config.showSpeedType": "Show Visual Speed Type",
   "speedometer.config.override_color": "Override color",
+  "speedometer.config.average_speed_sample_count": "Average Speed Sample Count",
 
-  "speedometer.key.configKey": "Config Key",
-  "speedometer.key.debugKey": "Debug Key",
-  "speedometer.key.category": "Speedometer",
+  "key.speedometer.configKey": "Config Key",
+  "key.speedometer.debugKey": "Debug Key",
+  "key.category.speedometer.name": "Speedometer",
 
   "speedometer.speed.mph": "MPH",
   "speedometer.speed.mps": "Meters/s",

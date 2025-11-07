@@ -16,10 +16,11 @@
     "speedometer.config.showVisualSpeedType": "\u00A74⨻\u00A7rVisa Visuell Farttyp",
     "speedometer.config.showSpeedType": "Visa Visuell Farttyp",
     "speedometer.config.override_color": "Överskrid färgen",
+    "speedometer.config.average_speed_sample_count": "Antal prover för medelhastighet",
 
-    "speedometer.key.configKey": "Konfigurations Knapp",
-    "speedometer.key.debugKey": "Debug Knapp",
-    "speedometer.key.category": "Speedometer",
+    "key.speedometer.configKey": "Konfigurations Knapp",
+    "key.speedometer.debugKey": "Debug Knapp",
+    "key.category.speedometer.name": "Speedometer",
   
     "speedometer.speed.mph": "MPH",
     "speedometer.speed.mps": "Meter/s",
