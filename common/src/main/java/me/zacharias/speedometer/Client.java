@@ -13,9 +13,9 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.ClickEvent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.entity.vehicle.boat.Boat;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.network.chat.Component;
 
@@ -26,7 +26,7 @@ import java.util.*;
 import static me.zacharias.speedometer.Speedometer.*;
 
 public class Client {
-    public static final KeyMapping.Category SPEEDOMETER_KEY_CATEGORY = KeyMapping.Category.register(ResourceLocation.fromNamespaceAndPath(MOD_ID, "name"));
+    public static final KeyMapping.Category SPEEDOMETER_KEY_CATEGORY = KeyMapping.Category.register(Identifier.fromNamespaceAndPath(MOD_ID, "name"));
     public static final KeyMapping CONFIG_KEY = new KeyMapping(
             "key.speedometer.configKey",
             InputConstants.Type.KEYSYM,
@@ -160,7 +160,7 @@ public class Client {
             //double v = speedTypeSpeed / speedType.gatMaxVisual();
 
             BufferedImage img = ImageHandler.scale(ICON.getSpeedometerIcon(speedTypeSpeed), Config.getImageSize(), Config.getImageSize());
-            ImageHandler.register(ResourceLocation.fromNamespaceAndPath(MOD_ID, "speedometer_icon_tmp"), img);
+            ImageHandler.register(Identifier.fromNamespaceAndPath(MOD_ID, "speedometer_icon_tmp"), img);
 
             for(int x1 = 0; x1 < img.getWidth(); x1++){
                 for(int y1 = 0; y1 < img.getHeight(); y1++){
@@ -175,7 +175,7 @@ public class Client {
                 }
             }
 
-            /*graphics.(ResourceLocation.fromNamespaceAndPath(MOD_ID, "speedometer_icon_tmp"),
+            /*graphics.(Identifier.fromNamespaceAndPath(MOD_ID, "speedometer_icon_tmp"),
                     xPos - img.getWidth(),
                     yPos - img.getHeight(),
                     0, 0,

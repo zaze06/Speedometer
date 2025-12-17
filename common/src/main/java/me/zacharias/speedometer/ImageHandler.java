@@ -1,11 +1,10 @@
 package me.zacharias.speedometer;
 
-import com.fasterxml.jackson.databind.util.ByteBufferBackedInputStream;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -78,7 +77,7 @@ public class ImageHandler {
         return rotatedImage;
     }
 
-    public static void register(ResourceLocation location, BufferedImage img) {
+    public static void register(Identifier location, BufferedImage img) {
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             ImageIO.write(img, "png", out);
