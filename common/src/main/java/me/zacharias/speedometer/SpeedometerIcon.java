@@ -1,6 +1,6 @@
 package me.zacharias.speedometer;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.joml.Vector2i;
@@ -24,13 +24,13 @@ public class SpeedometerIcon {
     private int max;
     private boolean overflow;
     private boolean g = false;
-    
+
     public SpeedometerIcon(JSONObject config, ResourceManager resourceManager) throws MissingPropertyException, IOException, JSONException
     {
         if(!config.has("background")) throw new MissingPropertyException("background");
-        
+
         String background = config.getString("background");
-        
+
         if(background.contains(":"))
         {
             background = background.replaceFirst(":", ":textures/");
@@ -39,33 +39,33 @@ public class SpeedometerIcon {
         {
             background = "textures/"+background;
         }
-        
-        Optional<Resource> speedometerIcon = resourceManager.getResource(ResourceLocation.read(background).getOrThrow(s -> new MissingPropertyException("background")));
+
+        Optional<Resource> speedometerIcon = resourceManager.getResource(Identifier.read(background).getOrThrow(s -> new MissingPropertyException("background")));
         if(speedometerIcon.isEmpty()) throw new MissingPropertyException("background");
-        
+
         InputStream stream = speedometerIcon.get().open();
         this.speedometerIcon = ImageIO.read(stream);
         stream.close();
-        
+
         if(!config.has("start")) throw new MissingPropertyException("start");
         this.start = config.getInt("start");
-        
+
         if(!config.has("end")) throw new MissingPropertyException("end");
         this.end = config.getInt("end");
-        
+
         if(!config.has("scale")) throw new MissingPropertyException("scale");
         this.scale = config.getFloat("scale");
-        
+
         if(!config.has("pointer")) throw new MissingPropertyException("pointer");
         this.pointer = new Pointer(config.getJSONObject("pointer"), resourceManager, new Vector2i(this.speedometerIcon.getWidth(), this.speedometerIcon.getHeight()));
-        
+
         if(!config.has("maxSpeed")) throw new MissingPropertyException("maxSpeed");
         this.max = config.getInt("maxSpeed");
-        
+
         if(!config.has("overflow")) throw new MissingPropertyException("overflow");
         this.overflow = config.getBoolean("overflow");
     }
-    
+
     public BufferedImage getSpeedometerIcon(double speed)
     {
         long startTime = System.currentTimeMillis();
@@ -91,7 +91,7 @@ class Pointer
     private Vector2i start;
     private int length;
     private boolean g = false;
-    
+
     public Pointer(JSONObject pointer, ResourceManager resourceManager, Vector2i size) throws MissingPropertyException, IOException, JSONException
     {
         if(!pointer.has("start")) throw new MissingPropertyException("pointer/start");
@@ -104,7 +104,7 @@ class Pointer
         else if(pointer.get("start") instanceof String str)
         {
             if(str.isEmpty()) throw new MissingPropertyException("pointer/start");
-            
+
             if(str.matches("^\\([0-9]+,( )?[0-9]+\\)+$"))
             {
                 String[] split = str.split(",");
@@ -115,25 +115,25 @@ class Pointer
                 start = new Vector2i(size.x / 2, size.y / 2);
             }
             else throw new MissingPropertyException("pointer/start");
-            
+
         }
-        
+
         if(pointer.has("image"))
         {
-            String imageResourceLocation = pointer.getString("image");
-            
-            if(imageResourceLocation.contains(":"))
+            String imageIdentifier = pointer.getString("image");
+
+            if(imageIdentifier.contains(":"))
             {
-                imageResourceLocation = imageResourceLocation.replaceFirst(":", ":textures/");
+                imageIdentifier = imageIdentifier.replaceFirst(":", ":textures/");
             }
             else
             {
-                imageResourceLocation = "textures/"+imageResourceLocation;
+                imageIdentifier = "textures/"+imageIdentifier;
             }
-            
-            Optional<Resource> image = resourceManager.getResource(ResourceLocation.read(imageResourceLocation).getOrThrow(s -> new MissingPropertyException("pointer/image")));
+
+            Optional<Resource> image = resourceManager.getResource(Identifier.read(imageIdentifier).getOrThrow(s -> new MissingPropertyException("pointer/image")));
             if(image.isEmpty()) throw new MissingPropertyException("pointer/image");
-            
+
             InputStream stream = image.get().open();
             this.image = ImageHandler.scale(ImageIO.read(stream), size.x, size.y);
             stream.close();
@@ -165,7 +165,7 @@ class Pointer
         }
         else throw new MissingPropertyException("pointer/image or pointer/length");
     }
-    
+
     public void draw(Graphics2D g2d, int start, int end, int max, boolean overflow, double speed)
     {
         Color c = color;
@@ -176,7 +176,7 @@ class Pointer
         double angle = ((speed/max) * end)+start;
         if(angle > end && !overflow) angle = end;
         Debugger.angle = angle;
-        
+
         if(Objects.nonNull(image))
         {
             int centerX = this.start.x;

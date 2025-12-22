@@ -124,3 +124,5 @@ fabric/run/
 gradlew
 gradlew.bat
 gradle/wrapper/gradle-wrapper.jar
+
+bin

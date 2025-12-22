@@ -2,7 +2,7 @@ package me.zacharias.speedometer.forge;
 
 import com.mojang.datafixers.util.Unit;
 import me.zacharias.speedometer.Speedometer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -38,12 +38,12 @@ class EventHandler
    */
   @SubscribeEvent
   private static void onResourceReload(AddClientReloadListenersEvent event) {
-    event.addListener(ResourceLocation.fromNamespaceAndPath(MOD_ID, "reload_listener"), new SimplePreparableReloadListener<Unit>() {
+    event.addListener(Identifier.fromNamespaceAndPath(MOD_ID, "reload_listener"), new SimplePreparableReloadListener<Unit>() {
       @Override
       protected @NotNull Unit prepare(@NotNull ResourceManager arg, @NotNull ProfilerFiller arg2) {
         return Unit.INSTANCE;
       }
-      
+
       @Override
       protected void apply(@NotNull Unit object, @NotNull ResourceManager resourceManager, @NotNull ProfilerFiller arg2) {
         Speedometer.loadSpeedometers(resourceManager);

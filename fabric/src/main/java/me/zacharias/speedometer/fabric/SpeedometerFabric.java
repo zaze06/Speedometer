@@ -4,7 +4,7 @@ import me.zacharias.speedometer.Speedometer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
 
@@ -26,10 +26,10 @@ public class SpeedometerFabric implements ModInitializer {
       public void onResourceManagerReload(ResourceManager resourceManager) {
         Speedometer.loadSpeedometers(resourceManager);
       }
-      
+
       @Override
-      public ResourceLocation getFabricId() {
-        return ResourceLocation.fromNamespaceAndPath("speedometer", "visual_speedometer_reload_listener");
+      public Identifier getFabricId() {
+        return Identifier.fromNamespaceAndPath("speedometer", "visual_speedometer_reload_listener");
       }
     });
   }

@@ -3,7 +3,7 @@ package me.zacharias.speedometer;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.apache.logging.log4j.LogManager;
@@ -50,11 +50,11 @@ public class Speedometer
 
     Client.init();
   }
-  
+
   public static void loadSpeedometers(ResourceManager resourceManager)
   {
-    //List< Resource > resource = Minecraft.getInstance().getResourceManager().getResourceStack(ResourceLocation.fromNamespaceAndPath(MOD_ID, "models/speedometer.json"));
-    Optional< Resource > resource = resourceManager.getResource(ResourceLocation.fromNamespaceAndPath(MOD_ID, "models/speedometer.json"));
+    //List< Resource > resource = Minecraft.getInstance().getResourceManager().getResourceStack(Identifier.fromNamespaceAndPath(MOD_ID, "models/speedometer.json"));
+    Optional< Resource > resource = resourceManager.getResource(Identifier.fromNamespaceAndPath(MOD_ID, "models/speedometer.json"));
 
     if(resource.isEmpty())
     {
@@ -62,7 +62,7 @@ public class Speedometer
       LOGGER.error("Failed to load speedometer config");
       return;
     }
-    
+
     try(BufferedReader stream = resource.get().openAsReader()) {
       String tmp;
       StringBuilder builder = new StringBuilder();
@@ -81,7 +81,7 @@ public class Speedometer
       LOGGER.error("Failed to load speedometer config", e);
       return;
     }
-    
+
     LOGGER.info("Successfully loaded speedometer config from {}", resource.get().source().packId());
   }
 
