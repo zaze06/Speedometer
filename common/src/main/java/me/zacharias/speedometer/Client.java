@@ -115,6 +115,8 @@ public class Client {
         double vOffset = 0D;
 
         double speed = (Math.sqrt(Math.pow(vec.x + xOffset, 2) + Math.pow(vec.y + yOffset, 2) + Math.pow(vec.z + zOffset, 2)) * 20)+vOffset;
+
+        // Pre modified speed, the unmodified speed before averaging it out.
         double lSpeed = speed;
 
         if (speeds.size() >= Config.getSpeedAvrageSampleCount()) {
@@ -126,6 +128,12 @@ public class Client {
             speed += aDouble;
         }
         speed = speed / speeds.size();
+
+        if(speed <= lSpeed*0.9f || speed >= lSpeed*1.1f){
+            speed = lSpeed;
+        }
+
+        speed = lSpeed;
 
         double speedTypeSpeed;
 
@@ -213,12 +221,15 @@ public class Client {
                     "  Z: " + (vec.z + zOffset) + "\n" +
                     "  Total: " + lSpeed + "\n" +
                     "Velocity total average: " + speed + "\n" +
+                    "Speed difference: " + (speed - lSpeed) + "\n" +
                     "Velocity total in " + speedType.name() + ": " + speedTypeSpeed + "\n" +
                     "Endpoint position: (" + Debugger.x + ", " + Debugger.y + ")\n" +
                     "Percentage point of visual speedometer: " + Debugger.angle + "\n" +
                     (Config.getVisualSpeedometer()?"Visual Size: "+Config.getImageSize():"Textual display") + "\n" +
                     (Config.getVisualSpeedometer()?"Creating visual speedometer: " + (Debugger.avrage40SizingTime) + " ms":"") + "\n" +
-                    "Sample Size: " + Config.getSpeedAvrageSampleCount();
+                    "Sample Size: " + Config.getSpeedAvrageSampleCount() + "\n" +
+                    "Speed placentals: 90%: " + String.format("%.2f", lSpeed*0.9f) + ", 110%: " + String.format("%.2f", lSpeed*1.1f) + "\n" +
+                    "Flatting out speed: " + (speed <= lSpeed*0.9f && speed >= lSpeed*1.1f);
 
             Color color = new Color(255, 255, 255);
 
