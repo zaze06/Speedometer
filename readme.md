@@ -1,6 +1,8 @@
 # Speedometer
 This is a simple mod for Forge, Fabric, and NeoForged that displays your current speed
 
+# Project is currently on hold due to studies and general exuastion!
+
 [![Build Status](https://github.com/zaze06/Speedometer/actions/workflows/gradle.yml/badge.svg?branch=master)](https://github.com/zaze06/Speedometer/actions/workflows/gradle.yml)
 
 ## Credits to
