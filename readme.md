@@ -6,7 +6,7 @@ This is a simple mod for Forge, Fabric, and NeoForged that displays your current
 [![Build Status](https://github.com/zaze06/Speedometer/actions/workflows/gradle.yml/badge.svg?branch=master)](https://github.com/zaze06/Speedometer/actions/workflows/gradle.yml)
 
 ## Why isn't this for 26.1.X yet?
-~~Well I'm waiting for [Architectury #708](https://github.com/architectury/architectury-api/pull/708), so it's in the works.~~
+~~Well I'm waiting for [Architectury #708](https://github.com/architectury/architectury-api/pull/708), so it's in the works.~~ <br>
 As of 2026-06-06 the PR is closed and a 26.1.X version exists, I will get working on a 26.1.X version. Please be patient.<br>
 Best regards
 
