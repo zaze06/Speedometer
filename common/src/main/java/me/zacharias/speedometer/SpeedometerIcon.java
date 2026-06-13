@@ -16,6 +16,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class SpeedometerIcon {
+    private final Identifier background;
     private BufferedImage speedometerIcon;
     private Pointer pointer;
     private int start;
@@ -40,7 +41,8 @@ public class SpeedometerIcon {
             background = "textures/"+background;
         }
 
-        Optional<Resource> speedometerIcon = resourceManager.getResource(Identifier.read(background).getOrThrow(s -> new MissingPropertyException("background")));
+        this.background = Identifier.read(background).getOrThrow(s -> new MissingPropertyException("background"));
+        Optional<Resource> speedometerIcon = resourceManager.getResource(this.background);
         if(speedometerIcon.isEmpty()) throw new MissingPropertyException("background");
 
         InputStream stream = speedometerIcon.get().open();
@@ -81,6 +83,10 @@ public class SpeedometerIcon {
         }
         Debugger.avrage40SizingTime = Debugger.sizingTime.stream().mapToLong(Long::longValue).sum() / Debugger.sizingTime.size();
         return img;
+    }
+
+    public Identifier getBackground() {
+        return background;
     }
 }
 

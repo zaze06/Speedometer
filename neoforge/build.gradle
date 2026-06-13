@@ -1,9 +1,12 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "8.1.1"
 }
+
+apply plugin: "architectury-plugin"
+
 architectury {
-    platformSetupLoomIde()
-    neoForge()
+    //platformSetupLoomIde()
+    //neoForge()
 }
 
 repositories{
@@ -29,12 +32,11 @@ configurations {
 dependencies {
     neoForge "net.neoforged:neoforge:$rootProject.neoforge_version"
     // Remove the next line if you don't want to depend on the API
-    modImplementation "dev.architectury:architectury-neoforge:$rootProject.architectury_version"
+    implementation "dev.architectury:architectury-neoforge:$rootProject.architectury_version"
 
-    modImplementation "me.shedaniel.cloth:cloth-config-neoforge:$rootProject.cloth_config_version"
+    implementation "me.shedaniel.cloth:cloth-config-neoforge:$rootProject.cloth_config_version"
 
-    common(project(path: ":common", configuration: "namedElements")) { transitive false }
-    shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive = false }
+    implementation(project(":common")) { transitive false }
 
     forgeRuntimeLibrary "org.json:json:${json_version}"
     include("org.json:json:${json_version}")
@@ -50,24 +52,17 @@ processResources {
 }
 
 shadowJar {
-    exclude "fabric.mod.json"
-
     configurations = [project.configurations.shadowCommon]
-    archiveClassifier.set("dev-shadow")
-
-    relocate 'org.json', 'speedometer.shaded.org.json'
-}
-
-remapJar {
-    inputFile.set shadowJar.archiveFile
-    dependsOn shadowJar
     archiveClassifier.set(null)
-    // Ensure built archive includes the mod version in the file name
-    archiveFileName.set("${rootProject.archives_base_name}-${project.name}-${rootProject.mod_version}_${rootProject.minecraft_version}.jar")
+    relocate 'org.json', 'speedometer.shaded.org.json'
+    archiveFileName.set("${rootProject.archives_base_name}-neoforge-${rootProject.mod_version}_${rootProject.minecraft_version}.jar")
+
+    // Shade the common module
+    from project(":common").sourceSets.main.output
 }
 
 jar {
-    archiveClassifier.set("dev")
+    enabled = false
 }
 
 sourcesJar {

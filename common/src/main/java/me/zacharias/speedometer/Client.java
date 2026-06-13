@@ -11,7 +11,10 @@ import net.minecraft.CrashReport;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.texture.AbstractTexture;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
@@ -42,6 +45,8 @@ public class Client {
 
     private static final ArrayList<Double> speeds = new ArrayList<>();
 
+    //private static Identifier speedometerTexture = Identifier.fromNamespaceAndPath("speedometer", "meter/speedometer.png");
+
 
     public static void init(){
 
@@ -63,7 +68,7 @@ public class Client {
                 }
                 else if(Minecraft.getInstance().player != null)
                 {
-                    Minecraft.getInstance().player.displayClientMessage(
+                    Minecraft.getInstance().player.sendSystemMessage(
                             Component
                                     .translatable("speedometer.error.missing_cloth")
                                     .withColor(new Color(190, 0, 0).getRGB())
@@ -71,7 +76,7 @@ public class Client {
                                             .translatable("speedometer.error.missing_cloth.open_config")
                                             .withStyle(ChatFormatting.UNDERLINE)
                                             .withStyle((style) -> style.withClickEvent(new ClickEvent.OpenFile(Config.getConfigPath())))
-                                    ), false);
+                                    ));
                     LOGGER.warn(Component.translatable("speedometer.error.missing_cloth").getString());
                 }
                 else
@@ -98,7 +103,7 @@ public class Client {
         LOGGER.info("Finished loading speedometer");
     }
 
-    private static void render(GuiGraphics graphics, DeltaTracker deltaTracker) {
+    private static void render(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
         if(Minecraft.getInstance().player == null) return;
         if(Minecraft.getInstance().options.hideGui) return;
         Entity entity = Minecraft.getInstance().player.getRootVehicle();
@@ -159,21 +164,26 @@ public class Client {
 
             //double v = speedTypeSpeed / speedType.gatMaxVisual();
 
-            BufferedImage img = ImageHandler.scale(ICON.getSpeedometerIcon(speedTypeSpeed), Config.getImageSize(), Config.getImageSize());
-            ImageHandler.register(Identifier.fromNamespaceAndPath(MOD_ID, "speedometer_icon_tmp"), img);
+            //BufferedImage img = ImageHandler.scale(ICON.getSpeedometerIcon(speedTypeSpeed), Config.getImageSize(), Config.getImageSize());
+            //ImageHandler.register(Identifier.fromNamespaceAndPath(MOD_ID, "speedometer_icon_tmp"), img);
 
-            for(int x1 = 0; x1 < img.getWidth(); x1++){
-                for(int y1 = 0; y1 < img.getHeight(); y1++){
-                    int x2 = x1 + xPos - img.getWidth();
-                    int y2 = y1 + yPos - img.getHeight();
+            TextureManager textureManager = Minecraft.getInstance().getTextureManager();
+            AbstractTexture texture = textureManager.getTexture(ICON.getBackground());
 
-                    int rgb = img.getRGB(x1, y1);
+            int width1 = texture.getTexture().getWidth(0);
+            int height1 = texture.getTexture().getHeight(0);
 
-                    if(new Color(rgb).equals(Color.black)) continue;
+            graphics.pose().pushMatrix();
+            graphics.pose().translate(xPos, yPos);
+            //graphics.pose().scale((float) Config.getImageSize() / width1, (float) Config.getImageSize() / height1);
+            graphics.pose().scale(1f);
 
-                    graphics.fill(x2, y2, x2+1, y2+1, rgb);
-                }
-            }
+            graphics.blit(ICON.getBackground(), xPos, yPos, 0, 0, width1, height1, width1, height1);
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, ICON.getBackground(), -100, -100, width1, height1);
+
+            graphics.pose().popMatrix();
+
+
 
             /*graphics.(Identifier.fromNamespaceAndPath(MOD_ID, "speedometer_icon_tmp"),
                     xPos - img.getWidth(),
@@ -187,11 +197,11 @@ public class Client {
             // i -> x
             // j -> y
             // k -> color RGB int
-            graphics.drawString(
-                    Minecraft.getInstance().font,
-                    speedString,
+            drawString(
+                    graphics,
                     xPos - width,
                     yPos - lineHeight,
+                    speedString,
                     Config.getColor().getRGB()
             );
         }
@@ -230,8 +240,34 @@ public class Client {
         }
     }
 
-    private static void drawString(GuiGraphics graphics, int x, int y, String text, int colorRGB){
-        graphics.drawString(
+    public void drawLine(GuiGraphicsExtractor graphics, int x1, int y1, int x2, int y2, int color) {
+        int dx = Math.abs(x2 - x1);
+        int dy = Math.abs(y2 - y1);
+        int sx = x1 < x2 ? 1 : -1;
+        int sy = y1 < y2 ? 1 : -1;
+        int err = dx - dy;
+
+        int x = x1, y = y1;
+
+        while (true) {
+            graphics.fill(x, y, x + 1, y + 1, color);
+
+            if (x == x2 && y == y2) break;
+
+            int e2 = 2 * err;
+            if (e2 > -dy) {
+                err -= dy;
+                x += sx;
+            }
+            if (e2 < dx) {
+                err += dx;
+                y += sy;
+            }
+        }
+    }
+
+    private static void drawString(GuiGraphicsExtractor graphics, int x, int y, String text, int colorRGB){
+        graphics.text(
                 Minecraft.getInstance().font,
                 text,
                 x,
@@ -240,7 +276,7 @@ public class Client {
         );
     }
 
-    private static int getPosImp(GuiGraphics event, int width, String input, boolean isXPosition){
+    private static int getPosImp(GuiGraphicsExtractor event, int width, String input, boolean isXPosition){
         input = input.trim();
         input = input
                 .replaceAll("(W+)|(H+)", String.valueOf(isXPosition?event.guiWidth():event.guiHeight()))
@@ -256,7 +292,7 @@ public class Client {
         return getPos(event, width, input, isXPosition);
     }
 
-    private static int getPos(GuiGraphics event, int width, String input, boolean isXPosition) {
+    private static int getPos(GuiGraphicsExtractor event, int width, String input, boolean isXPosition) {
         ArrayList<String> tokens = new ArrayList<>();
         final char[] s = input.toCharArray();
 
@@ -334,7 +370,7 @@ public class Client {
         return position;
     }
 
-    private static void defaultValues(GuiGraphics event, boolean isXPosition, ArrayList<String> passerPose) {
+    private static void defaultValues(GuiGraphicsExtractor event, boolean isXPosition, ArrayList<String> passerPose) {
         if(isXPosition)
         {
             passerPose.add(String.valueOf(event.guiWidth()));
