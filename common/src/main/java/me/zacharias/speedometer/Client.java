@@ -217,7 +217,7 @@ public class Client {
             );
         }
 
-        if(Config.isDebug()){
+        if(Config.isDebug() && !Minecraft.getInstance().debugEntries.isOverlayVisible()){
             /*String debugData = "Speedometer: "+VERSION+"\n"+
                     "(xPos, yPos): (" +xPos+ ", " + yPos + ")\n" +
                     "Velocity raw:" + "\n" +
