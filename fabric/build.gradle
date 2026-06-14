@@ -37,6 +37,9 @@ dependencies {
 
     include("org.json:json:${json_version}")
     shadowCommon("org.json:json:${json_version}")
+
+    include("net.objecthunter:exp4j:${exp4j_version}")
+    shadowCommon("net.objecthunter:exp4j:${exp4j_version}")
 }
 
 processResources {

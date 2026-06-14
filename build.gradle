@@ -31,6 +31,8 @@ subprojects {
         // No mappings needed - MC 26.1+ is unobfuscated (fabric.loom.disableObfuscation=true)
 
         implementation "org.json:json:${json_version}"
+
+        implementation "net.objecthunter:exp4j:${exp4j_version}"
     }
 }
 

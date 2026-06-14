@@ -9,8 +9,7 @@ dependencies {
 }
 
 architectury {
-    //common("fabric", "neoforge")
-    common(rootProject.enabled_platforms.split(","))
+    common("fabric", "neoforge")
 }
 
 publishing {
