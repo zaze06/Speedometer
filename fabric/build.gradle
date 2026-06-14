@@ -54,19 +54,12 @@ shadowJar {
     configurations = [project.configurations.shadowCommon]
     archiveClassifier.set(null)
     relocate 'org.json', 'speedometer.shaded.org.json'
+    relocate 'net.objecthunter', 'speedometer.shaded.net.objecthunter'
     archiveFileName.set("${rootProject.archives_base_name}-fabric-${rootProject.mod_version}_${rootProject.minecraft_version}.jar")
 
     // Shade the common module
     from project(":common").sourceSets.main.output
     from project(":common").sourceSets.main.resources.srcDirs
-}
-
-sourceSets {
-    main {
-        resources {
-            srcDir project(":common").sourceSets.main.resources
-        }
-    }
 }
 
 jar {

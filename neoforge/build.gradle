@@ -47,14 +47,6 @@ dependencies {
     shadowCommon("net.objecthunter:exp4j:${exp4j_version}")
 }
 
-sourceSets {
-    main {
-        resources {
-            srcDir project(":common").sourceSets.main.resources
-        }
-    }
-}
-
 processResources {
     inputs.property "version", project.version
 
@@ -67,6 +59,7 @@ shadowJar {
     configurations = [project.configurations.shadowCommon]
     archiveClassifier.set(null)
     relocate 'org.json', 'speedometer.shaded.org.json'
+    relocate 'net.objecthunter', 'speedometer.shaded.net.objecthunter'
     archiveFileName.set("${rootProject.archives_base_name}-neoforge-${rootProject.mod_version}_${rootProject.minecraft_version}.jar")
 
     // Shade the common module
