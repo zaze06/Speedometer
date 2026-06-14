@@ -10,6 +10,7 @@ plugins {
 
 subprojects {
     apply plugin: "dev.architectury.loom"
+    //apply plugin: "net.fabricmc.fabric-loom"
 
     loom {
         silentMojangMappingsLicense()

@@ -164,24 +164,35 @@ public class Client {
 
             //double v = speedTypeSpeed / speedType.gatMaxVisual();
 
-            //BufferedImage img = ImageHandler.scale(ICON.getSpeedometerIcon(speedTypeSpeed), Config.getImageSize(), Config.getImageSize());
+            BufferedImage img = ImageHandler.scale(ICON.getSpeedometerIcon(speedTypeSpeed), Config.getImageSize(), Config.getImageSize());
+
+            for(int x1 = 0; x1 < img.getWidth(); x1++){
+                for(int y1 = 0; y1 < img.getHeight(); y1++){
+                    int x2 = x1 + xPos - img.getWidth();
+                    int y2 = y1 + yPos - img.getHeight();
+                    int rgb = img.getRGB(x1, y1);
+                    if(new Color(rgb).equals(Color.black)) continue;
+                    graphics.fill(x2, y2, x2+1, y2+1, rgb);
+                }
+            }
+
             //ImageHandler.register(Identifier.fromNamespaceAndPath(MOD_ID, "speedometer_icon_tmp"), img);
 
-            TextureManager textureManager = Minecraft.getInstance().getTextureManager();
-            AbstractTexture texture = textureManager.getTexture(ICON.getBackground());
+            //TextureManager textureManager = Minecraft.getInstance().getTextureManager();
+            //AbstractTexture texture = textureManager.getTexture(ICON.getBackground());
 
-            int width1 = texture.getTexture().getWidth(0);
-            int height1 = texture.getTexture().getHeight(0);
+            //int width1 = texture.getTexture().getWidth(0);
+            //int height1 = texture.getTexture().getHeight(0);
 
-            graphics.pose().pushMatrix();
-            graphics.pose().translate(xPos, yPos);
+            //graphics.pose().pushMatrix();
+            //graphics.pose().translate(xPos, yPos);
             //graphics.pose().scale((float) Config.getImageSize() / width1, (float) Config.getImageSize() / height1);
-            graphics.pose().scale(1f);
+            //graphics.pose().scale(1f);
 
-            graphics.blit(ICON.getBackground(), xPos, yPos, 0, 0, width1, height1, width1, height1);
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, ICON.getBackground(), -100, -100, width1, height1);
+            //graphics.blit(ICON.getBackground(), xPos, yPos, 0, 0, width1, height1, width1, height1);
+            //graphics.blitSprite(RenderPipelines.GUI_TEXTURED, ICON.getBackground(), -100, -100, width1, height1);
 
-            graphics.pose().popMatrix();
+            //graphics.pose().popMatrix();
 
 
 
@@ -207,7 +218,8 @@ public class Client {
         }
 
         if(Config.isDebug()){
-            String debugData = "Speedometer: "+VERSION+"\n"+
+            /*String debugData = "Speedometer: "+VERSION+"\n"+
+                    "(xPos, yPos): (" +xPos+ ", " + yPos + ")\n" +
                     "Velocity raw:" + "\n" +
                     "  X: " + vec.x + "\n" +
                     "  Y: " + vec.y + "\n" +
@@ -228,8 +240,37 @@ public class Client {
                     "Percentage point of visual speedometer: " + Debugger.angle + "\n" +
                     (Config.getVisualSpeedometer()?"Visual Size: "+Config.getImageSize():"Textual display") + "\n" +
                     (Config.getVisualSpeedometer()?"Creating visual speedometer: " + (Debugger.avrage40SizingTime) + " ms":"") + "\n" +
-                    "Sample Size: " + Config.getSpeedAvrageSampleCount();
-
+                    "Sample Size: " + Config.getSpeedAvrageSampleCount();*/
+            String debugData = String.format("""
+                    Speedometer: %s
+                    (xPos, yPos): (%d,%d)
+                    Velocity raw:
+                      X: %.4f
+                      Y: %.4f
+                      Z: %.4f
+                    Offsets:
+                      X: %.4f
+                      Y: %.4f
+                      Z: %.4f
+                      Total: %.4f
+                    Velocity modified:
+                      X: %.4f
+                      Y: %.4f
+                      Z: %.4f
+                      Total: %.4f
+                    Velocity total average: %.4f
+                    Sample Size: %d
+                    Velocity total in: %s : %.4f
+                    Endpoint position: (%.4f, %.4f)
+                    Percentage point of visual speedometer: %.4f
+                    Mode: %s
+                    Visual speedometer time: %tSS:LLL
+                    """, VERSION, xPos, yPos, vec.x, vec.y, vec.z, xOffset, yOffset,
+                    zOffset, vOffset, (vec.x + xOffset), (vec.y + yOffset), (vec.z + zOffset),
+                    lSpeed, speed, Config.getSpeedAvrageSampleCount(), speedType.name(), speedTypeSpeed,
+                    Debugger.x, Debugger.y, Debugger.angle,
+                    (Config.getVisualSpeedometer()?"Visual Size: "+Config.getImageSize():"Textual display"),
+                    Debugger.avrage40SizingTime);
             Color color = new Color(255, 255, 255);
 
             int y = 0;
@@ -306,9 +347,9 @@ public class Client {
                     tokens.add(Character.toString(c));
                 }
                 else if(Character.isDigit(c)){
-                    int lastIndex = i - 1;
+                    int lastIndex = tokens.size() - 1;
                     if(lastIndex >= 0 && tokens.get(lastIndex).matches("^[0-9]+$")) {
-                        tokens.set(tokens.size() - 1, tokens.get(tokens.size() - 1) + c);
+                        tokens.set(tokens.size() - 1, tokens.getLast() + c);
                     }
                     else
                     {
@@ -322,6 +363,10 @@ public class Client {
         }catch (Exception e){
             tokens.clear();
             defaultValues(event, isXPosition, tokens);
+            if(Config.getWarnCount() < 4) {
+                LOGGER.warn("Failed for reason {} setting default values of (W|H)-3", e.getMessage());
+                Config.IncrementWarnCount();
+            }
         }
 
         int position;
@@ -331,6 +376,10 @@ public class Client {
             tokens.clear();
             defaultValues(event, isXPosition, tokens);
             position = Integer.parseInt(tokens.getFirst());
+            if(Config.getWarnCount() < 4) {
+                LOGGER.warn("Failed for reason {} setting default values of (W|H)-3", e.getMessage());
+                Config.IncrementWarnCount();
+            }
         }
 
         for(int i = 1; i < tokens.size(); i+=2){

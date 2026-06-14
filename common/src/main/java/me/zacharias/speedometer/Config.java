@@ -12,11 +12,12 @@ import static me.zacharias.speedometer.Speedometer.*;
 
 public class Config {
     private static JSONObject config;
-    public static final float configVersion = 4f;
+    public static final float CONFIG_VERSION = 4f;
     private static int counter = 0;
     private static String configPath;
     private static BufferedImage speedometer;
     private static boolean disableVisualSpeedometer = false;
+    private static int warns = 0;
 
     // Regex
     // Moved to here from ConfigMenu to avoid dependency on Cloth Config API for this class
@@ -63,13 +64,13 @@ public class Config {
                 LOGGER.info("Loaded config successfully");
 
                 if(config.has("version")){
-                    if(config.getFloat("version")!=configVersion){
-                        if(config.getFloat("version") > configVersion){
+                    if(config.getFloat("version")!= CONFIG_VERSION){
+                        if(config.getFloat("version") > CONFIG_VERSION){
                             LOGGER.warn("Config version is too new, resting");
                             defaultValues();
 
                             save();
-                        }else if(config.getFloat("version") < configVersion){
+                        }else if(config.getFloat("version") < CONFIG_VERSION){
                             config = new JSONObject();
                             LOGGER.warn("Config version is outdated, resting");
 
@@ -113,7 +114,7 @@ public class Config {
 
         if(config.has("version") && config.get("version") instanceof Number) {
             float version = config.getFloat("version");
-            if (version > configVersion || version < configVersion) {
+            if (version > CONFIG_VERSION || version < CONFIG_VERSION) {
                 validationError("Config version is outdated or too new, resetting to default values");
                 return;
             }
@@ -245,7 +246,7 @@ public class Config {
         }
 
         if(!config.has("version")) {
-            config.put("version", configVersion);
+            config.put("version", CONFIG_VERSION);
         }
 
         if(!config.has("showVisualSpeedType")){
@@ -263,6 +264,8 @@ public class Config {
         if(!config.has("speedAvrageSampleCount")) {
             config.put("speedAvrageSampleCount", 150);
         }
+
+        warns = 0;
     }
 
     public static void save(){
@@ -284,9 +287,10 @@ public class Config {
             throw new RuntimeException(e);
         }
         counter=0;
+        warns = 0;
     }
 
-    //region Config Getters
+    //<editor-fold defaultstate="collapsed" desc="Config Getters">
     public static SpeedTypes getSpeedType(){
         if(config.has("speed")){
             return config.getEnum(SpeedTypes.class, "speed");
@@ -411,9 +415,13 @@ public class Config {
         }
     }
 
-    //endregion
+    public static int getWarnCount() {
+        return warns;
+    }
 
-    //region Config Setters
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Config Setters">
 
     public static void setColor(int r, int g, int b){
         config.put("color", new JSONObject()
@@ -472,5 +480,10 @@ public class Config {
     {
         config.put("speedAvrageSampleCount", speedAvrageSampleCount);
     }
-    //endregion
+
+    public static void IncrementWarnCount() {
+        warns++;
+    }
+
+    //</editor-fold>
 }
