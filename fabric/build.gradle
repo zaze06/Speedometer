@@ -61,6 +61,14 @@ shadowJar {
     from project(":common").sourceSets.main.resources.srcDirs
 }
 
+sourceSets {
+    main {
+        resources {
+            srcDir project(":common").sourceSets.main.resources
+        }
+    }
+}
+
 jar {
     enabled = false
 }

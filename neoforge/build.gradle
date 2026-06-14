@@ -47,6 +47,14 @@ dependencies {
     shadowCommon("net.objecthunter:exp4j:${exp4j_version}")
 }
 
+sourceSets {
+    main {
+        resources {
+            srcDir project(":common").sourceSets.main.resources
+        }
+    }
+}
+
 processResources {
     inputs.property "version", project.version
 
