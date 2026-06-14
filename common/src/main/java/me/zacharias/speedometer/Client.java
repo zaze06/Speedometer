@@ -12,15 +12,13 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.texture.AbstractTexture;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.boat.Boat;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.network.chat.Component;
+import net.objecthunter.exp4j.ExpressionBuilder;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -155,14 +153,30 @@ public class Client {
             default -> 0;
         };
 
-        int yPos = getPosImp(graphics, width, Config.getYPosition(), false);
-        int xPos = getPosImp(graphics, width, Config.getXPosition(), true);
+        //int yPos = getPosImp(graphics, width, Config.getYPosition(), false);
+        //int xPos = getPosImp(graphics, width, Config.getXPosition(), true);
+
+        @SuppressWarnings("IntegerDivisionInFloatingPointContext")
+        int yPos = (int) new ExpressionBuilder(Config.getYPosition())
+                .variables("H","h","s")
+                .build()
+                .setVariable("H", graphics.guiHeight())
+                .setVariable("h", graphics.guiHeight()/2)
+                .setVariable("s", width)
+                .evaluate();
+
+        @SuppressWarnings("IntegerDivisionInFloatingPointContext")
+        int xPos = (int) new ExpressionBuilder(Config.getXPosition())
+                .variables("W","w","s")
+                .build()
+                .setVariable("W", graphics.guiWidth())
+                .setVariable("w", graphics.guiWidth()/2)
+                .setVariable("s", width)
+                .evaluate();
 
         int lineHeight = Minecraft.getInstance().font.lineHeight;
 
         if(Config.getVisualSpeedometer() && !Config.isDisableVisualSpeedometer()){
-
-            //double v = speedTypeSpeed / speedType.gatMaxVisual();
 
             BufferedImage img = ImageHandler.scale(ICON.getSpeedometerIcon(speedTypeSpeed), Config.getImageSize(), Config.getImageSize());
 
@@ -217,7 +231,7 @@ public class Client {
             );
         }
 
-        if(Config.isDebug()){
+        if(Config.isDebug() && !Minecraft.getInstance().debugEntries.isOverlayVisible()){
             /*String debugData = "Speedometer: "+VERSION+"\n"+
                     "(xPos, yPos): (" +xPos+ ", " + yPos + ")\n" +
                     "Velocity raw:" + "\n" +
@@ -264,13 +278,13 @@ public class Client {
                     Endpoint position: (%.4f, %.4f)
                     Percentage point of visual speedometer: %.4f
                     Mode: %s
-                    Visual speedometer time: %tSS:LLL
+                    Visual speedometer time: %02d:%03d
                     """, VERSION, xPos, yPos, vec.x, vec.y, vec.z, xOffset, yOffset,
                     zOffset, vOffset, (vec.x + xOffset), (vec.y + yOffset), (vec.z + zOffset),
                     lSpeed, speed, Config.getSpeedAvrageSampleCount(), speedType.name(), speedTypeSpeed,
                     Debugger.x, Debugger.y, Debugger.angle,
                     (Config.getVisualSpeedometer()?"Visual Size: "+Config.getImageSize():"Textual display"),
-                    Debugger.avrage40SizingTime);
+                    (Debugger.avrage40SizingTime/1000), Debugger.avrage40SizingTime%1000);
             Color color = new Color(255, 255, 255);
 
             int y = 0;
@@ -315,122 +329,5 @@ public class Client {
                 y,
                 colorRGB
         );
-    }
-
-    private static int getPosImp(GuiGraphicsExtractor event, int width, String input, boolean isXPosition){
-        input = input.trim();
-        input = input
-                .replaceAll("(W+)|(H+)", String.valueOf(isXPosition?event.guiWidth():event.guiHeight()))
-                .replaceAll("(w+)|(h+)", String.valueOf(isXPosition?event.guiWidth()/2:event.guiHeight()/2))
-                .replaceAll("(S+)|(s+)", String.valueOf(width));
-        if((Config.isDebug()) && Config.getCounter() < 2) {
-            //String speedDisplayType = SpeedTypes.getName(Config.getSpeedType()).getString();
-            //String splitRawSpeedPosition = Arrays.toString(passerPose.toArray());
-            //String rawSpeedPosition = isXPosition ? Config.getXPosition() : Config.getYPosition();
-            LOGGER.info("Selected speed type(DEBUG): {}\n{}\n\n\n", isXPosition, input);
-            Config.addCounter();
-        }
-        return getPos(event, width, input, isXPosition);
-    }
-
-    private static int getPos(GuiGraphicsExtractor event, int width, String input, boolean isXPosition) {
-        ArrayList<String> tokens = new ArrayList<>();
-        final char[] s = input.toCharArray();
-
-        try{
-            for(int i = 0; i <s.length; i++){
-                char c = s[i];
-                if(c == '+' ||
-                        c == '-' ||
-                        c == '*' ||
-                        c == '/'){
-                    tokens.add(Character.toString(c));
-                }
-                else if(Character.isDigit(c)){
-                    int lastIndex = tokens.size() - 1;
-                    if(lastIndex >= 0 && tokens.get(lastIndex).matches("^[0-9]+$")) {
-                        tokens.set(tokens.size() - 1, tokens.getLast() + c);
-                    }
-                    else
-                    {
-                        tokens.add(Character.toString(c));
-                    }
-                }
-                else{
-                    throw new IllegalArgumentException("Invalid character in input string: " + c);
-                }
-            }
-        }catch (Exception e){
-            tokens.clear();
-            defaultValues(event, isXPosition, tokens);
-            if(Config.getWarnCount() < 4) {
-                LOGGER.warn("Failed for reason {} setting default values of (W|H)-3", e.getMessage());
-                Config.IncrementWarnCount();
-            }
-        }
-
-        int position;
-        try{
-            position = Integer.parseInt(tokens.getFirst());
-        }catch (NumberFormatException e){
-            tokens.clear();
-            defaultValues(event, isXPosition, tokens);
-            position = Integer.parseInt(tokens.getFirst());
-            if(Config.getWarnCount() < 4) {
-                LOGGER.warn("Failed for reason {} setting default values of (W|H)-3", e.getMessage());
-                Config.IncrementWarnCount();
-            }
-        }
-
-        for(int i = 1; i < tokens.size(); i+=2){
-            String operator = tokens.get(i);
-            if(i + 1 >= tokens.size()) {
-                LOGGER.error("Invalid expression: missing operand after operator '{}'", operator);
-                break;
-            }
-            String operand = tokens.get(i + 1);
-            int value;
-            try {
-                value = Integer.parseInt(operand);
-            }
-            catch (NumberFormatException e) {
-                LOGGER.error("Invalid operand: '{}'. Using default value. REPORT THIS! https://github.com/zaze06/Speedometer/issues/new/choose", operand);
-                Minecraft.getInstance().emergencySaveAndCrash(new CrashReport("Invalid operand in speedometer position calculation. REPORT THIS! https://github.com/zaze06/Speedometer/issues/new/choose", e));
-                return -1;
-            }
-
-            switch (operator) {
-                case "+" -> position += value;
-                case "-" -> position -= value;
-                case "*" -> position *= value;
-                case "/" -> position /= value;
-            }
-        }
-
-        if (Config.isDebug() && Config.getCounter() < 2) {
-            LOGGER.info("Selected speed type: {}\n{}\n\n{}\n\n{}",
-                    SpeedTypes.getName(Config.getSpeedType()).getString(),
-                    Arrays.toString(tokens.toArray()),
-                    position,
-                    isXPosition ? Config.getXPosition() : Config.getYPosition());
-            Config.addCounter();
-        }
-
-        return position;
-    }
-
-    private static void defaultValues(GuiGraphicsExtractor event, boolean isXPosition, ArrayList<String> passerPose) {
-        if(isXPosition)
-        {
-            passerPose.add(String.valueOf(event.guiWidth()));
-            passerPose.add("-");
-            passerPose.add("3");
-        }
-        else
-        {
-            passerPose.add(String.valueOf(event.guiHeight()));
-            passerPose.add("-");
-            passerPose.add("3");
-        }
     }
 }

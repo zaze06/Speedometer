@@ -3,7 +3,8 @@ package me.zacharias.speedometer;
 import me.shedaniel.clothconfig2.api.*;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentSerialization;
+import net.objecthunter.exp4j.ExpressionBuilder;
+import net.objecthunter.exp4j.Expression;
 
 import java.util.Optional;
 
@@ -55,11 +56,25 @@ public class ConfigMenu {
     category.addEntry(entryBuilder.startStringDropdownMenu(Component.translatable("speedometer.config.xPosition"), Config.getXPosition())
         .setSaveConsumer(Config::setXPosition)
         .setErrorSupplier(xPosition -> {
-          if(xPosition.matches(xRegex) && !xPosition.isEmpty()){
-            return Optional.empty();
-          }else{
-            return Optional.of(Component.translatable("speedometer.invalid"));
-          }
+            if(xPosition.isEmpty())
+            {
+                return Optional.of(Component.translatable("speedometer.invalid"));
+            }
+            try {
+                Expression ex = new ExpressionBuilder(xPosition)
+                        .variables("W","w","s")
+                        .build()
+                        .setVariable("W", 0)
+                        .setVariable("w", 0)
+                        .setVariable("s", 0);
+                if(ex.validate().isValid()){
+                    return Optional.empty();
+                }else{
+                    return Optional.of(Component.translatable("speedometer.invalid"));
+                }
+            } catch (Exception e) {
+                return Optional.of(Component.translatable("speedometer.invalid"));
+            }
         })
         .setTooltip(
             Component.translatable("speedometer.config.tooltip.xPosition.line1"),
@@ -73,11 +88,27 @@ public class ConfigMenu {
     category.addEntry(entryBuilder.startStringDropdownMenu(Component.translatable("speedometer.config.yPosition"), Config.getYPosition())
         .setSaveConsumer(Config::setYPosition)
         .setErrorSupplier(yPosition -> {
-          if(yPosition.matches(yRegex) && !yPosition.isEmpty()){
-            return Optional.empty();
-          }else{
-            return Optional.of(Component.translatable("speedometer.invalid"));
-          }
+            if(yPosition.isEmpty())
+            {
+                return Optional.of(Component.translatable("speedometer.invalid"));
+            }
+            try {
+                Expression ex = new ExpressionBuilder(yPosition)
+                        .variables("H", "h", "s")
+                        .build()
+                        .setVariable("H", 0)
+                        .setVariable("h", 0)
+                        .setVariable("s", 0);
+                if (ex.validate().isValid()) {
+                    return Optional.empty();
+                } else {
+                    return Optional.of(Component.translatable("speedometer.invalid"));
+                }
+            }
+            catch (Exception ignored)
+            {
+                return Optional.of(Component.translatable("speedometer.invalid"));
+            }
         })
         .setTooltip(
             Component.translatable("speedometer.config.tooltip.yPosition.line1"),
