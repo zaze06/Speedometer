@@ -56,15 +56,23 @@ public class ConfigMenu {
     category.addEntry(entryBuilder.startStringDropdownMenu(Component.translatable("speedometer.config.xPosition"), Config.getXPosition())
         .setSaveConsumer(Config::setXPosition)
         .setErrorSupplier(xPosition -> {
-            Expression ex = new ExpressionBuilder(xPosition)
-                    .variables("W","w","s")
-                    .build()
-                    .setVariable("W", 0)
-                    .setVariable("w", 0)
-                    .setVariable("s", 0);
-            if(ex.validate().isValid() && !xPosition.isEmpty()){
-                return Optional.empty();
-            }else{
+            if(xPosition.isEmpty())
+            {
+                return Optional.of(Component.translatable("speedometer.invalid"));
+            }
+            try {
+                Expression ex = new ExpressionBuilder(xPosition)
+                        .variables("W","w","s")
+                        .build()
+                        .setVariable("W", 0)
+                        .setVariable("w", 0)
+                        .setVariable("s", 0);
+                if(ex.validate().isValid()){
+                    return Optional.empty();
+                }else{
+                    return Optional.of(Component.translatable("speedometer.invalid"));
+                }
+            } catch (Exception e) {
                 return Optional.of(Component.translatable("speedometer.invalid"));
             }
         })
@@ -80,15 +88,25 @@ public class ConfigMenu {
     category.addEntry(entryBuilder.startStringDropdownMenu(Component.translatable("speedometer.config.yPosition"), Config.getYPosition())
         .setSaveConsumer(Config::setYPosition)
         .setErrorSupplier(yPosition -> {
-            Expression ex = new ExpressionBuilder(yPosition)
-                    .variables("H","h","s")
-                    .build()
-                    .setVariable("H", 0)
-                    .setVariable("h", 0)
-                    .setVariable("s", 0);
-            if(ex.validate().isValid() && !yPosition.isEmpty()){
-                return Optional.empty();
-            }else{
+            if(yPosition.isEmpty())
+            {
+                return Optional.of(Component.translatable("speedometer.invalid"));
+            }
+            try {
+                Expression ex = new ExpressionBuilder(yPosition)
+                        .variables("H", "h", "s")
+                        .build()
+                        .setVariable("H", 0)
+                        .setVariable("h", 0)
+                        .setVariable("s", 0);
+                if (ex.validate().isValid()) {
+                    return Optional.empty();
+                } else {
+                    return Optional.of(Component.translatable("speedometer.invalid"));
+                }
+            }
+            catch (Exception ignored)
+            {
                 return Optional.of(Component.translatable("speedometer.invalid"));
             }
         })
