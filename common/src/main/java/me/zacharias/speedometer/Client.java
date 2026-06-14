@@ -21,6 +21,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.boat.Boat;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.network.chat.Component;
+import net.objecthunter.exp4j.ExpressionBuilder;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -155,14 +156,30 @@ public class Client {
             default -> 0;
         };
 
-        int yPos = getPosImp(graphics, width, Config.getYPosition(), false);
-        int xPos = getPosImp(graphics, width, Config.getXPosition(), true);
+        //int yPos = getPosImp(graphics, width, Config.getYPosition(), false);
+        //int xPos = getPosImp(graphics, width, Config.getXPosition(), true);
+
+        @SuppressWarnings("IntegerDivisionInFloatingPointContext")
+        int yPos = (int) new ExpressionBuilder(Config.getYPosition())
+                .variables("H","h","s")
+                .build()
+                .setVariable("H", graphics.guiHeight())
+                .setVariable("h", graphics.guiHeight()/2)
+                .setVariable("s", width)
+                .evaluate();
+
+        @SuppressWarnings("IntegerDivisionInFloatingPointContext")
+        int xPos = (int) new ExpressionBuilder(Config.getXPosition())
+                .variables("W","w","s")
+                .build()
+                .setVariable("W", graphics.guiWidth())
+                .setVariable("w", graphics.guiWidth()/2)
+                .setVariable("s", width)
+                .evaluate();
 
         int lineHeight = Minecraft.getInstance().font.lineHeight;
 
         if(Config.getVisualSpeedometer() && !Config.isDisableVisualSpeedometer()){
-
-            //double v = speedTypeSpeed / speedType.gatMaxVisual();
 
             BufferedImage img = ImageHandler.scale(ICON.getSpeedometerIcon(speedTypeSpeed), Config.getImageSize(), Config.getImageSize());
 
@@ -264,13 +281,13 @@ public class Client {
                     Endpoint position: (%.4f, %.4f)
                     Percentage point of visual speedometer: %.4f
                     Mode: %s
-                    Visual speedometer time: %tSS:LLL
+                    Visual speedometer time: %02d:%03d
                     """, VERSION, xPos, yPos, vec.x, vec.y, vec.z, xOffset, yOffset,
                     zOffset, vOffset, (vec.x + xOffset), (vec.y + yOffset), (vec.z + zOffset),
                     lSpeed, speed, Config.getSpeedAvrageSampleCount(), speedType.name(), speedTypeSpeed,
                     Debugger.x, Debugger.y, Debugger.angle,
                     (Config.getVisualSpeedometer()?"Visual Size: "+Config.getImageSize():"Textual display"),
-                    Debugger.avrage40SizingTime);
+                    (Debugger.avrage40SizingTime/1000), Debugger.avrage40SizingTime%1000);
             Color color = new Color(255, 255, 255);
 
             int y = 0;
