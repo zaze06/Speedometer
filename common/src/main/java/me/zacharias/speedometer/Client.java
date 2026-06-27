@@ -62,7 +62,7 @@ public class Client {
         ClientTickEvent.CLIENT_POST.register(minecraft -> {
             if(CONFIG_KEY.consumeClick()){
                 if(isClothLoaded) {
-                    Minecraft.getInstance().setScreen(ConfigMenu.getConfig(Minecraft.getInstance().screen).build());
+                    Minecraft.getInstance().setScreenAndShow(ConfigMenu.getConfig(Minecraft.getInstance().gui.screen()).build());
                 }
                 else if(Minecraft.getInstance().player != null)
                 {
@@ -103,7 +103,7 @@ public class Client {
 
     private static void render(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
         if(Minecraft.getInstance().player == null) return;
-        if(Minecraft.getInstance().options.hideGui) return;
+        if(Minecraft.getInstance().gui.hud.isHidden()) return;
         Entity entity = Minecraft.getInstance().player.getRootVehicle();
 
         Vec3 vec = new Vec3(
