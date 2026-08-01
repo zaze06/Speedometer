@@ -1,30 +1,32 @@
 package me.zacharias.speedometer;
 
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
 import com.mojang.blaze3d.platform.InputConstants;
+
 import dev.architectury.event.events.client.ClientGuiEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.platform.Platform;
 import dev.architectury.platform.client.ConfigurationScreenRegistry;
 import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
+import static me.zacharias.speedometer.Speedometer.ICON;
+import static me.zacharias.speedometer.Speedometer.LOGGER;
+import static me.zacharias.speedometer.Speedometer.MOD_ID;
+import static me.zacharias.speedometer.Speedometer.VERSION;
 import net.minecraft.ChatFormatting;
-import net.minecraft.CrashReport;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.boat.Boat;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.network.chat.Component;
 import net.objecthunter.exp4j.ExpressionBuilder;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.*;
-
-import static me.zacharias.speedometer.Speedometer.*;
 
 public class Client {
     public static final KeyMapping.Category SPEEDOMETER_KEY_CATEGORY = KeyMapping.Category.register(Identifier.fromNamespaceAndPath(MOD_ID, "name"));
@@ -143,7 +145,7 @@ public class Client {
             speedTypeSpeed = speed;
         }
 
-        String format = String.format("%.2f", speedTypeSpeed);
+        String format = String.format("%." + Config.getSpeedPrecision() + "f", speedTypeSpeed);
 
         String speedString = format + " " + SpeedTypes.getName(speedType).getString();
 

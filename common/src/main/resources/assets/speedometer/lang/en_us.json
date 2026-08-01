@@ -17,6 +17,7 @@
   "speedometer.config.showSpeedType": "Show Visual Speed Type",
   "speedometer.config.override_color": "Override color",
   "speedometer.config.average_speed_sample_count": "Average Speed Sample Count",
+  "speedometer.config.speed_precision": "Speed Decimal Precision",
 
   "key.speedometer.configKey": "Config Key",
   "key.speedometer.debugKey": "Debug Key",
@@ -64,6 +65,7 @@
 
   "speedometer.config.tooltip.override_color.line1": "Override the color of a line pointer",
   "speedometer.config.tooltip.override_color.line2": "OPS doesn't work if the pointer is an image!",
+  "speedometer.config.tooltip.speed_precision": "Number of digits shown after the decimal point",
 
   "speedometer.invalid": "Invalid, or Empty String",
 

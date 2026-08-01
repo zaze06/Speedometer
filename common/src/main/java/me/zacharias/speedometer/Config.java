@@ -1,14 +1,21 @@
 package me.zacharias.speedometer;
 
-import dev.architectury.platform.Platform;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.*;
-
-import static me.zacharias.speedometer.Speedometer.*;
+import dev.architectury.platform.Platform;
+import static me.zacharias.speedometer.Speedometer.LOGGER;
+import static me.zacharias.speedometer.Speedometer.MOD_ID;
+import static me.zacharias.speedometer.Speedometer.formatMillisToDHMS;
 
 public class Config {
     private static JSONObject config;
@@ -26,6 +33,8 @@ public class Config {
 
     public static final int MIN_IMAGE_SIZE = 10;
     public static final int MAX_IMAGE_SIZE = 200;
+    public static final int MIN_SPEED_PRECISION = 0;
+    public static final int MAX_SPEED_PRECISION = 5;
 
     public static void initialize(){
         if(config != null) throw new RuntimeException("Already Initialized");
@@ -196,6 +205,14 @@ public class Config {
             LOGGER.warn("Speed average sample count is missing or invalid, resetting to default value");
             config.put("speedAvrageSampleCount", 100);
         }
+
+        if(!(config.has("speedPrecision") && config.get("speedPrecision") instanceof Number &&
+                config.getInt("speedPrecision") >= MIN_SPEED_PRECISION &&
+                config.getInt("speedPrecision") <= MAX_SPEED_PRECISION))
+        {
+            LOGGER.warn("Speed precision is missing or invalid, resetting to default value");
+            config.put("speedPrecision", 2);
+        }
         
         LOGGER.info("Validated config successfully");
     }
@@ -263,6 +280,10 @@ public class Config {
 
         if(!config.has("speedAvrageSampleCount")) {
             config.put("speedAvrageSampleCount", 150);
+        }
+
+        if(!config.has("speedPrecision")) {
+            config.put("speedPrecision", 2);
         }
 
         warns = 0;
@@ -419,6 +440,18 @@ public class Config {
         return warns;
     }
 
+    public static int getSpeedPrecision()
+    {
+        if(config.has("speedPrecision"))
+        {
+            return Math.max(MIN_SPEED_PRECISION, Math.min(MAX_SPEED_PRECISION, config.getInt("speedPrecision")));
+        }
+        else
+        {
+            return 2;
+        }
+    }
+
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Config Setters">
@@ -479,6 +512,11 @@ public class Config {
     public static void setSpeedAvrageSampleCount(int speedAvrageSampleCount)
     {
         config.put("speedAvrageSampleCount", speedAvrageSampleCount);
+    }
+
+    public static void setSpeedPrecision(int speedPrecision)
+    {
+        config.put("speedPrecision", Math.max(MIN_SPEED_PRECISION, Math.min(MAX_SPEED_PRECISION, speedPrecision)));
     }
 
     public static void IncrementWarnCount() {

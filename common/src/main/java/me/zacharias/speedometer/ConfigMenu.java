@@ -1,17 +1,19 @@
 package me.zacharias.speedometer;
 
-import me.shedaniel.clothconfig2.api.*;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
-import net.objecthunter.exp4j.ExpressionBuilder;
-import net.objecthunter.exp4j.Expression;
-
 import java.util.Optional;
 
-import static me.zacharias.speedometer.Config.yRegex;
-import static me.zacharias.speedometer.Config.xRegex;
-import static me.zacharias.speedometer.Config.MIN_IMAGE_SIZE;
+import me.shedaniel.clothconfig2.api.ConfigBuilder;
+import me.shedaniel.clothconfig2.api.ConfigCategory;
+import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
+import me.shedaniel.clothconfig2.api.Requirement;
 import static me.zacharias.speedometer.Config.MAX_IMAGE_SIZE;
+import static me.zacharias.speedometer.Config.MAX_SPEED_PRECISION;
+import static me.zacharias.speedometer.Config.MIN_IMAGE_SIZE;
+import static me.zacharias.speedometer.Config.MIN_SPEED_PRECISION;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.objecthunter.exp4j.Expression;
+import net.objecthunter.exp4j.ExpressionBuilder;
 
 public class ConfigMenu {
 
@@ -43,6 +45,22 @@ public class ConfigMenu {
 
     category.addEntry(entryBuilder.startIntSlider(Component.translatable("speedometer.config.average_speed_sample_count"), me.zacharias.speedometer.Config.getSpeedAvrageSampleCount(), 30, 500)
         .setSaveConsumer(me.zacharias.speedometer.Config::setSpeedAvrageSampleCount)
+        .build()
+    );
+
+    Integer[] speedPrecisionValues = new Integer[] { 
+        0, 2, 3, 4, 5
+    };
+
+    category.addEntry(entryBuilder.startSelector(
+        Component.translatable("speedometer.config.speed_precision"),
+        speedPrecisionValues,
+        me.zacharias.speedometer.Config.getSpeedPrecision()
+    )
+        .setDefaultValue(2)
+        .setNameProvider(value -> Component.literal(String.valueOf(value)))
+        .setSaveConsumer(me.zacharias.speedometer.Config::setSpeedPrecision)
+        .setTooltip(Component.translatable("speedometer.config.tooltip.speed_precision"))
         .build()
     );
 
