@@ -7,9 +7,7 @@ import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import me.shedaniel.clothconfig2.api.Requirement;
 import static me.zacharias.speedometer.Config.MAX_IMAGE_SIZE;
-import static me.zacharias.speedometer.Config.MAX_SPEED_PRECISION;
 import static me.zacharias.speedometer.Config.MIN_IMAGE_SIZE;
-import static me.zacharias.speedometer.Config.MIN_SPEED_PRECISION;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.objecthunter.exp4j.Expression;
@@ -48,8 +46,8 @@ public class ConfigMenu {
         .build()
     );
 
-    Integer[] speedPrecisionValues = new Integer[] { 
-        0, 2, 3, 4, 5
+    Integer[] speedPrecisionValues = new Integer[] { // 0 to 5
+        Config.MIN_SPEED_PRECISION, 2, 3, 4, Config.MAX_SPEED_PRECISION
     };
 
     category.addEntry(entryBuilder.startSelector(
