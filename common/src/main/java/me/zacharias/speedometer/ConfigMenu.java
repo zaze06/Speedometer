@@ -47,7 +47,12 @@ public class ConfigMenu {
     );
 
     Integer[] speedPrecisionValues = new Integer[] { // 0 to 5
-        Config.MIN_SPEED_PRECISION, 2, 3, 4, Config.MAX_SPEED_PRECISION
+        Config.MIN_SPEED_PRECISION, 
+        Config.MIN_SPEED_PRECISION + 1, 
+        Config.MIN_SPEED_PRECISION + 2, 
+        Config.MIN_SPEED_PRECISION + 3, 
+        Config.MIN_SPEED_PRECISION + 4, 
+        Config.MAX_SPEED_PRECISION
     };
 
     category.addEntry(entryBuilder.startSelector(

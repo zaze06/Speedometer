@@ -65,7 +65,7 @@
 
     "speedometer.config.tooltip.override_color.line1": "Överskrider förgen av linjen pekaren",
     "speedometer.config.tooltip.override_color.line2": "OBS funkar inte om pekaren är en bild!",
-    "speedometer.config.tooltip.speed_precision": "Antal siffror som visas efter decimaltecknet",
+    "speedometer.config.tooltip.speed_precision": "Antal decimaler efter decimaltecknet",
   
     "speedometer.invalid": "Ogiltig eller Inte korrekt Sträng",
 
