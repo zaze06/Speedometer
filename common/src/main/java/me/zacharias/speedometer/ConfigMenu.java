@@ -1,6 +1,7 @@
 package me.zacharias.speedometer;
 
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
@@ -46,14 +47,7 @@ public class ConfigMenu {
         .build()
     );
 
-    Integer[] speedPrecisionValues = new Integer[] { // 0 to 5
-        Config.MIN_SPEED_PRECISION, 
-        Config.MIN_SPEED_PRECISION + 1, 
-        Config.MIN_SPEED_PRECISION + 2, 
-        Config.MIN_SPEED_PRECISION + 3, 
-        Config.MIN_SPEED_PRECISION + 4, 
-        Config.MAX_SPEED_PRECISION
-    };
+    Integer[] speedPrecisionValues = IntStream.rangeClosed(Config.MIN_SPEED_PRECISION, Config.MAX_SPEED_PRECISION).boxed().toArray(Integer[]::new);
 
     category.addEntry(entryBuilder.startSelector(
         Component.translatable("speedometer.config.speed_precision"),
