@@ -36,6 +36,22 @@ public class Config {
     public static final int MIN_SPEED_PRECISION = 0;
     public static final int MAX_SPEED_PRECISION = 5;
 
+    //<editor-fold defaultstate="collapsed" desc="Magic constants for default values">
+    public static final int             DEFAULT_SPEED_PRECISION             = 2;
+    public static final int             DEFAULT_IMAGE_SIZE                  = 19;
+    public static final int             DEFAULT_SPEED_AVERAGE_SAMPLE_COUNT  = 150;
+    public static final boolean         DEFAULT_USE_KNOT                    = false;
+    public static final boolean         DEFAULT_VISUAL_SPEEDOMETER          = false;
+    public static final boolean         DEFAULT_DEBUG                       = false;
+    public static final boolean         DEFAULT_SHOW_VISUAL_SPEED_TYPE      = false;
+    public static final boolean         DEFAULT_SHOW_SPEED_TYPE             = false;
+    public static final boolean         DEFAULT_OVERRIDE_COLOR              = false;
+    public static final Color           DEFAULT_COLOR                       = new Color(16, 146, 158);
+    public static final String          DEFAULT_X_POSITION                  = "W-3";
+    public static final String          DEFAULT_Y_POSITION                  = "H-3";
+    public static final SpeedTypes      DEFAULT_SPEED_TYPE                  = SpeedTypes.BlockPS;
+    //</editor-fold>
+
     public static void initialize(){
         if(config != null) throw new RuntimeException("Already Initialized");
         configPath = Platform.getConfigFolder().toString()+"/"+MOD_ID+"/config.json";
@@ -203,7 +219,7 @@ public class Config {
         if(!(config.has("speedAvrageSampleCount") && config.get("speedAvrageSampleCount") instanceof Number))
         {
             LOGGER.warn("Speed average sample count is missing or invalid, resetting to default value");
-            config.put("speedAvrageSampleCount", 100);
+            config.put("speedAvrageSampleCount", DEFAULT_SPEED_AVERAGE_SAMPLE_COUNT);
         }
 
         if(!(config.has("speedPrecision") && config.get("speedPrecision") instanceof Number &&
@@ -211,7 +227,7 @@ public class Config {
                 config.getInt("speedPrecision") <= MAX_SPEED_PRECISION))
         {
             LOGGER.warn("Speed precision is missing or invalid, resetting to default value");
-            config.put("speedPrecision", 2);
+            config.put("speedPrecision", DEFAULT_SPEED_PRECISION);
         }
         
         LOGGER.info("Validated config successfully");
@@ -231,35 +247,35 @@ public class Config {
 
     private static void defaultValues() {
         if(!config.has("speed")) {
-            config.put("speed", SpeedTypes.BlockPS);
+            config.put("speed", DEFAULT_SPEED_TYPE);
         }
         if(!config.has("useKnot")) {
-            config.put("useKnot", false);
+            config.put("useKnot", DEFAULT_USE_KNOT);
         }
         if(!config.has("color")) {
             config.put("color", new JSONObject()
-                    .put("r", 16)
-                    .put("g", 146)
-                    .put("b", 158)
+                    .put("r", DEFAULT_COLOR.getRed())
+                    .put("g", DEFAULT_COLOR.getGreen())
+                    .put("b", DEFAULT_COLOR.getBlue())
             );
         }
         if(!config.has("visualSpeedometer")) {
-            config.put("visualSpeedometer", false);
+            config.put("visualSpeedometer", DEFAULT_VISUAL_SPEEDOMETER);
         }
 
         if(!config.has("xPosition")) {
-            config.put("xPosition", "W-3");
+            config.put("xPosition", DEFAULT_X_POSITION);
         }
         if(!config.has("yPosition")) {
-            config.put("yPosition", "H-3");
+            config.put("yPosition", DEFAULT_Y_POSITION);
         }
 
         if(!config.has("debug")) {
-            config.put("debug", false);
+            config.put("debug", DEFAULT_DEBUG);
         }
 
         if(!config.has("imagSize")) {
-            config.put("imageSize", 19);
+            config.put("imageSize", DEFAULT_IMAGE_SIZE);
         }
 
         if(!config.has("version")) {
@@ -267,23 +283,23 @@ public class Config {
         }
 
         if(!config.has("showVisualSpeedType")){
-            config.put("showVisualSpeedType", false);
+            config.put("showVisualSpeedType", DEFAULT_SHOW_VISUAL_SPEED_TYPE);
         }
 
         if(!config.has("showSpeedType")){
-            config.put("showSpeedType", false);
+            config.put("showSpeedType", DEFAULT_SHOW_SPEED_TYPE);
         }
 
         if(!config.has("overrideColor")) {
-            config.put("overrideColor", false);
+            config.put("overrideColor", DEFAULT_OVERRIDE_COLOR);
         }
 
         if(!config.has("speedAvrageSampleCount")) {
-            config.put("speedAvrageSampleCount", 150);
+            config.put("speedAvrageSampleCount", DEFAULT_SPEED_AVERAGE_SAMPLE_COUNT);
         }
 
         if(!config.has("speedPrecision")) {
-            config.put("speedPrecision", 2);
+            config.put("speedPrecision", DEFAULT_SPEED_PRECISION);
         }
 
         warns = 0;
@@ -343,6 +359,8 @@ public class Config {
 
     public static int getColorRGB()
     {
+        // The color format is 0xRRGGBBAA. Since we don't use the alpha (AA) channel,
+        // we AND the value with 0xFFFFFF to keep only the RGB components.
         return getColor().getRGB() & 0xFFFFFF;
     }
 
