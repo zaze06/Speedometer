@@ -17,6 +17,7 @@
     "speedometer.config.showSpeedType": "Visa Visuell Farttyp",
     "speedometer.config.override_color": "Överskrid färgen",
     "speedometer.config.average_speed_sample_count": "Antal prover för medelhastighet",
+    "speedometer.config.speed_precision": "Decimalprecision för hastighet",
 
     "key.speedometer.configKey": "Konfigurations Knapp",
     "key.speedometer.debugKey": "Debug Knapp",
@@ -64,6 +65,7 @@
 
     "speedometer.config.tooltip.override_color.line1": "Överskrider förgen av linjen pekaren",
     "speedometer.config.tooltip.override_color.line2": "OBS funkar inte om pekaren är en bild!",
+    "speedometer.config.tooltip.speed_precision": "Antal decimaler efter decimaltecknet",
   
     "speedometer.invalid": "Ogiltig eller Inte korrekt Sträng",
 
