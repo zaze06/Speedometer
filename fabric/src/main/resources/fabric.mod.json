@@ -24,6 +24,6 @@
     "architectury": ">=13.0.5"
   },
   "suggests": {
-    "cloth-config1": ">=15.0.140"
+    "cloth-config": ">=15.0.140"
   }
 }
