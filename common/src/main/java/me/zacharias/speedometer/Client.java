@@ -32,13 +32,13 @@ public class Client {
     public static final KeyMapping.Category SPEEDOMETER_KEY_CATEGORY = KeyMapping.Category.register(Identifier.fromNamespaceAndPath(MOD_ID, "name"));
     public static final KeyMapping CONFIG_KEY = new KeyMapping(
             "key.speedometer.configKey",
-            InputConstants.Type.KEYSYM,
+            InputConstants.Type.KEYBOARD,
             InputConstants.KEY_O,
             SPEEDOMETER_KEY_CATEGORY
     );
     public static final KeyMapping DEBUG_KEY = new KeyMapping(
             "key.speedometer.debugKey",
-            InputConstants.Type.KEYSYM,
+            InputConstants.Type.KEYBOARD,
             InputConstants.KEY_F6,
             SPEEDOMETER_KEY_CATEGORY
     );
