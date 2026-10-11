@@ -1,0 +1,75 @@
+{
+  "speedometer.config.name": "Speedometer Конфигурация",
+  "speedometer.config.category.name": "Speedometer Категория конфигурации",
+  "speedometer.config.speed": "Тип скорости",
+  "speedometer.config.color": "цвет",
+  "speedometer.config.knot": "Используйте узел в лодках",
+  "speedometer.config.visualSpeedometer": "Визуальный дисплей спидометра",
+  "speedometer.config.xPosition.visual": "Положение X для визуального измерителя",
+  "speedometer.config.yPosition.visual": "Положение Y для визуального измерителя",
+  "speedometer.config.xPosition.text": "Положение X для текстового счетчика",
+  "speedometer.config.yPosition.text": "Положение Y для текстового счетчика",
+  "speedometer.config.xPosition": "Положение X для счетчиков",
+  "speedometer.config.yPosition": "Положение Y для счетчиков",
+  "speedometer.config.debug": "Отлаживать",
+  "speedometer.config.imageSize": "Размер изображения",
+  "speedometer.config.showVisualSpeedType": "\u00A74⨻\u00A7r Показать визуальный тип скорости",
+  "speedometer.config.showSpeedType": "Показать визуальный тип скорости",
+  "speedometer.config.override_color": "Переопределить цвет",
+
+  "speedometer.key.configKey": "Конфигурационный ключ",
+  "speedometer.key.debugKey": "Отладочный ключ",
+  "speedometer.key.category": "Спидометр",
+
+  "speedometer.speed.mph": "MPH",
+  "speedometer.speed.mps": "Метры/с",
+  "speedometer.speed.kmph": "км/ч",
+  "speedometer.speed.bps": "Блоки/с",
+  "speedometer.speed.knot": "Узел",
+  "speedometer.speed.error": "Неизвестный тип скорости",
+
+  "speedometer.meter.large": "Большой",
+  "speedometer.meter.small": "маленький",
+  "speedometer.meter.medium": "Средний",
+
+  "speedometer.visualSpeedometer.true": "Визуальный",
+  "speedometer.visualSpeedometer.false": "Текст",
+
+  "speedometer.useKnot.true": "Да",
+  "speedometer.useKnot.false": "Нет",
+
+  "speedometer.debug.true": "\u00A74Да",
+  "speedometer.debug.false": "\u00A74Нет",
+
+  "speedometer.show": "Показывать",
+  "speedometer.hide": "Скрывать",
+
+  "speedometer.config.tooltip.xPosition.line1": "W = ширина экрана",
+  "speedometer.config.tooltip.xPosition.line2": "w = половина ширины экрана",
+  "speedometer.config.tooltip.xPosition.line3": "s = ширина текста или изображения",
+
+  "speedometer.config.tooltip.yPosition.line1": "H = высота экрана",
+  "speedometer.config.tooltip.yPosition.line2": "h = половина высоты экрана",
+  "speedometer.config.tooltip.yPosition.line3": "s = высота текста или изображения",
+
+  "speedometer.config.tooltip.debug": "Отладочная информация",
+
+  "speedometer.config.tooltip.imageSize": "Размер изображения. Задаёт высоту и ширину.",
+
+  "speedometer.config.tooltip.showVisualSpeedType.line1": "Эта настройка не работает полностью.",
+  "speedometer.config.tooltip.showVisualSpeedType.line2": "Я(разработчик) не рекомендуется использовать эту настройку, так как она не работает на меньших размерах, а на больших падает fps",
+
+  "speedometer.config.tooltip.showSpeedType.line1": "Эта настройка показывает тип скорости над визуальным измерителем, что лучше, чем внутри визуального измерителя.",
+
+  "speedometer.config.tooltip.override_color.line1": "Переопределить цвет указателя линии",
+  "speedometer.config.tooltip.override_color.line2": "Ой, не работает, если указатель представляет собой изображение!",
+
+  "speedometer.invalid": "Неверная или пустая строка",
+
+  "speedometer.config.error.size_outofbounds": "Размер выходит за рамки 10<=размер<=200",
+
+  "speedometer.error.missing_cloth": "Отсутствует Cloth Конфигурации API для экрана конфигурации, ",
+  "speedometer.error.missing_cloth.open_config": "Открыть конфигурацию",
+
+  "resourcepack.speedometer.quarter_circle_speedometer": "Quarter circle Speedometer"
+}
