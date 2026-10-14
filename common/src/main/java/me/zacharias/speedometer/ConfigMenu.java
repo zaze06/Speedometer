@@ -47,9 +47,10 @@ public class ConfigMenu {
         .build()
     );
 
-    category.addEntry(entryBuilder.startIntSlider(Component.translatable("speedometer.config.average_speed_sample_count"), me.zacharias.speedometer.Config.getSpeedAvrageSampleCount(), 30, 500)
+    category.addEntry(entryBuilder.startIntField(Component.translatable("speedometer.config.average_speed_sample_count"), me.zacharias.speedometer.Config.getSpeedAvrageSampleCount())
         .setSaveConsumer(me.zacharias.speedometer.Config::setSpeedAvrageSampleCount)
         .setDefaultValue(DEFAULT_SPEED_AVERAGE_SAMPLE_COUNT)
+        .setMin(1)
         .build()
     );
 
