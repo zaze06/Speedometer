@@ -15,7 +15,9 @@
     "6.4.1": "Added increased the size of the averaging sample size got increased and is configurable as disused in #8",
     "6.4.2": "Updated to 1.21.10",
     "6.4.2.1": "Updated to 26.1.2",
-    "6.4.3": "Updated to 26.2"
+    "6.4.3": "Updated to 26.2",
+    "6.4.5": "Updated to 26.3",
+    "6.4.6-beta": "Fixed an issue in 6.4.5"
   },
   "promos": {
     "1.21-latest": "6.2.2",
@@ -46,6 +48,12 @@
     "1.21.11-recommended": "6.4.2",
 
     "26.1.2-latest": "6.4.2.1",
-    "26.1.2-recommended": "6.4.2.1"
+    "26.1.2-recommended": "6.4.2.1",
+
+    "26.2-latest": "6.4.3",
+    "26.2-recommended": "6.4.3",
+
+    "26.3-latest": "6.4.6-beta",
+    "26.3-recommended": "6.4.5"
   }
 }
