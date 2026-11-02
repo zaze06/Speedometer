@@ -26,15 +26,18 @@ public class Config {
     private static boolean disableVisualSpeedometer = false;
     private static int warns = 0;
 
-    // Regex
+    //<editor-fold defaultstate="collapsed" desc="Regex">
     // Moved to here from ConfigMenu to avoid dependency on Cloth Config API for this class
     public static final String xRegex = "W*w*S*s*\\+*-*\\**/*[0-9]*";
     public static final String yRegex = "H*h*S*s*\\+*-*\\**/*[0-9]*";
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Magic constants for value constraints">
     public static final int MIN_IMAGE_SIZE = 10;
     public static final int MAX_IMAGE_SIZE = 200;
     public static final int MIN_SPEED_PRECISION = 0;
     public static final int MAX_SPEED_PRECISION = 5;
+    //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Magic constants for default values">
     public static final int             DEFAULT_SPEED_PRECISION             = 2;

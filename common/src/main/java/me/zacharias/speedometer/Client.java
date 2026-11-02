@@ -33,7 +33,7 @@ public class Client {
     public static final KeyMapping CONFIG_KEY = new KeyMapping(
             "key.speedometer.configKey",
             InputConstants.Type.KEYBOARD,
-            InputConstants.KEY_O,
+            InputConstants.KEY_SEMICOLON,
             SPEEDOMETER_KEY_CATEGORY
     );
     public static final KeyMapping DEBUG_KEY = new KeyMapping(
@@ -108,11 +108,11 @@ public class Client {
         if(Minecraft.getInstance().gui.hud.isHidden()) return;
         Entity entity = Minecraft.getInstance().player.getRootVehicle();
 
-        Vec3 vec = new Vec3(
+        Vec3 vec = entity.getKnownSpeed(); /*new Vec3(
                 entity.getX() - entity.xOld,
                 entity.getY() - entity.yOld,
                 entity.getZ() - entity.zOld
-        );
+        );*/
 
         double yOffset = 0D;
         double xOffset = 0D;
@@ -234,29 +234,6 @@ public class Client {
         }
 
         if(Config.isDebug() && !Minecraft.getInstance().debugEntries.isOverlayVisible()){
-            /*String debugData = "Speedometer: "+VERSION+"\n"+
-                    "(xPos, yPos): (" +xPos+ ", " + yPos + ")\n" +
-                    "Velocity raw:" + "\n" +
-                    "  X: " + vec.x + "\n" +
-                    "  Y: " + vec.y + "\n" +
-                    "  Z: " + vec.z + "\n" +
-                    "Offsets:" + "\n" +
-                    "  X: " + xOffset + "\n" +
-                    "  Y: " + yOffset + "\n" +
-                    "  Z: " + zOffset + "\n" +
-                    "  Total: " + vOffset + "\n" +
-                    "Velocity modified:" + "\n" +
-                    "  X: " + (vec.x + xOffset) + "\n" +
-                    "  Y: " + (vec.y + yOffset) + "\n" +
-                    "  Z: " + (vec.z + zOffset) + "\n" +
-                    "  Total: " + lSpeed + "\n" +
-                    "Velocity total average: " + speed + "\n" +
-                    "Velocity total in " + speedType.name() + ": " + speedTypeSpeed + "\n" +
-                    "Endpoint position: (" + Debugger.x + ", " + Debugger.y + ")\n" +
-                    "Percentage point of visual speedometer: " + Debugger.angle + "\n" +
-                    (Config.getVisualSpeedometer()?"Visual Size: "+Config.getImageSize():"Textual display") + "\n" +
-                    (Config.getVisualSpeedometer()?"Creating visual speedometer: " + (Debugger.avrage40SizingTime) + " ms":"") + "\n" +
-                    "Sample Size: " + Config.getSpeedAvrageSampleCount();*/
             String debugData = String.format("""
                     Speedometer: %s
                     (xPos, yPos): (%d,%d)

@@ -1,9 +1,12 @@
 package me.zacharias.speedometer;
 
 import dev.architectury.platform.Platform;
+import dev.architectury.registry.ReloadListenerRegistry;
 import dev.architectury.utils.Env;
 
+import net.fabricmc.api.EnvType;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.apache.logging.log4j.LogManager;
@@ -26,13 +29,12 @@ public class Speedometer
   public static void init() {
     LOGGER.info("Loading speedometer by Allen");
 
-
     if(Platform.getEnvironment() != Env.CLIENT) {
       LOGGER.error("You're running speedometer on something other then a client, this is not supported");
       try {
         for (File f : Objects.requireNonNull(Platform.getModsFolder().toFile().listFiles())) {
           if (f.getName().startsWith("speedometer")) {
-            String fileName = "speedometer-" + VERSION + ".jar.disable";
+            String fileName = String.format("speedometer-%s-%s_%s.jar.disable", Platform.isFabric()?"fabric":"neoforged", VERSION, Platform.getMinecraftVersion());
             if(f.renameTo(new File(f.getParent(), fileName))){
               LOGGER.warn("Successfully in renaming the mod jar file to {}", fileName);
               LOGGER.warn("You should remove the file from {}", Platform.getModsFolder().toString());
@@ -49,10 +51,19 @@ public class Speedometer
     }
 
     Client.init();
+
+    ReloadListenerRegistry.register(
+            PackType.CLIENT_RESOURCES,
+            new SpeedometerReloadListener(),
+            Identifier.fromNamespaceAndPath(MOD_ID, "reload_listener")
+    );
   }
 
   public static void loadSpeedometers(ResourceManager resourceManager)
   {
+
+    LOGGER.info("Loading resources!");
+
     //List< Resource > resource = Minecraft.getInstance().getResourceManager().getResourceStack(Identifier.fromNamespaceAndPath(MOD_ID, "models/speedometer.json"));
     Optional< Resource > resource = resourceManager.getResource(Identifier.fromNamespaceAndPath(MOD_ID, "models/speedometer.json"));
 

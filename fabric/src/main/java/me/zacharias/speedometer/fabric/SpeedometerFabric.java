@@ -12,25 +12,5 @@ public class SpeedometerFabric implements ModInitializer {
   @Override
   public void onInitialize() {
     Speedometer.init();
-
-    //Minecraft.getInstance().getResourcePackRepository().addPack()
-
-    ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
-      /**
-       * Register the reload listener for the speedometers
-       * This is required since i haven't found how to put this in the Architecture Abstraction layer(Common module)
-       * TODO: Find a way to put this in the Abstraction layer
-       * @param resourceManager The event that is fired when the client reloads resources
-       */
-      @Override
-      public void onResourceManagerReload(ResourceManager resourceManager) {
-        Speedometer.loadSpeedometers(resourceManager);
-      }
-
-      @Override
-      public Identifier getFabricId() {
-        return Identifier.fromNamespaceAndPath("speedometer", "visual_speedometer_reload_listener");
-      }
-    });
   }
 }
