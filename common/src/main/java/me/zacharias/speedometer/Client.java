@@ -96,7 +96,7 @@ public class Client {
   private static void render(GuiGraphics graphics, DeltaTracker deltaTracker) {
     if(Minecraft.getInstance().player == null) return;
     if(Minecraft.getInstance().options.hideGui) return;
-    Entity entity = Minecraft.getInstance().player.getRootVehicle();
+    Entity entity = Minecraft.getInstance().player;
 
     Vec3 vec = new Vec3(
         entity.getX() - entity.xOld,
@@ -125,8 +125,9 @@ public class Client {
     double speedTypeSpeed;
 
     SpeedTypes speedType = Config.getSpeedType();
-    if (speedType == SpeedTypes.KNOT || (entity instanceof Boat && Config.getUseKnot())) {
+    if (speedType == SpeedTypes.KNOT || (entity.getRootVehicle() instanceof Boat && Config.getUseKnot())) {
       speedTypeSpeed = speed * 1.94384449;
+      speedType = SpeedTypes.KNOT;
     }else if (speedType == SpeedTypes.KMPH) {
       speedTypeSpeed = speed * 3.6;
     } else if (speedType == SpeedTypes.MPH) {
@@ -201,7 +202,8 @@ public class Client {
           "Velocity total in " + speedType.name() + ": " + speedTypeSpeed + "\n" +
           "Endpoint position: (" + Debugger.x + ", " + Debugger.y + ")\n" +
           "Percentage point of visual speedometer: " + Debugger.angle + "\n" +
-          (Config.getVisualSpeedometer()?"Visual Size: "+Config.getImageSize():"Textual display");
+          (Config.getVisualSpeedometer()?"Visual Size: "+Config.getImageSize():"Textual display" + "\n" +
+          "Root vehicle: " + entity.getRootVehicle().getClass().getSimpleName());
 
       Color color = new Color(255, 255, 255);
 
